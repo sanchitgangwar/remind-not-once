@@ -44,7 +44,11 @@ module.exports = {
             minify: { collapseWhitespace: true }
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin()
+        new webpack.NamedModulesPlugin(),
+        new ExtractTextPlugin({
+            filename: 'app.bundle.[contenthash].css',
+            disable: true
+        })
     ],
     devServer: {
         host: '0.0.0.0',
@@ -54,8 +58,11 @@ module.exports = {
         historyApiFallback: true,
         disableHostCheck: true,
         publicPath: '/',
-        contentBase: path.resolve(__dirname, 'dist'),
-        overlay: { warnings: true, errors: true }
+        contentBase: path.resolve(__dirname, '../assets/dist'),
+        overlay: { warnings: true, errors: true },
+        proxy: {
+            '/api/*': 'http://localhost:12000'
+        }
     },
     module: {
         rules: [{
@@ -67,15 +74,33 @@ module.exports = {
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: [{
-                    loader: 'css-loader'
-                }, 'postcss-loader']
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1,
+                        localIdentName: '[name]_[local]_[hash:base64:6]',
+                        modules: true
+                    }
+                }, 'postcss-loader'
+                ]
             })
         }, {
             test: /\.svg$/,
-            use: 'url?limit=3000&name=[name]_[hash:6].[ext]'
+            use: {
+                loader: 'url-loader',
+                options: {
+                    limit: 30000,
+                    name: '[name]_[hash:6].[ext]'
+                }
+            }
         }, {
             test: /\.(png|jpg|jpeg|gif|ttf|woff2|woff|eot)$/,
-            use: 'url?limit=1000&name=[name]_[hash:6].[ext]'
+            use: {
+                loader: 'file-loader',
+                options: {
+                    limit: 10000,
+                    name: '[name]_[hash:6].[ext]'
+                }
+            }
         }, {
             test: /\.hbs$/,
             use: 'handlebars-loader'
