@@ -1,0 +1,7 @@
+{
+    "google": {
+        "clientId": "1073338094416-qvt8qc5onhbbmjouu6e57impjutrpkbs.apps.googleusercontent.com",
+        "clientSecret": "cX2r36GhAPzZk7Omf_3D_Atn",
+        "redirectUrl": "http://localhost:3000/api/auth/oauth2callback"
+    }
+}

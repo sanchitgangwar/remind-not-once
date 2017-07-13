@@ -1,24 +1,23 @@
 import google from 'googleapis';
 
+const config = require('config');
+
+const OAuth2 = google.auth.OAuth2;
+const oauth2Client = new OAuth2(
+    config.get('google.clientId'),
+    config.get('google.clientSecret'),
+    config.get('google.redirectUrl')
+);
+
+
 function login(req, res) {
-    const OAuth2 = google.auth.OAuth2;
-
-    const oauth2Client = new OAuth2(
-        // Client ID
-        '531852830993-246k3nsjd19mda91djkgr0dhvtn45e6o.apps.googleusercontent.com',
-
-        // Client Secret
-        'U6myGNl7YDG1MgeHpy5YG1bU',
-
-        // Redirect URL
-        'http://localhost:12000/api/auth/oauth2callback'
-    );
-
-    const scope = 'https://www.googleapis.com/auth/calendar';
+    const scopes = [
+        'https://www.googleapis.com/auth/plus.me',
+        'https://www.googleapis.com/auth/calendar'
+    ];
     const url = oauth2Client.generateAuthUrl({
-        scope
+        scope: scopes
     });
-
 
     res.send(200, {
         url
@@ -26,7 +25,23 @@ function login(req, res) {
 }
 
 function oauth2callback(req, res) {
-    res.send(200);
+    const code = req.query.code;
+    const error = req.query.error;
+
+    if (error) {
+        res.redirect('/home');
+        return;
+    }
+
+    oauth2Client.getToken(code, (err, tokens) => {
+        if (!err) {
+            res.cookie('token', tokens.access_token);
+
+            res.redirect('/');
+        } else {
+            res.redirect('/login');
+        }
+    });
 }
 
 function logout(req, res) {

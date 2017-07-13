@@ -4,15 +4,13 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const BabiliPlugin = require('babili-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, '../src'),
     entry: {
-        index: [
-            'react-hot-loader/patch',
-            './client/index.js'
-        ],
+        index: './client/index.js',
         vendor: [
             'react', 'react-dom', 'react-redux', 'redux'
         ]
@@ -20,10 +18,9 @@ module.exports = {
     output: {
         path: path.join(__dirname, '../dist/'),
         publicPath: '/',
-        filename: '[name].js',
-        chunkFilename: '[name].js'
+        filename: '[name]_[chunkhash:6].js',
+        chunkFilename: '[name]_[chunkhash:6].js'
     },
-    devtool: 'cheap-module-source-map',
     resolve: {
         modules: [
             path.resolve(__dirname, '../src'),
@@ -37,6 +34,10 @@ module.exports = {
         }
     },
     plugins: [
+        new CleanWebpackPlugin(['dist/'], {
+            root: path.resolve(__dirname, '../'),
+            verbose: true
+        }),
         new webpack.EnvironmentPlugin({ DEBUG: true, NODE_ENV: 'development', DEV: true }),
         new HtmlWebpackPlugin({
             template: 'index.html',
@@ -47,23 +48,15 @@ module.exports = {
         new webpack.NamedModulesPlugin(),
         new ExtractTextPlugin({
             filename: 'app.bundle.[contenthash].css',
-            disable: true
+            disable: false
+        }),
+        new BabiliPlugin({}, { comments: false }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'commons',
+            filename: 'commons-[hash:6].js',
+            minChunks: Infinity
         })
     ],
-    devServer: {
-        host: '0.0.0.0',
-        port: 3000,
-        hot: true,
-        compress: true,
-        historyApiFallback: true,
-        disableHostCheck: true,
-        publicPath: '/',
-        contentBase: path.resolve(__dirname, '../dist'),
-        overlay: { warnings: true, errors: true },
-        proxy: {
-            '/api/*': 'http://localhost:12000'
-        }
-    },
     module: {
         rules: [{
             test: /\.js$/,

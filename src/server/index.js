@@ -20,6 +20,7 @@ import bunyan from 'bunyan';
 import logger from 'express-bunyan-logger';
 
 import apiEndpoints from './api';
+import authMiddleware from './authMiddleware';
 
 // import routes from '../client/routes';
 // import rootReducer from '../client/reducers';
@@ -34,12 +35,12 @@ global.fetch = fetch;
 const app = express();
 
 // Change Default template engine to handlebars for res.render
-app.use(express.static('../../dist'));
-app.engine('.hbs', exphbs({
-    extname: '.hbs'
-}));
-app.set('views', path.join('../../dist'));
-app.set('view engine', '.hbs');
+app.use(express.static('dist/'));
+// app.engine('.hbs', exphbs({
+//     extname: '.hbs'
+// }));
+// app.set('views', path.join('../../dist'));
+// app.set('view engine', '.hbs');
 
 // app.use(favicon(path.join('public', 'favicon.ico')));
 
@@ -64,8 +65,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/api', authMiddleware);
 app.use('/api', apiEndpoints);
 
+app.use('*', express.static('dist/'));
 // The handler for page requests
 // app.use((req, res) => {
 //     const store = createStore(
