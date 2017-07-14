@@ -4,7 +4,7 @@ import Slide from 'material-ui/transitions/Slide';
 
 import api from 'Universal/utils/api';
 
-import Logo from '../../../../assets/images/logo.svg';
+import Logo from '../../../../assets/images/LogoFull.svg';
 import GoogleLogo from '../../../../assets/images/google_logo1600.png';
 
 import styles from './index.css';

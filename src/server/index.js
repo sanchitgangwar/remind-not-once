@@ -33,6 +33,7 @@ const log = bunyan.createLogger({
 global.fetch = fetch;
 
 const app = express();
+const router = express.Router();
 
 // Change Default template engine to handlebars for res.render
 app.use(express.static('dist/'));
@@ -65,10 +66,11 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api', authMiddleware);
+// app.use('/api', authMiddleware);
 app.use('/api', apiEndpoints);
 
 app.use('*', express.static('dist/'));
+
 // The handler for page requests
 // app.use((req, res) => {
 //     const store = createStore(

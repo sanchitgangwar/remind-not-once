@@ -4,12 +4,9 @@ const config = require('config');
 
 const plus = google.plus('v1');
 
-function checkIfAuthenticated(req, res, next) {
-    if (req.url.indexOf('auth/') !== -1) {
-        next();
-        return;
-    }
-
+function getDetails(req, res) {
+    console.log('\n\n\n\n COOKIES are: ', JSON.stringify(req.cookies, null, 4));
+    console.log('\n\n\nTOKEN: ', req.cookies.token);
     if (req.cookies && req.cookies.token) {
         const OAuth2 = google.auth.OAuth2;
         const oauth2Client = new OAuth2(
@@ -25,19 +22,21 @@ function checkIfAuthenticated(req, res, next) {
         plus.people.get({
             userId: 'me',
             auth: oauth2Client,
-            fields: 'displayName'
-        }, (err) => {
+            fields: 'displayName,image'
+        }, (err, response) => {
             if (err) {
-                res.cookie('token', '', { expires: new Date(null) });
-                res.send(401);
+                res.cookie('token', '', { expires: new Date(null), path: '/' });
+                res.send(401, err);
                 return;
             }
 
-            next();
+            res.send(response);
         });
     } else {
         res.send(401);
     }
 }
 
-export default checkIfAuthenticated;
+export default {
+    getDetails
+};

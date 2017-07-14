@@ -190,7 +190,9 @@ class Api {
             'window'
         ];
 
-        const fetchOptions = {};
+        const fetchOptions = {
+            credentials: 'include'
+        };
 
         extracts.forEach(key => {
             if (typeof config[key] !== 'undefined') {

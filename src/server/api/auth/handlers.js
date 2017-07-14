@@ -29,13 +29,20 @@ function oauth2callback(req, res) {
     const error = req.query.error;
 
     if (error) {
-        res.redirect('/home');
+        res.redirect('/');
         return;
     }
 
     oauth2Client.getToken(code, (err, tokens) => {
         if (!err) {
-            res.cookie('token', tokens.access_token);
+            res.cookie('token', tokens.access_token, {
+                path: '/',
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            });
+            res.cookie('RT', tokens.refresh_token, {
+                path: '/',
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            });
 
             res.redirect('/');
         } else {
