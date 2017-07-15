@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Paper, Button, Typography, Snackbar } from 'material-ui';
-import Slide from 'material-ui/transitions/Slide';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Paper, Button, Typography } from 'material-ui';
 
 import api from 'Universal/utils/api';
+import { showSnackbarAction, hideSnackbarAction } from 'Universal/actions/snackbar';
 
 import Logo from '../../../../assets/images/LogoFull.svg';
 import GoogleLogo from '../../../../assets/images/google_logo1600.png';
@@ -10,13 +13,10 @@ import GoogleLogo from '../../../../assets/images/google_logo1600.png';
 import styles from './index.css';
 
 class Login extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            error: false
-        };
-    }
+    static propTypes = {
+        showSnackbar: PropTypes.func.isRequired,
+        hideSnackbar: PropTypes.func.isRequired
+    };
 
     handleLogin = () => {
         api.post({
@@ -24,16 +24,15 @@ class Login extends Component {
         }).then((response) => {
             window.location.href = response.url;
         }, () => {
-            this.setState({
-                error: true
+            this.props.showSnackbar({
+                message: 'Please try again',
+                onRequestClose: this.handleSnackbarClose
             });
         });
     };
 
     handleSnackbarClose = () => {
-        this.setState({
-            error: false
-        });
+        this.props.hideSnackbar();
     };
 
     render() {
@@ -68,24 +67,16 @@ class Login extends Component {
                         </Button>
                     </div>
                 </Paper>
-
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left'
-                    }}
-                    open={this.state.error}
-                    onRequestClose={this.handleSnackbarClose}
-                    transition={<Slide direction="up" />}
-                    SnackbarContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
-                    autoHideDuration={1000}
-                    message={<span id="message-id">Please try again.</span>}
-                />
             </div>
         );
     }
 }
 
-export default Login;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        showSnackbar: showSnackbarAction,
+        hideSnackbar: hideSnackbarAction
+    }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(Login);

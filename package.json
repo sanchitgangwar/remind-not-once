@@ -33,6 +33,7 @@
         "express-handlebars": "^3.0.0",
         "googleapis": "^20.1.0",
         "isomorphic-style-loader": "^3.0.0",
+        "material-ui-icons": "^1.0.0-alpha.19",
         "moment": "^2.13.0",
         "needle": "^1.0.0",
         "object-path": "^0.11.4",

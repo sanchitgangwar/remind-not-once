@@ -1,5 +1,6 @@
 .root {
     width: 100%;
+    background: #efefef;
 }
 
 .logoContainer {
@@ -8,4 +9,9 @@
 
 .logo {
     height: 50px;
+}
+
+.contentContainer {
+    padding: 24px;
+    margin-top: 65px;
 }

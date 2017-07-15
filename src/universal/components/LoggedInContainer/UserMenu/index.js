@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Typography from 'material-ui/Typography';
 
+import {
+    showSnackbarAction,
+    hideSnackbarAction
+} from 'Universal/actions/snackbar';
+import api from 'Universal/utils/api';
+
 import styles from './index.css';
 
 class UserMenu extends Component {
     static propTypes = {
-        userDetails: PropTypes.object.isRequired
+        userDetails: PropTypes.object.isRequired,
+        showSnackbar: PropTypes.func.isRequired,
+        hideSnackbar: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -36,6 +45,24 @@ class UserMenu extends Component {
         });
     };
 
+    handleLogout = () => {
+        api.get({
+            path: '/api/auth/logout'
+        }).then(() => {
+            if (window) {
+                window.location.href = '/';
+            }
+        }, () => {
+            this.props.showSnackbar({
+                message: 'Please try again.',
+                onRequestClose: this.props.hideSnackbar
+            });
+            this.setState({
+                open: false
+            });
+        });
+    };
+
     render() {
         return (
             <IconButton>
@@ -48,7 +75,7 @@ class UserMenu extends Component {
                     open={this.state.open}
                     onRequestClose={this.handleRequestClose}
                 >
-                    <MenuItem className={styles.details} disabled>
+                    <div className={styles.details}>
                         <div className={styles.text}>
                             <Typography type="body1">{ this.props.userDetails.displayName }</Typography>
                             <Typography type="caption">sanchitgangwar@gmail.com</Typography>
@@ -56,8 +83,11 @@ class UserMenu extends Component {
                         <div className={styles.image}>
                             <Avatar src={this.props.userDetails.image.url} />
                         </div>
+                    </div>
+
+                    <MenuItem onClick={this.handleLogout} selected>
+                            Logout
                     </MenuItem>
-                    <MenuItem selected onClick={this.handleRequestClose}>Logout</MenuItem>
                 </Menu>
             </IconButton>
         );
@@ -70,4 +100,11 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null)(UserMenu);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        showSnackbar: showSnackbarAction,
+        hideSnackbar: hideSnackbarAction
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);

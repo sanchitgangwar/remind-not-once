@@ -7,7 +7,7 @@ import {
 } from 'Universal/actions/user';
 
 export default function auth(state = {
-    isLoggedIn: true,
+    isLoggedIn: false,
     isLoggingIn: false,
     isCookieChecked: false,
     details: {

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
 
+import EventsList from 'Universal/pages/EventsList';
 import UserMenu from './UserMenu';
 
 import LogoFull from '../../../../assets/images/LogoFull.svg';
@@ -21,7 +21,8 @@ class LoggedInContainer extends Component {
         return (
             <div className={styles.root}>
                 <AppBar style={{
-                    backgroundColor: '#eee'
+                    backgroundColor: '#eee',
+                    height: 65
                 }}>
                     <Toolbar>
                         <Link to="/" className={styles.logoContainer}>
@@ -30,6 +31,10 @@ class LoggedInContainer extends Component {
                         <UserMenu />
                     </Toolbar>
                 </AppBar>
+
+                <div className={styles.contentContainer}>
+                    <Route exact path="/" component={EventsList} />
+                </div>
             </div>
         );
     }

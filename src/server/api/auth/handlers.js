@@ -19,7 +19,7 @@ function login(req, res) {
         scope: scopes
     });
 
-    res.send(200, {
+    res.status(200).send({
         url
     });
 }
@@ -52,7 +52,10 @@ function oauth2callback(req, res) {
 }
 
 function logout(req, res) {
-    res.send(200);
+    res.cookie('token', '', { expires: new Date(null) });
+    res.cookie('RT', '', { expires: new Date(null) });
+
+    res.redirect('/');
 }
 
 export default {

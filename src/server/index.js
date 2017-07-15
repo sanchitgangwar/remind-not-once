@@ -20,7 +20,6 @@ import bunyan from 'bunyan';
 import logger from 'express-bunyan-logger';
 
 import apiEndpoints from './api';
-import authMiddleware from './authMiddleware';
 
 // import routes from '../client/routes';
 // import rootReducer from '../client/reducers';

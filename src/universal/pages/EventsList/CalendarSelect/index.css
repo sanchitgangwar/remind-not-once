@@ -1,0 +1,24 @@
+.root {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button {
+    flex: none !important;
+    text-align: right;
+}
+
+.color {
+    display: inline-block;
+    margin: 0 10px 0 0 ;
+    /*height: 15px;*/
+    width: 15px;
+    background: red;
+}
+
+.menuItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

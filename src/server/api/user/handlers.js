@@ -5,8 +5,6 @@ const config = require('config');
 const plus = google.plus('v1');
 
 function getDetails(req, res) {
-    console.log('\n\n\n\n COOKIES are: ', JSON.stringify(req.cookies, null, 4));
-    console.log('\n\n\nTOKEN: ', req.cookies.token);
     if (req.cookies && req.cookies.token) {
         const OAuth2 = google.auth.OAuth2;
         const oauth2Client = new OAuth2(
@@ -26,14 +24,14 @@ function getDetails(req, res) {
         }, (err, response) => {
             if (err) {
                 res.cookie('token', '', { expires: new Date(null), path: '/' });
-                res.send(401, err);
+                res.status(401).send(err);
                 return;
             }
 
-            res.send(response);
+            res.status(200).send(response);
         });
     } else {
-        res.send(401);
+        res.status(401).send();
     }
 }
 

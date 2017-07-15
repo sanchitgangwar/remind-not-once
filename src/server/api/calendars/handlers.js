@@ -1,15 +1,10 @@
 import google from 'googleapis';
 
+import formatters from './formatters';
+
 const config = require('config');
 
-const plus = google.plus('v1');
-
-function checkIfAuthenticated(req, res, next) {
-    if (req.url.indexOf('auth/') !== -1) {
-        next();
-        return;
-    }
-
+function getList(req, res) {
     if (req.cookies && req.cookies.token) {
         const OAuth2 = google.auth.OAuth2;
         const oauth2Client = new OAuth2(
@@ -22,22 +17,22 @@ function checkIfAuthenticated(req, res, next) {
             access_token: req.cookies.token
         });
 
-        plus.people.get({
-            userId: 'me',
+        const calendar = google.calendar('v3');
+        calendar.calendarList.list({
             auth: oauth2Client,
-            fields: 'displayName'
-        }, (err) => {
+        }, (err, response) => {
             if (err) {
-                res.cookie('token', '', { expires: new Date(null) });
-                res.send(401);
+                res.status(err.code).send(err);
                 return;
             }
 
-            next();
+            res.status(200).send(formatters.calendarsList(response));
         });
     } else {
-        res.send(401);
+        res.status(401).send();
     }
 }
 
-export default checkIfAuthenticated;
+export default {
+    getList
+};
