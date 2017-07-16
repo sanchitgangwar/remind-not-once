@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import cx from 'classnames';
 
 import List, { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
@@ -87,10 +88,23 @@ class CalendarSelect extends Component {
                         aria-controls="calendar-menu"
                         aria-label="Calendar"
                         onClick={this.handleClickListItem}
+                        disabled={!selected.id}
                     >
                         <ListItemText
-                            primary="Calendar"
-                            secondary={selected.summary || 'NONE'}
+                            primary={
+                                <span className={cx({
+                                    [styles.placeholder]: !selected.id
+                                })}>
+                                    Calendar
+                                </span>
+                            }
+                            secondary={
+                                <span className={cx({
+                                    [styles.placeholder]: !selected.id
+                                })}>
+                                    {selected.summary || 'NONE'}
+                                </span>
+                            }
                         />
                         <ListItemIcon>
                             <Bookmark style={{
@@ -108,7 +122,6 @@ class CalendarSelect extends Component {
                     {
                         this.props.calendars.list.map((calendar, index) => (
                             <MenuItem
-                                dataA={10}
                                 key={index}
                                 selected={selected.id === calendar.id}
                                 onClick={this.handleCalendarSelect.bind(this, index)}

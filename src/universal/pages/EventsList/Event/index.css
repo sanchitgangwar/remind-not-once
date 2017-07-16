@@ -1,0 +1,32 @@
+.headerContainer {
+    display: flex;
+}
+
+.headerText {
+    flex: 1;
+}
+
+.listRoot {
+    padding: 20px;
+}
+
+.listItem {
+    height: 48px;
+}
+
+.cardActionContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.stepperRoot {
+    padding: 0 !important;
+}
+
+.stepperButton {
+    display: none !important;
+}
+
+.progress {
+    width: 100% !important;
+}

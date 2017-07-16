@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { CircularProgress } from 'material-ui/Progress';
-
 import {
     setSelectedCalendarAction
 } from 'Universal/actions/calendars';
@@ -13,6 +11,7 @@ import {
 } from 'Universal/actions/events';
 
 import CalendarSelect from './CalendarSelect';
+import Event from './Event';
 import styles from './index.css';
 
 class EventsList extends Component {
@@ -23,12 +22,26 @@ class EventsList extends Component {
         setEventsForDate: PropTypes.func.isRequired
     };
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.calendars.selected.id !==
+            this.props.calendars.selected.id) {
+            this.setState({
+                events: []
+            });
+        }
+    }
+
     render() {
         return (
             <div>
                 <CalendarSelect />
 
-                EventsList
+                {
+                    !this.props.calendars.selected.id
+                        ? <div className={styles.loader}>
+                        </div>
+                        : <Event />
+                }
             </div>
         );
     }

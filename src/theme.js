@@ -5,7 +5,7 @@ import {
 
 const theme = createMuiTheme();
 const typography = createTypography(theme.palette, {
-    fontFamily: '"Oxygen", "Roboto", sans-serif'
+    fontFamily: '"Source Sans Pro", "Roboto", sans-serif'
 });
 
 export default {

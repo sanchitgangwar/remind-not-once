@@ -5,6 +5,7 @@ import { Link, Route } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
 
 import EventsList from 'Universal/pages/EventsList';
 import UserMenu from './UserMenu';
@@ -21,12 +22,16 @@ class LoggedInContainer extends Component {
         return (
             <div className={styles.root}>
                 <AppBar style={{
-                    backgroundColor: '#eee',
+                    backgroundColor: '#fcfcfc',
                     height: 65
                 }}>
                     <Toolbar>
                         <Link to="/" className={styles.logoContainer}>
                             <img src={LogoFull} className={styles.logo} />
+                        </Link>
+
+                        <Link to="/new" className={styles.button}>
+                            <Button>CREATE NEW</Button>
                         </Link>
                         <UserMenu />
                     </Toolbar>

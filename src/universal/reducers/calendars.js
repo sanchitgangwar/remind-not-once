@@ -4,7 +4,7 @@ import {
 } from 'Universal/actions/calendars';
 
 export default function (state = {
-    selected: null,
+    selected: {},
     list: []
 }, action) {
     switch (action.type) {
