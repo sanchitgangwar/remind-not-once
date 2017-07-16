@@ -18,15 +18,17 @@ function getList(req, res) {
         });
 
         const calendar = google.calendar('v3');
-        calendar.calendarList.list({
-            auth: oauth2Client
+        calendar.events.list({
+            auth: oauth2Client,
+            calendarId: req.params.calendarId || 'primary',
+            timeMin: (new Date()).toISOString()
         }, (err, response) => {
             if (err) {
-                res.status(err.code || 500).send(err);
+                res.status(err.code || 500).send(status);
                 return;
             }
 
-            res.status(200).send(formatters.calendarsList(response));
+            res.status(200).send(formatters.formatList(response));
         });
     } else {
         res.status(401).send();

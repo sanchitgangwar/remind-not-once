@@ -156,7 +156,7 @@ class Api {
                 param = `${key}=${obj[key]}`;
             }
 
-            queryString = ++i ? `${queryString}&${param}` : param;
+            queryString = i++ ? `${queryString}&${param}` : param;
         }
         return queryString;
     }

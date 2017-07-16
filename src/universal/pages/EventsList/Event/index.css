@@ -6,14 +6,6 @@
     flex: 1;
 }
 
-.listRoot {
-    padding: 20px;
-}
-
-.listItem {
-    height: 48px;
-}
-
 .cardActionContainer {
     display: flex;
     justify-content: flex-end;

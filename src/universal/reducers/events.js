@@ -1,21 +1,18 @@
 import {
     SET_EVENTS_FOR_DATE,
-    DELETE_EVENT
-} from 'Universal/actions/calendars';
+    CLEAR_EVENTS
+} from 'Universal/actions/events';
 
 export default function (state = {
-    dates: {}
 }, action) {
     switch (action.type) {
     case SET_EVENTS_FOR_DATE:
         return {
             ...state,
-            dates: action.payload
+            [action.payload.date]: action.payload.events
         };
-    case DELETE_EVENT:
-        return {
-            ...state
-        };
+    case CLEAR_EVENTS:
+        return {};
     default:
         return state;
     }

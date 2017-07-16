@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Card, { CardContent, CardActions } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import Collapse from 'material-ui/transitions/Collapse';
-import List, { ListItem, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
 import MobileStepper from 'material-ui/MobileStepper';
+import lightGreen from 'material-ui/colors/lightGreen';
+import pink from 'material-ui/colors/pink';
+
 import DoneIcon from 'material-ui-icons/Done';
 import DoneAllIcon from 'material-ui-icons/DoneAll';
 import UndoIcon from 'material-ui-icons/Undo';
-import pink from 'material-ui/colors/pink';
-import lightGreen from 'material-ui/colors/lightGreen';
+
+import Table from './Table';
 
 import styles from './index.css';
 
 class Event extends Component {
+    static propTypes = {
+        summary: PropTypes.string.isRequired,
+        calendarId: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
+        completed: PropTypes.array,
+        incomplete: PropTypes.array
+    };
+
     constructor(props) {
         super(props);
 
@@ -51,28 +62,28 @@ class Event extends Component {
     };
 
     render() {
-        const incomplete = [
-            'Walden, Page 21', 'India, Page 30'
-        ];
+        const { completed, incomplete } = this.props;
 
-        const complete = [
-            'Harry Potter, Pages 20-25', 'History I, Pages 40-50'
-        ];
+        const nCompleted = completed.length;
+        const nIncomplete = incomplete.length;
 
         return (
             <div>
                 <Card className={styles.card}>
                     <MobileStepper
                         type="progress"
-                        steps={5}
+                        steps={nCompleted + nIncomplete + 1}
                         position="static"
-                        activeStep={2}
+                        activeStep={nCompleted}
+                        onNext={() => null}
+                        onBack={() => null}
                         classes={{
                             root: styles.stepperRoot,
                             button: styles.stepperButton,
                             progress: styles.progress
                         }}
                     />
+
                     <CardContent>
                         <div className={styles.headerContainer}>
                             <div className={styles.headerText}>
@@ -91,80 +102,45 @@ class Event extends Component {
                             </div>
                         </div>
 
-                        <Typography>Total: 5, Remaining: 2</Typography>
+                        <Typography style={{ margin: '10px 0 20px 0' }}>
+                            Total: {nIncomplete + nCompleted}, Remaining: {incomplete.length}
+                        </Typography>
 
-                        <div className={styles.listRoot}
-                            style={{
-                                marginTop: 20,
-                                backgroundColor: pink['50']
-                            }}>
-                            <Typography type="subheading">
-                                INCOMPLETE
-                            </Typography>
-                            <List>
-                                {
-                                    incomplete.map((value, index) =>
-                                        <ListItem dense button key={value}
-                                            onClick={event => this.handleToggle(event, index)}
-                                            classes={{
-                                                root: styles.listItem
-                                            }}>
-
-                                            <ListItemText primary={`Line item ${value + 1}`} />
-                                            <ListItemSecondaryAction classes={{
-                                                root: styles.secondaryAction
-                                            }}>
-                                                <IconButton aria-label="Done">
-                                                    <DoneIcon />
-                                                </IconButton>
-                                            </ListItemSecondaryAction>
-                                        </ListItem>)
-                                }
-                            </List>
-                        </div>
+                        <Table
+                            title="INCOMPLETE"
+                            backgroundColor={pink['50']}
+                            list={incomplete}
+                            actionIcon={<DoneIcon />}
+                            onActionClick={this.handleDone}
+                        />
                     </CardContent>
 
                     <Collapse in={this.state.showCompleted}
                         transitionDuration="auto" unmountOnExit>
 
                         <CardContent>
-                            <div className={styles.listRoot} style={{
-                                backgroundColor: lightGreen['50']
-                            }}>
-                                <Typography type="subheading">COMPLETED</Typography>
-                                <List>
-                                    {
-                                        complete.map((value, index) =>
-                                            <ListItem dense button key={value}
-                                                onClick={event => this.handleToggle(event, index)}
-                                                classes={{
-                                                    root: styles.listItem
-                                                }}>
-
-                                                <ListItemText primary={`Line item ${value + 1}`} />
-                                                <ListItemSecondaryAction classes={{
-                                                    root: styles.secondaryAction
-                                                }}>
-                                                    <IconButton aria-label="Undo">
-                                                        <UndoIcon />
-                                                    </IconButton>
-                                                </ListItemSecondaryAction>
-                                            </ListItem>)
-                                    }
-                                </List>
-                            </div>
+                            <Table
+                                title="COMPLETED"
+                                backgroundColor={lightGreen['50']}
+                                list={completed}
+                                actionIcon={<UndoIcon />}
+                                onActionClick={this.handleUndo}
+                            />
                         </CardContent>
                     </Collapse>
-
-                    <CardActions classes={{
-                        root: styles.cardActionContainer
-                    }}>
-                        <Button dense color="primary" onClick={this.handleExpandClick}>
-                            { this.state.showCompleted ?
-                                'Hide completed' :
-                                'Show completed' }
-                        </Button>
-                    </CardActions>
+                    {
+                        nCompleted ? (
+                            <CardActions classes={{
+                                root: styles.cardActionContainer
+                            }}>
+                                <Button dense color="primary" onClick={this.handleExpandClick}>
+                                    { this.state.showCompleted ?
+                                        'Hide completed' :
+                                        'Show completed' }
+                                </Button>
+                            </CardActions>
+                        ) : null
+                    }
                 </Card>
             </div>
         );
