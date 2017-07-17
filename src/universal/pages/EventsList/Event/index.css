@@ -1,0 +1,12 @@
+.headerContainer {
+    display: flex;
+}
+
+.headerText {
+    flex: 1;
+}
+
+.cardActionContainer {
+    display: flex;
+    justify-content: flex-end;
+}

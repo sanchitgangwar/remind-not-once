@@ -1,0 +1,13 @@
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+}
+
+.loading {
+    color: rgba(0, 0, 0, 0.5);
+}

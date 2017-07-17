@@ -4,7 +4,9 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 
 module.exports = {
     context: path.resolve(__dirname, '../src'),
@@ -18,7 +20,7 @@ module.exports = {
         ]
     },
     output: {
-        path: path.join(__dirname, 'dist/'),
+        path: path.join(__dirname, '../dist/'),
         publicPath: '/',
         filename: '[name].js',
         chunkFilename: '[name].js'
@@ -37,6 +39,11 @@ module.exports = {
         }
     },
     plugins: [
+        new CleanWebpackPlugin(['dist'], {
+            root: path.resolve(__dirname, '../'),
+            verbose: true,
+            dry: false
+        }),
         new webpack.EnvironmentPlugin({ DEBUG: true, NODE_ENV: 'development', DEV: true }),
         new HtmlWebpackPlugin({
             template: 'index.html',
@@ -44,7 +51,11 @@ module.exports = {
             minify: { collapseWhitespace: true }
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin()
+        new webpack.NamedModulesPlugin(),
+        new ExtractTextPlugin({
+            filename: 'app.bundle.[contenthash].css',
+            disable: true
+        })
     ],
     devServer: {
         host: '0.0.0.0',
@@ -54,8 +65,11 @@ module.exports = {
         historyApiFallback: true,
         disableHostCheck: true,
         publicPath: '/',
-        contentBase: path.resolve(__dirname, 'dist'),
-        overlay: { warnings: true, errors: true }
+        contentBase: path.resolve(__dirname, '../dist'),
+        overlay: { warnings: true, errors: true },
+        proxy: {
+            '/api/*': 'http://localhost:12000'
+        }
     },
     module: {
         rules: [{
@@ -67,15 +81,33 @@ module.exports = {
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: [{
-                    loader: 'css-loader'
-                }, 'postcss-loader']
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1,
+                        localIdentName: '[name]_[local]_[hash:base64:6]',
+                        modules: true
+                    }
+                }, 'postcss-loader'
+                ]
             })
         }, {
             test: /\.svg$/,
-            use: 'url?limit=3000&name=[name]_[hash:6].[ext]'
+            use: {
+                loader: 'url-loader',
+                options: {
+                    limit: 30000,
+                    name: '[name]_[hash:6].[ext]'
+                }
+            }
         }, {
             test: /\.(png|jpg|jpeg|gif|ttf|woff2|woff|eot)$/,
-            use: 'url?limit=1000&name=[name]_[hash:6].[ext]'
+            use: {
+                loader: 'file-loader',
+                options: {
+                    limit: 10000,
+                    name: '[name]_[hash:6].[ext]'
+                }
+            }
         }, {
             test: /\.hbs$/,
             use: 'handlebars-loader'
