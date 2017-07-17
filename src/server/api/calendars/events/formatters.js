@@ -1,17 +1,14 @@
 import moment from 'moment';
 
-const summaryRegex = /^(?:\[R\+\])\s+(.*)/g;
-const descriptionRegex = /((?:\[-\])|(?:\[\+\]))\s+(.*?)(?=(?:(?:\[+|-\]))|$)/gm;
-
 function getSummary(summary) {
-    const regex = summaryRegex;
+    const regex = /^(?:\[R\+\])\s+(.*)/g;
     const m = regex.exec(summary);
 
     return m ? m[1] : null;
 }
 
 function formatTasksTextToArray(description) {
-    const regex = descriptionRegex;
+    const regex = /((?:\[-\])|(?:\[\+\]))\s+(.*?)(?=(?:(?:\[+|-\]))|$)/gm;
 
     const tasks = {
         completed: [],
