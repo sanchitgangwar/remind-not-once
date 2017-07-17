@@ -10,15 +10,3 @@
     display: flex;
     justify-content: flex-end;
 }
-
-.stepperRoot {
-    padding: 0 !important;
-}
-
-.stepperButton {
-    display: none !important;
-}
-
-.progress {
-    width: 100% !important;
-}

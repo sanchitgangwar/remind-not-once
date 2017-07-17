@@ -4,7 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 // const CompressionPlugin = require('compression-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const fs = require('fs');
 
 const nodeModules = {};
@@ -54,6 +54,11 @@ module.exports = {
         }]
     },
     plugins: [
+        new CleanWebpackPlugin(['distServer'], {
+            root: path.resolve(__dirname, '../'),
+            verbose: true,
+            dry: false
+        }),
         new webpack.BannerPlugin({
             banner: 'require("source-map-support").install();',
             raw: true,

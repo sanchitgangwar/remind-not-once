@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const summaryRegex = /^(?:\[R\+\])\s+(.*)/g;
 const descriptionRegex = /((?:\[-\])|(?:\[\+\]))\s+(.*?)(?=(?:(?:\[+|-\]))|$)/gm;
 
@@ -8,7 +10,7 @@ function getSummary(summary) {
     return m ? m[1] : null;
 }
 
-function getTasks(description) {
+function formatTasksTextToArray(description) {
     const regex = descriptionRegex;
 
     const tasks = {
@@ -37,10 +39,13 @@ function formatList(response) {
         const summary = getSummary(event.summary);
 
         if (summary) {
-            const tasks = getTasks(event.description);
+            const tasks = formatTasksTextToArray(event.description);
             const obj = {
                 id: event.id,
                 summary,
+                created: moment(event.created).format('LL'),
+                updated: moment(event.updated).format('LL'),
+                date: event.start.date,
                 completed: tasks.completed,
                 incomplete: tasks.incomplete
             };
@@ -52,6 +57,17 @@ function formatList(response) {
     return result;
 }
 
+function formatTasksToText({ completed, incomplete }) {
+    const completedDesc = completed.length ? `[+] ${completed.join('\n[+] ')}` : '';
+    const incompleteDesc = incomplete.length ? `[-] ${incomplete.join('\n[-] ')}` : '';
+
+    return incompleteDesc ?
+        `${incompleteDesc}\n${completedDesc}` :
+        `${completedDesc}`;
+}
+
 export default {
-    formatList
+    formatList,
+    formatTasksTextToArray,
+    formatTasksToText
 };

@@ -109,7 +109,7 @@ class Api {
      */
     formatUrl(config) {
         let queryString = '';
-        if (config.method === 'GET' && config.query) {
+        if (config.query) {
             queryString = this.constructQuery(config.query);
         }
 

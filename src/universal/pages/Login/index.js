@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Paper, Button, Typography } from 'material-ui';
+
+import Paper from 'material-ui/Paper';
+import Button from 'material-ui/Button';
+import Typography from 'material-ui/Typography';
 
 import api from 'Universal/utils/api';
-import { showSnackbarAction, hideSnackbarAction } from 'Universal/actions/snackbar';
+import { showSnackbarAction } from 'Universal/actions/snackbar';
 
 import Logo from '../../../../assets/images/LogoFull.svg';
 import GoogleLogo from '../../../../assets/images/google_logo1600.png';
@@ -14,8 +17,7 @@ import styles from './index.css';
 
 class Login extends Component {
     static propTypes = {
-        showSnackbar: PropTypes.func.isRequired,
-        hideSnackbar: PropTypes.func.isRequired
+        showSnackbar: PropTypes.func.isRequired
     };
 
     handleLogin = () => {
@@ -25,14 +27,9 @@ class Login extends Component {
             window.location.href = response.url;
         }, () => {
             this.props.showSnackbar({
-                message: 'Please try again',
-                onRequestClose: this.handleSnackbarClose
+                message: 'Please try again'
             });
         });
-    };
-
-    handleSnackbarClose = () => {
-        this.props.hideSnackbar();
     };
 
     render() {
@@ -74,8 +71,7 @@ class Login extends Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        showSnackbar: showSnackbarAction,
-        hideSnackbar: hideSnackbarAction
+        showSnackbar: showSnackbarAction
     }, dispatch);
 }
 

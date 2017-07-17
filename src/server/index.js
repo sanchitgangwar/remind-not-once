@@ -13,13 +13,14 @@ import fetch from 'node-fetch';
 import 'promise.prototype.finally';
 
 import compress from 'compression';
-import favicon from 'serve-favicon';
+// import favicon from 'serve-favicon';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import bunyan from 'bunyan';
 import logger from 'express-bunyan-logger';
 
 import apiEndpoints from './api';
+import authMiddleware from './authMiddleware';
 
 // import routes from '../client/routes';
 // import rootReducer from '../client/reducers';
@@ -32,7 +33,6 @@ const log = bunyan.createLogger({
 global.fetch = fetch;
 
 const app = express();
-const router = express.Router();
 
 // Change Default template engine to handlebars for res.render
 app.use(express.static('dist/'));
@@ -41,8 +41,6 @@ app.use(express.static('dist/'));
 // }));
 // app.set('views', path.join('../../dist'));
 // app.set('view engine', '.hbs');
-
-// app.use(favicon(path.join('public', 'favicon.ico')));
 
 app.use(logger({
     name: 'app'
@@ -65,7 +63,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.use('/api', authMiddleware);
+app.use('/api', authMiddleware);
 app.use('/api', apiEndpoints);
 
 app.use('*', express.static('dist/'));

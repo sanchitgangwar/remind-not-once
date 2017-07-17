@@ -1,13 +1,6 @@
-import google from 'googleapis';
+import oauth from 'Server/api/oauth2';
 
-const config = require('config');
-
-const OAuth2 = google.auth.OAuth2;
-const oauth2Client = new OAuth2(
-    config.get('google.clientId'),
-    config.get('google.clientSecret'),
-    config.get('google.redirectUrl')
-);
+const oauth2Client = oauth.getClient();
 
 
 function login(req, res) {

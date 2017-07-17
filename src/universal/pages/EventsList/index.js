@@ -26,7 +26,10 @@ const loadingStyle = {
 
 function getTodaysDate() {
     const d = new Date();
-    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+    let month = d.getMonth() + 1;
+    month = month < 10 ? `0${month}` : month;
+
+    return `${d.getFullYear()}-${month}-${d.getDate()}`;
 }
 
 class EventsList extends Component {
@@ -101,15 +104,12 @@ class EventsList extends Component {
                                 ? events.map((event, index) => (
                                     <Event
                                         key={index}
-                                        id={event.id}
-                                        summary={event.summary}
+                                        details={event}
                                         calendarId={this.props.calendars.selected.id}
-                                        completed={event.completed}
-                                        incomplete={event.incomplete}
                                     />
                                 ))
                                 : <Typography
-                                    className={loadingStyle} type="subheading" align="center">
+                                    style={loadingStyle} type="subheading" align="center">
                                     No events
                                 </Typography>
                         )

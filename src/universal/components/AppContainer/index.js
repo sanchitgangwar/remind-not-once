@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { Snackbar } from 'material-ui';
+import Snackbar from 'material-ui/Snackbar';
 import Slide from 'material-ui/transitions/Slide';
 
 import ProtectedRoute from 'Universal/components/ProtectedRoute';
@@ -12,6 +12,7 @@ import NotFound from 'Universal/pages/NotFound';
 import Loader from 'Universal/components/Loader';
 import LoggedInContainer from 'Universal/components/LoggedInContainer';
 
+import { hideSnackbarAction } from 'Universal/actions/snackbar';
 import { initLoginAction } from 'Universal/actions/user';
 
 import styles from './index.css';
@@ -22,7 +23,8 @@ class AppContainer extends Component {
         isLoggingIn: PropTypes.bool.isRequired,
         isCookieChecked: PropTypes.bool.isRequired,
         initLogin: PropTypes.func.isRequired,
-        snackbar: PropTypes.object.isRequired
+        snackbar: PropTypes.object.isRequired,
+        hideSnackbar: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -59,7 +61,7 @@ class AppContainer extends Component {
                         horizontal: 'left'
                     }}
                     open={this.props.snackbar.open}
-                    onRequestClose={this.props.snackbar.onRequestClose}
+                    onRequestClose={this.props.hideSnackbar}
                     transition={<Slide direction="up" />}
                     SnackbarContentProps={{
                         'aria-describedby': 'message-id',
@@ -83,7 +85,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        initLogin: initLoginAction
+        initLogin: initLoginAction,
+        hideSnackbar: hideSnackbarAction
     }, dispatch);
 }
 

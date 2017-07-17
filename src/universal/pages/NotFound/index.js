@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Typography } from 'material-ui';
 import { Link } from 'react-router-dom';
+
+import Typography from 'material-ui/Typography';
 
 import LogoSmall from '../../../../assets/images/LogoSmall.svg';
 import styles from './index.css';

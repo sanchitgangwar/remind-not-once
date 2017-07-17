@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Card, { CardContent, CardActions } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import Collapse from 'material-ui/transitions/Collapse';
 import IconButton from 'material-ui/IconButton';
-import MobileStepper from 'material-ui/MobileStepper';
 import lightGreen from 'material-ui/colors/lightGreen';
 import pink from 'material-ui/colors/pink';
 
@@ -14,17 +15,21 @@ import DoneIcon from 'material-ui-icons/Done';
 import DoneAllIcon from 'material-ui-icons/DoneAll';
 import UndoIcon from 'material-ui-icons/Undo';
 
+import api from 'Universal/utils/api';
+import { updateEventAction } from 'Universal/actions/events';
+import { showSnackbarAction } from 'Universal/actions/snackbar';
+
+import StatusBar from './StatusBar';
 import Table from './Table';
 
 import styles from './index.css';
 
 class Event extends Component {
     static propTypes = {
-        summary: PropTypes.string.isRequired,
         calendarId: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
-        completed: PropTypes.array,
-        incomplete: PropTypes.array
+        details: PropTypes.object.isRequired,
+        showSnackbar: PropTypes.func.isRequired,
+        updateEvent: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -61,8 +66,87 @@ class Event extends Component {
         });
     };
 
+    handleDoneAll = () => {
+        const { calendarId, details: { id } } = this.props;
+
+        api.put({
+            path: `/api/calendars/${calendarId}/events/${id}`,
+            query: {
+                op: 'DONE'
+            }
+        }).then((newTasks) => {
+            this.props.updateEvent({
+                id,
+                date: this.props.details.date,
+                completed: newTasks.completed,
+                incomplete: newTasks.incomplete
+            });
+            this.props.showSnackbar({
+                message: 'Marked all as completed.'
+            });
+        }, () => {
+            this.props.showSnackbar({
+                message: 'Could not mark as completed.'
+            });
+        });
+    };
+
+    handleUndo = (event, index) => {
+        const { calendarId, details: { id } } = this.props;
+
+        api.put({
+            path: `/api/calendars/${calendarId}/events/${id}/tasks`,
+            query: {
+                op: 'UNDO'
+            }
+        }, {
+            task: this.props.details.completed[index]
+        }).then((newTasks) => {
+            this.props.updateEvent({
+                id,
+                date: this.props.details.date,
+                completed: newTasks.completed,
+                incomplete: newTasks.incomplete
+            });
+            this.props.showSnackbar({
+                message: 'Marked as completed.'
+            });
+        }, () => {
+            this.props.showSnackbar({
+                message: 'Could not mark as completed.'
+            });
+        });
+    };
+
+    handleDone = (event, index) => {
+        const { calendarId, details: { id } } = this.props;
+
+        api.put({
+            path: `/api/calendars/${calendarId}/events/${id}/tasks`,
+            query: {
+                op: 'DONE'
+            }
+        }, {
+            task: this.props.details.incomplete[index]
+        }).then((newTasks) => {
+            this.props.updateEvent({
+                id,
+                date: this.props.details.date,
+                completed: newTasks.completed,
+                incomplete: newTasks.incomplete
+            });
+            this.props.showSnackbar({
+                message: 'Marked as incomplete.'
+            });
+        }, () => {
+            this.props.showSnackbar({
+                message: 'Could not mark as done.'
+            });
+        });
+    };
+
     render() {
-        const { completed, incomplete } = this.props;
+        const { details: { created, completed, incomplete } } = this.props;
 
         const nCompleted = completed.length;
         const nIncomplete = incomplete.length;
@@ -70,19 +154,7 @@ class Event extends Component {
         return (
             <div>
                 <Card className={styles.card}>
-                    <MobileStepper
-                        type="progress"
-                        steps={nCompleted + nIncomplete + 1}
-                        position="static"
-                        activeStep={nCompleted}
-                        onNext={() => null}
-                        onBack={() => null}
-                        classes={{
-                            root: styles.stepperRoot,
-                            button: styles.stepperButton,
-                            progress: styles.progress
-                        }}
-                    />
+                    <StatusBar nCompleted={nCompleted} nIncomplete={nIncomplete} />
 
                     <CardContent>
                         <div className={styles.headerContainer}>
@@ -91,14 +163,20 @@ class Event extends Component {
                                     Re-read pages
                                 </Typography>
                                 <Typography type="caption">
-                                    Created: 12th July 2017
+                                    Created: { created }
                                 </Typography>
                             </div>
 
                             <div className={styles.headerIcons}>
-                                <IconButton aria-label="Done All">
-                                    <DoneAllIcon />
-                                </IconButton>
+                            {
+                                nIncomplete ? (
+                                    <IconButton
+                                        aria-label="Done All"
+                                        onClick={this.handleDoneAll}>
+                                        <DoneAllIcon />
+                                    </IconButton>
+                                ): null
+                            }
                             </div>
                         </div>
 
@@ -106,16 +184,24 @@ class Event extends Component {
                             Total: {nIncomplete + nCompleted}, Remaining: {incomplete.length}
                         </Typography>
 
-                        <Table
-                            title="INCOMPLETE"
-                            backgroundColor={pink['50']}
-                            list={incomplete}
-                            actionIcon={<DoneIcon />}
-                            onActionClick={this.handleDone}
-                        />
+                        {
+                            nIncomplete ? (
+                                <Table
+                                    title="INCOMPLETE"
+                                    backgroundColor={pink['50']}
+                                    list={incomplete}
+                                    actionIcon={<DoneIcon />}
+                                    onActionClick={this.handleDone}
+                                />
+                            ) : (
+                                <Typography type="subheading" align="center">
+                                    All tasks completed.
+                                </Typography>
+                            )
+                        }
                     </CardContent>
 
-                    <Collapse in={this.state.showCompleted}
+                    <Collapse in={Boolean(nCompleted) && this.state.showCompleted}
                         transitionDuration="auto" unmountOnExit>
 
                         <CardContent>
@@ -147,4 +233,11 @@ class Event extends Component {
     }
 }
 
-export default Event;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        updateEvent: updateEventAction,
+        showSnackbar: showSnackbarAction
+    }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(Event);

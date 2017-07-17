@@ -29,14 +29,15 @@ class Table extends Component {
                     {
                         this.props.list.map((value, index) =>
                             <ListItem dense button key={value}
-                                onClick={event => this.handleToggle(event, index)}
                                 classes={{
                                     root: styles.listItem
                                 }}>
 
                                 <ListItemText primary={value} />
                                 <ListItemSecondaryAction>
-                                    <IconButton aria-label="Done">
+                                    <IconButton
+                                        aria-label="Done"
+                                        onClick={event => this.props.onActionClick(event, index)}>
                                         { this.props.actionIcon }
                                     </IconButton>
                                 </ListItemSecondaryAction>
