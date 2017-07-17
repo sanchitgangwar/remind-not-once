@@ -1,14 +1,14 @@
 import express from 'express';
-import exphbs from 'express-handlebars';
+// import exphbs from 'express-handlebars';
 
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { RouterContext, match } from 'react-router';
-import { Provider } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
+// import React from 'react';
+// import { renderToString } from 'react-dom/server';
+// import { RouterContext, match } from 'react-router';
+// import { Provider } from 'react-redux';
+// import thunkMiddleware from 'redux-thunk';
+// import { createStore, applyMiddleware } from 'redux';
 
-import path from 'path';
+// import path from 'path';
 import fetch from 'node-fetch';
 import 'promise.prototype.finally';
 

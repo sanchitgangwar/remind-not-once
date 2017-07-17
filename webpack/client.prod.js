@@ -6,13 +6,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const BabiliPlugin = require('babili-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
+// const CompressionPlugin = require('compression-webpack-plugin');
 
 
 module.exports = {
     context: path.resolve(__dirname, '../src'),
     entry: {
-        index: './client/index.js'
+        index: './client/index.js',
+        vendor: ['react', 'react-dom', 'react-redux', 'redux']
     },
     output: {
         path: path.join(__dirname, '../dist/'),
@@ -65,20 +66,20 @@ module.exports = {
         new BabiliPlugin({}, { comments: false }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'commons',
-            filename: 'commons-[hash:6].js',
+            filename: 'commons-[chunkhash:6].js',
             minChunks: 2
         }),
         new ExtractTextPlugin({
             filename: 'app.bundle.[contenthash].css',
             disable: false
         }),
-        new CompressionPlugin({
-            asset: '[path][query]',
-            algorithm: 'gzip',
-            test: /\.js$|\.css$|\.html$/,
-            threshold: 10240,
-            minRatio: 0
-        })
+        // new CompressionPlugin({
+        //     asset: '[path][query]',
+        //     algorithm: 'gzip',
+        //     test: /\.js$|\.css$|\.html$/,
+        //     threshold: 10240,
+        //     minRatio: 0
+        // })
     ],
     module: {
         rules: [{

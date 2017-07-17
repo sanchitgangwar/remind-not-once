@@ -168,15 +168,15 @@ class Event extends Component {
                             </div>
 
                             <div className={styles.headerIcons}>
-                            {
-                                nIncomplete ? (
-                                    <IconButton
-                                        aria-label="Done All"
-                                        onClick={this.handleDoneAll}>
-                                        <DoneAllIcon />
-                                    </IconButton>
-                                ): null
-                            }
+                                {
+                                    nIncomplete ? (
+                                        <IconButton
+                                            aria-label="Done All"
+                                            onClick={this.handleDoneAll}>
+                                            <DoneAllIcon />
+                                        </IconButton>
+                                    ) : null
+                                }
                             </div>
                         </div>
 

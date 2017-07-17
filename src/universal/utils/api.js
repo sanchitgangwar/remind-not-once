@@ -141,7 +141,7 @@ class Api {
     constructQuery(obj) {
         let queryString = '';
         let i = 0;
-        for (const key in obj) {
+        obj.keys().forEach((key) => {
             let param = '';
 
             if (obj[key] && typeof obj[key] === 'object' && obj[key].constructor === Array) {
@@ -157,7 +157,8 @@ class Api {
             }
 
             queryString = i++ ? `${queryString}&${param}` : param;
-        }
+        });
+
         return queryString;
     }
 
@@ -194,7 +195,7 @@ class Api {
             credentials: 'include'
         };
 
-        extracts.forEach(key => {
+        extracts.forEach((key) => {
             if (typeof config[key] !== 'undefined') {
                 fetchOptions[key] = config[key];
             }

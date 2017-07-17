@@ -20,7 +20,7 @@ function formatTasksTextToArray(description) {
 
     let m;
 
-    // eslint-disable-line no-cond-assign
+    // eslint-disable-next-line no-cond-assign
     while ((m = regex.exec(description)) !== null) {
         if (m[1] === '[+]') {
             tasks.completed.push(m[2]);
