@@ -109,11 +109,11 @@ class Event extends Component {
                 incomplete: newTasks.incomplete
             });
             this.props.showSnackbar({
-                message: 'Marked as completed.'
+                message: 'Marked as incomplete.'
             });
         }, () => {
             this.props.showSnackbar({
-                message: 'Could not mark as completed.'
+                message: 'Could not mark as incomplete.'
             });
         });
     };
@@ -136,11 +136,11 @@ class Event extends Component {
                 incomplete: newTasks.incomplete
             });
             this.props.showSnackbar({
-                message: 'Marked as incomplete.'
+                message: 'Marked as completed.'
             });
         }, () => {
             this.props.showSnackbar({
-                message: 'Could not mark as done.'
+                message: 'Could not mark as completed.'
             });
         });
     };

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
 
 import EventsList from 'Universal/pages/EventsList';
+import CreateEvent from 'Universal/pages/CreateEvent';
 import UserMenu from './UserMenu';
 
 import LogoFull from '../../../../assets/images/LogoFull.svg';
@@ -30,7 +31,7 @@ class LoggedInContainer extends Component {
                             <img src={LogoFull} className={styles.logo} />
                         </Link>
 
-                        <Link to="/new" className={styles.button}>
+                        <Link to="/create" className={styles.button}>
                             <Button>CREATE NEW</Button>
                         </Link>
                         <UserMenu />
@@ -38,7 +39,10 @@ class LoggedInContainer extends Component {
                 </AppBar>
 
                 <div className={styles.contentContainer}>
-                    <Route exact path="/" component={EventsList} />
+                    <Switch>
+                        <Route exact path="/" component={EventsList} />
+                        <Route exact path="/create" component={CreateEvent} />
+                    </Switch>
                 </div>
             </div>
         );

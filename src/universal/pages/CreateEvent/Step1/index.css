@@ -1,0 +1,23 @@
+.tasks {
+    width: 100%;
+    margin-top: 40px;
+    padding: 0 0 20px 0;
+    background-color: #fcfcfc;
+}
+
+.spacer {
+    flex: 1 1 100%;
+}
+
+.tableFooter {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableRow:nth-child(even) {
+    background: rgba(0, 0, 0, 0.04);
+}
+

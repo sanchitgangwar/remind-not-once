@@ -37,6 +37,7 @@
         "lodash": "^4.17.4",
         "material-ui-icons": "^1.0.0-alpha.19",
         "moment": "^2.18.1",
+        "query-string": "^4.3.4",
         "react": "^15.2.0",
         "react-dom": "^15.1.0",
         "react-hot-loader": "^3.0.0-beta.7",

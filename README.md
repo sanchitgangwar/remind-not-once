@@ -8,6 +8,7 @@ Add events, with associated to-do tasks, to Google Calendar with custom reminder
  - [React-router v4](https://reacttraining.com/react-router/)
  - [Material UI v1](http://www.material-ui.com/)
  - [Webpack v3](https://webpack.github.io/)
+ - [Redux-form v7](https://redux-form.com/7.0.0)
 
 ## Setting up
 

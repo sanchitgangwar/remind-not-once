@@ -1,3 +1,5 @@
+import queryString from 'query-string';
+
 // Default base config for client.
 const baseConfig = {
     headers: {
@@ -108,17 +110,17 @@ class Api {
      * @return {String}        The URL
      */
     formatUrl(config) {
-        let queryString = '';
+        let query = '';
         if (config.query) {
-            queryString = this.constructQuery(config.query);
+            query = queryString.stringify(config.query);
         }
 
-        if (queryString) {
-            queryString = `?${queryString}`;
+        if (query) {
+            query = `?${query}`;
         }
 
         if (config.url) {
-            return `${config.url}${queryString}`;
+            return `${config.url}${query}`;
         }
 
         const protocol = config.protocol ? config.protocol : 'http';
@@ -127,39 +129,8 @@ class Api {
         const path = config.path ? config.path : '';
 
         return hostname
-            ? `${protocol}://${hostname}${portString}${path}${queryString}`
-            : `${path}${queryString}`;
-    }
-
-
-    /**
-     * Constructs the query string out of the given map.
-     *
-     * @param  {Object} obj The key-value pairs of the query.
-     * @return {String}     The query-string without the first '?'
-     */
-    constructQuery(obj) {
-        let queryString = '';
-        let i = 0;
-        obj.keys().forEach((key) => {
-            let param = '';
-
-            if (obj[key] && typeof obj[key] === 'object' && obj[key].constructor === Array) {
-                for (let j = 0; j < obj[key].length; ++j) {
-                    if (j) {
-                        param = `${param}&${key}=${obj[key][j]}`;
-                    } else {
-                        param = `${key}=${obj[key][j]}`;
-                    }
-                }
-            } else {
-                param = `${key}=${obj[key]}`;
-            }
-
-            queryString = i++ ? `${queryString}&${param}` : param;
-        });
-
-        return queryString;
+            ? `${protocol}://${hostname}${portString}${path}${query}`
+            : `${path}${query}`;
     }
 
     /**
