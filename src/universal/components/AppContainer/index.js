@@ -52,7 +52,7 @@ class AppContainer extends Component {
                     <ProtectedRoute exact path="/" render={props => (
                         <LoggedInContainer {...props} />
                     )} />
-                    <ProtectedRoute path="/create" render={props => (
+                    <ProtectedRoute exact path="/create" render={props => (
                         <LoggedInContainer {...props} />
                     )} />
                     <Route component={NotFound} />

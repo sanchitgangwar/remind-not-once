@@ -14,28 +14,8 @@ import DeleteSweepIcon from 'material-ui-icons/DeleteSweep';
 
 import Switch from 'Universal/components/Fields/Switch';
 
-import theme from 'Universal/../theme';
 import styles from './index.css';
-
-const jsStyles = {
-    textField: {
-        marginTop: 10,
-        marginBottom: 20
-    },
-    toolbar: {
-        background: theme.palette.primary['500']
-    },
-    toolbarHeader: {
-        color: '#fff',
-        flex: '0 0 auto'
-    },
-    toolbarIcon: {
-        fill: '#fff'
-    },
-    tableCell: {
-        width: '100%'
-    }
-};
+import jsStyles from './styles.js';
 
 class TaskInputs extends Component {
     static propTypes = {
@@ -46,7 +26,7 @@ class TaskInputs extends Component {
         const { fields } = this.props;
 
         return (
-            <div className={styles.tasks}>
+            <div className={styles.tableInputsRoot}>
                 <Toolbar style={jsStyles.toolbar}>
                     <Typography style={jsStyles.toolbarHeader}>
                         { fields.length } { fields.length === 1 ? 'TASK' : 'TASKS' } ADDED
@@ -63,7 +43,7 @@ class TaskInputs extends Component {
 
                 <Table className={styles.table}>
                     <TableHead>
-                        <TableRow className={styles.tableRow}>
+                        <TableRow className={styles.tableHeader}>
                             <TableCell style={jsStyles.tableCell}>Task name</TableCell>
                             <TableCell>Completed</TableCell>
                             <TableCell>Actions</TableCell>
@@ -106,7 +86,7 @@ class TaskInputs extends Component {
                 </Table>
 
                 <div className={styles.tableFooter}>
-                    <Button onClick={() => fields.push()}>
+                    <Button raised color="primary" onClick={() => fields.push()}>
                         Add task
                     </Button>
                 </div>

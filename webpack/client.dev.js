@@ -27,6 +27,7 @@ module.exports = {
     },
     devtool: 'cheap-module-source-map',
     resolve: {
+        extensions: ['.js', '.json', '.css'],
         modules: [
             path.resolve(__dirname, '../src'),
             path.resolve(__dirname, '../assets'),

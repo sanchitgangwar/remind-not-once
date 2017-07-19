@@ -50,3 +50,4 @@ The tasks can be marked as completed and incomplete using the UI.
 ## To-do
 
  - Server-side rendering using `react-loadable`
+ - Add tooltips as and when developed by `material-ui`.
