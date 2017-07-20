@@ -1,0 +1,15 @@
+.rowContent {
+    display: flex;
+    align-items: center;
+}
+
+.dateRoot {
+    flex: 1;
+    padding: 24px;
+}
+
+@media only screen and (max-width: 600px) {
+    .rowContent {
+        flex-direction: column;
+    }
+}

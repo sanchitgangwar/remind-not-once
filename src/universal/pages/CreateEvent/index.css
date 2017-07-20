@@ -2,40 +2,16 @@
     padding: 20px;
 }
 
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
 .formHeader {
     margin-bottom: 30px !important;
 }
 
-.stepper {
-    margin-top: 20px;
-    background: #fff !important;
+.cancelLink {
+    text-decoration: none;
 }
-
-.tableInputsRoot {
-    width: 100%;
-    margin-top: 40px;
-    padding: 0 0 20px 0;
-    background-color: #f5f5f5;
-}
-
-.spacer {
-    flex: 1 1 100%;
-}
-
-.tableFooter {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.tableRow:nth-child(even),
-.tableHeader {
-    background: rgba(0, 0, 0, 0.04);
-}
-
-.orCell {
-    background: rgba(0, 0, 0, 0.1);
-}
-

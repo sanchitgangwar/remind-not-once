@@ -13,6 +13,11 @@ class RFDropdown extends Component {
         source: PropTypes.array.isRequired
     };
 
+    static defaultProps = {
+        meta: {},
+        input: {}
+    };
+
     constructor(props) {
         super(props);
 
@@ -34,7 +39,10 @@ class RFDropdown extends Component {
     }
 
     handleRequestClose = (value) => {
-        this.props.input.onChange(value);
+        if (typeof value === 'string') {
+            this.props.input.onChange(value);
+        }
+
         this.setState({
             open: false
         });
@@ -46,7 +54,9 @@ class RFDropdown extends Component {
             input: {
                 value
             },
-            source
+            source,
+            meta,
+            ...custom
         } = this.props;
 
         let selectedLabel;
@@ -59,13 +69,14 @@ class RFDropdown extends Component {
 
         return (
             (
-                <div>
+                <div className={styles.root}>
                     <TextField
                         onClick={this.handleLabelClick}
                         label={label}
                         value={selectedLabel}
                         fullWidth={true}
                         className={styles.input}
+                        {...custom}
                     />
                     <Menu
                         anchorEl={this.state.anchorEl}

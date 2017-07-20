@@ -7,8 +7,13 @@ import styles from './index.css';
 class RFTextField extends Component {
     static propTypes = {
         label: PropTypes.string,
-        meta: PropTypes.object.isRequired,
+        meta: PropTypes.object,
         input: PropTypes.object
+    };
+
+    static defaultProps = {
+        meta: {},
+        input: {}
     };
 
     render() {
