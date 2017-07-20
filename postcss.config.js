@@ -1,9 +1,10 @@
 module.exports = {
-    parser: false,
     plugins: {
-        'postcss-import': {},
+        'postcss-import': {
+            root: __dirname
+        },
         'postcss-nested': {},
-        autoprefixer: {},
-        cssnano: {}
+        'postcss-mixins': {},
+        autoprefixer: {}
     }
 };

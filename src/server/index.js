@@ -10,7 +10,6 @@ import express from 'express';
 
 // import path from 'path';
 import fetch from 'node-fetch';
-import 'promise.prototype.finally';
 
 import compress from 'compression';
 // import favicon from 'serve-favicon';

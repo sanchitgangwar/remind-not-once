@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 
 class ProtectedRoute extends Component {
     static propTypes = {
-        isLoggedIn: PropTypes.bool.isRequired
+        isLoggedIn: PropTypes.bool.isRequired,
+        location: PropTypes.object.isRequired
     };
 
     render() {

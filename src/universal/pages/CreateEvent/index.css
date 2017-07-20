@@ -1,0 +1,17 @@
+.root {
+    padding: 20px;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.formHeader {
+    margin-bottom: 30px !important;
+}
+
+.cancelLink {
+    text-decoration: none;
+}

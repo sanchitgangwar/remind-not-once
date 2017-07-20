@@ -1,5 +1,5 @@
 {
-    "name": "remind-not-once",
+    "name": "remind-plus",
     "version": "0.0.1",
     "description": "Add events to Google Calendar with custom reminders",
     "author": "sanchitgangwar@gmail.com",
@@ -37,9 +37,11 @@
         "lodash": "^4.17.4",
         "material-ui-icons": "^1.0.0-alpha.19",
         "moment": "^2.18.1",
+        "query-string": "^4.3.4",
         "react": "^15.2.0",
         "react-dom": "^15.1.0",
         "react-hot-loader": "^3.0.0-beta.7",
+        "react-mdl-datepicker": "^1.0.0",
         "react-redux": "^5.0.5",
         "react-router-dom": "^4.1.1",
         "serve-favicon": "^2.4.3",

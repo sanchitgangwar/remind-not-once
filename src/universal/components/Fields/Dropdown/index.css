@@ -1,0 +1,11 @@
+.input {
+    cursor: pointer;
+
+    input {
+        cursor: pointer;
+    }
+}
+
+.root {
+    display: inline-block;
+}

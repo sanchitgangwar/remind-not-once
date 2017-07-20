@@ -44,13 +44,16 @@ class AppContainer extends Component {
         return (
             <div className={styles.root}>
                 <Switch>
-                    <ProtectedRoute exact path="/" render={() => (
-                        <LoggedInContainer />
-                    )} />
                     <Route exact path="/login" render={() => (
                         this.props.isLoggedIn ?
                             <Redirect to="/" /> :
                             <Login />
+                    )} />
+                    <ProtectedRoute exact path="/" render={props => (
+                        <LoggedInContainer {...props} />
+                    )} />
+                    <ProtectedRoute exact path="/create" render={props => (
+                        <LoggedInContainer {...props} />
                     )} />
                     <Route component={NotFound} />
                 </Switch>

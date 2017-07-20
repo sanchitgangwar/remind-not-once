@@ -8,7 +8,7 @@ import {
 
 export default function auth(state = {
     isLoggedIn: false,
-    isLoggingIn: false,
+    isLoggingIn: true,
     isCookieChecked: false,
     details: {
         displayName: 'Sanchit Gangwar',

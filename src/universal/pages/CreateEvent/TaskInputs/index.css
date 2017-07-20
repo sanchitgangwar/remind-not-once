@@ -1,0 +1,33 @@
+.rowContent {
+    display: flex;
+    padding: 24px;
+    align-items: center;
+}
+
+.textInput {
+    flex: 1;
+}
+
+.switch {
+    margin-left: 24px;
+}
+
+@media only screen and (max-width: 500px) {
+    .rowsContainer {
+        padding: 10px 0;
+    }
+
+    .rowContent {
+        flex-direction: column;
+        align-content: flex-start;
+    }
+
+    .textInput {
+        width: 100%;
+    }
+
+    .switch {
+        margin-left: 0;
+        width: 100%;
+    }
+}

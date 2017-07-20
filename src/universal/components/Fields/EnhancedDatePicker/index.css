@@ -1,0 +1,8 @@
+.bottomRoot {
+    display: flex;
+    align-items: center;
+}
+
+.middleText {
+    margin: 0 10px;
+}
