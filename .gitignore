@@ -10,3 +10,5 @@ server/dist
 dist/
 distServer/
 .webpack-stats.json
+config/*
+!config/example.json

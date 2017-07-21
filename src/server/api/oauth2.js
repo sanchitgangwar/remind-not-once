@@ -1,5 +1,9 @@
 import google from 'googleapis';
 import config from 'config';
+// const config = require('config');
+
+console.info('=====>>>>>>> ');
+console.log(config.get('google.clientId'));
 
 function getClient(req) {
     const OAuth2 = google.auth.OAuth2;
