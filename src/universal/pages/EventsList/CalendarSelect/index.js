@@ -6,19 +6,14 @@ import cx from 'classnames';
 
 import List, { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
-import Bookmark from 'material-ui-icons/Bookmark';
+import BookmarkIcon from 'material-ui-icons/Bookmark';
 
 import {
-    setSelectedCalendarAction,
-    setCalendarsListAction
+    setSelectedCalendarAction
 } from 'Universal/actions/calendars';
 import {
     setEventsForDateAction
 } from 'Universal/actions/events';
-import {
-    showSnackbarAction
-} from 'Universal/actions/snackbar';
-import api from 'Universal/utils/api';
 
 import styles from './index.css';
 
@@ -27,9 +22,7 @@ class CalendarSelect extends Component {
         calendars: PropTypes.object.isRequired,
         events: PropTypes.object.isRequired,
         setSelectedCalendar: PropTypes.func.isRequired,
-        setCalendarsList: PropTypes.func.isRequired,
-        setEventsForDate: PropTypes.func.isRequired,
-        showSnackbar: PropTypes.func.isRequired
+        setEventsForDate: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -39,21 +32,6 @@ class CalendarSelect extends Component {
             anchorEl: undefined,
             open: false
         };
-    }
-
-    componentDidMount() {
-        if (!this.props.calendars.list.length) {
-            api.get({
-                path: '/api/calendars/list'
-            }).then((response) => {
-                this.props.setSelectedCalendar(response[0]);
-                this.props.setCalendarsList(response);
-            }, () => {
-                this.props.showSnackbar({
-                    message: 'Could not fetch calendars.'
-                });
-            });
-        }
     }
 
     handleRequestClose = () => {
@@ -107,7 +85,7 @@ class CalendarSelect extends Component {
                             }
                         />
                         <ListItemIcon>
-                            <Bookmark style={{
+                            <BookmarkIcon style={{
                                 fill: selected.backgroundColor || 'currentColor'
                             }} />
                         </ListItemIcon>
@@ -128,7 +106,7 @@ class CalendarSelect extends Component {
                             >
                                 <div className={styles.menuItem}>
                                     {calendar.summary}
-                                    <Bookmark style={{
+                                    <BookmarkIcon style={{
                                         fill: calendar.backgroundColor,
                                         marginLeft: 10
                                     }} />
@@ -153,9 +131,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setSelectedCalendar: setSelectedCalendarAction,
-        setCalendarsList: setCalendarsListAction,
-        setEventsForDate: setEventsForDateAction,
-        showSnackbar: showSnackbarAction
+        setEventsForDate: setEventsForDateAction
     }, dispatch);
 }
 

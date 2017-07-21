@@ -10,7 +10,8 @@ class RFDropdown extends Component {
         label: PropTypes.string,
         input: PropTypes.object,
         meta: PropTypes.object,
-        source: PropTypes.array.isRequired
+        source: PropTypes.array.isRequired,
+        renderOption: PropTypes.func
     };
 
     static defaultProps = {
@@ -24,13 +25,17 @@ class RFDropdown extends Component {
         this.state = {
             anchorEl: null,
             open: false,
-            value: this.props.input.value || this.props.source[0].value
+            value: this.props.input.value ||
+                (this.props.source[0] && this.props.source[0].value)
         };
     }
 
     handleLabelClick = (event) => {
         event.preventDefault();
         event.target.blur();
+        if (!this.props.source.length) {
+            return;
+        }
 
         this.setState({
             anchorEl: event.target,
@@ -56,6 +61,7 @@ class RFDropdown extends Component {
             },
             source,
             meta,
+            renderOption,
             ...custom
         } = this.props;
 
@@ -70,14 +76,17 @@ class RFDropdown extends Component {
         return (
             (
                 <div className={styles.root}>
-                    <TextField
-                        onClick={this.handleLabelClick}
-                        label={label}
-                        value={selectedLabel}
-                        fullWidth={true}
-                        className={styles.input}
-                        {...custom}
-                    />
+                    {
+                        <TextField
+                            onClick={this.handleLabelClick}
+                            label={label}
+                            value={selectedLabel || 'Select'}
+                            fullWidth={true}
+                            className={styles.input}
+                            disabled={!source.length}
+                            {...custom}
+                        />
+                    }
                     <Menu
                         anchorEl={this.state.anchorEl}
                         open={this.state.open}
@@ -90,7 +99,11 @@ class RFDropdown extends Component {
                                     selected={option.value === value}
                                     onClick={() => this.handleRequestClose(option.value)}
                                 >
-                                    { option.label }
+                                    {
+                                        renderOption ?
+                                            renderOption(option) :
+                                            option.label
+                                    }
                                 </MenuItem>
                             ))
                         }

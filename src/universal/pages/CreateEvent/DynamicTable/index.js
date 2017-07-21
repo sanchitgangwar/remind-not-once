@@ -17,7 +17,6 @@ import ExpandLessIcon from 'material-ui-icons/ExpandLess';
 import theme from 'Universal/../theme';
 import styles from './index.css';
 
-
 const jsStyles = {
     toolbar: {
         cursor: 'pointer',
@@ -67,7 +66,6 @@ class DynamicTable extends Component {
         super(props);
 
         const { minRows } = props;
-
         this.state = {
             nRows: minRows || 0,
             rootExpanded: true,
@@ -76,19 +74,10 @@ class DynamicTable extends Component {
         };
     }
 
-    handleDropdownClick = (event) => {
-        this.setState({
-            dropdownAnchorEl: event.target,
-            dropdownOpen: true
-        });
-    };
-
-    handleDropdownRequestClose = () => {
-        this.setState({
-            dropdownOpen: false
-        });
-    };
-
+    /**
+     * Handles deletion of a row.
+     * @param  {Object} event The event object
+     */
     handleDelete = (event) => {
         event.stopPropagation();
         const index = event.currentTarget.dataset.index;
@@ -103,6 +92,9 @@ class DynamicTable extends Component {
         });
     };
 
+    /**
+     * Handles addition of a new row.
+     */
     handleAdd = () => {
         const { nRows, expanded, expandTouched } = this.state;
         let newExpanded;
@@ -128,8 +120,14 @@ class DynamicTable extends Component {
         });
     }
 
+    /**
+     * Handles deletion of all rows.
+     * @param  {Object} event The event object.
+     */
     handleDeleteAll = (event) => {
-        event.stopPropagation();
+        event.stopPropagation(); /* Necessary because we don't want the click to
+                                propagate to the toolbar which has its own
+                                click handler. */
         const { minRows } = this.props;
 
         this.props.onDeleteAll();
@@ -140,7 +138,12 @@ class DynamicTable extends Component {
         });
     };
 
-    handleExpandToggle = (event) => {
+    /**
+     * Called when a row is collapsed/expanded.
+     *
+     * @param  {Object} event The event object.
+     */
+    handleRowExpandToggle = (event) => {
         event.stopPropagation();
         const index = event.currentTarget.dataset.index;
         const { expanded, expandTouched } = this.state;
@@ -159,6 +162,11 @@ class DynamicTable extends Component {
         });
     };
 
+    /**
+     * Called when the table is collapsed/expanded.
+     *
+     * @param  {Object} event The event object.
+     */
     handleRootExpandToggle = (event) => {
         event.stopPropagation();
         this.setState({
@@ -189,7 +197,7 @@ class DynamicTable extends Component {
                             className={styles.rowHeaderContent}
                             style={toolbarStyle}
                             data-index={index}
-                            onClick={this.handleExpandToggle}
+                            onClick={this.handleRowExpandToggle}
                         >
                             <Typography style={jsStyles.toolbarHeadingText}>
                                 { this.props.getToolbarHeading &&
@@ -210,7 +218,7 @@ class DynamicTable extends Component {
                             <div className={styles.expandButton}>
                                 <IconButton
                                     data-index={index}
-                                    onClick={this.handleExpandToggle}
+                                    onClick={this.handleRowExpandToggle}
                                 >
                                     {
                                         this.state.expanded[index] ? (
