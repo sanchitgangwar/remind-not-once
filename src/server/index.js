@@ -35,7 +35,7 @@ const app = express();
 app.use(favicon(path.resolve('./assets/icons/favicon-96x96.png')));
 
 app.get('*.js', (req, res, next) => {
-    req.url = req.url + '.gz';
+    req.url = `${req.url}.gz`;
     res.set('Content-Encoding', 'gzip');
     next();
 });
