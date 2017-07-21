@@ -25,6 +25,12 @@ class TaskInputs extends Component {
         tasks: PropTypes.array.isRequired
     };
 
+    /**
+     * Returns the background to be set on a row's toolbar.
+     *
+     * @param  {Integer} index The index of the row.
+     * @return {String} A valid CSS color string.
+     */
     getToolbarBg = (index) => {
         const field = this.props.fields.get(index);
         if (field && field.completed) {
@@ -34,6 +40,13 @@ class TaskInputs extends Component {
         return pink['50'];
     }
 
+    /**
+     * Passed as a param to DynamicTable. Returns the heading to be rendered
+     * on a row's toolbar.
+     *
+     * @param  {Integer} index The index of the row.
+     * @return {String}
+     */
     getToolbarHeading = (index) => {
         const field = this.props.fields.get(index);
 
@@ -44,19 +57,41 @@ class TaskInputs extends Component {
         return '';
     }
 
+    /**
+     * Handles deletion of a row.
+     *
+     * @param  {Integer} index The index of the row.
+     */
     handleDelete = (index) => {
         this.props.fields.remove(index);
     };
 
+    /**
+     * Handles deletion of all the rows.
+     */
     handleDeleteAll = () => {
         this.props.fields.removeAll();
-        this.props.fields.push();
+        this.props.fields.push({
+            name: 'Untitled task'
+        });
     };
 
+    /**
+     * Handles addition of a row.
+     */
     handleAdd = () => {
-        this.props.fields.push();
+        this.props.fields.push({
+            name: 'Untitled task'
+        });
     };
 
+    /**
+     * Passed as a param to DynamicTable. Called when DynamicTable is
+     * rendering rows.
+     *
+     * @param  {Integer} index The index of the row being rendered.
+     * @return {Element}
+     */
     renderRow = index => (
         <FormSection name={`${this.props.fields.name}[${index}]`}>
             <div className={styles.rowContent} style={jsStyles.rowContent}>
@@ -68,6 +103,7 @@ class TaskInputs extends Component {
                         placeholder="Task name"
                         style={jsStyles.textField}
                         required={true}
+                        autoSelectOnFocus={true}
                     />
                 </div>
 

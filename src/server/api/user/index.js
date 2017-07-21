@@ -4,6 +4,6 @@ import handlers from './handlers';
 
 const router = express.Router();
 
-router.get('/details', handlers.getDetails);
+router.get('/', handlers.getDetails);
 
 export default router;

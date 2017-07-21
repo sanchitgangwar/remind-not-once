@@ -6,7 +6,8 @@ const router = express.Router({
     mergeParams: true
 });
 
-router.get('/list', handlers.getList);
+router.get('/', handlers.getList);
+router.post('/', handlers.createEvent);
 router.put('/:eventId', handlers.updateEvent);
 router.put('/:eventId/tasks', handlers.updateTask);
 

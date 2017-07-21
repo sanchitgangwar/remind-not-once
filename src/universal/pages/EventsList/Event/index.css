@@ -1,3 +1,7 @@
+.card:not(last-child) {
+    margin-bottom: 16px;
+}
+
 .headerContainer {
     display: flex;
 }

@@ -16,6 +16,7 @@ import DoneAllIcon from 'material-ui-icons/DoneAll';
 import UndoIcon from 'material-ui-icons/Undo';
 
 import api from 'Universal/utils/api';
+import dateUtil from 'Universal/utils/date';
 import { updateEventAction } from 'Universal/actions/events';
 import { showSnackbarAction } from 'Universal/actions/snackbar';
 
@@ -146,89 +147,100 @@ class Event extends Component {
     };
 
     render() {
-        const { details: { created, completed, incomplete } } = this.props;
+        const {
+            details: {
+                created,
+                completed,
+                incomplete,
+                startDate,
+                endDate,
+                summary
+            }
+        } = this.props;
 
         const nCompleted = completed.length;
         const nIncomplete = incomplete.length;
 
         return (
-            <div>
-                <Card className={styles.card}>
-                    <StatusBar nCompleted={nCompleted} nIncomplete={nIncomplete} />
+            <Card className={styles.card}>
+                <StatusBar nCompleted={nCompleted} nIncomplete={nIncomplete} />
 
-                    <CardContent>
-                        <div className={styles.headerContainer}>
-                            <div className={styles.headerText}>
-                                <Typography type="headline" component="h4">
-                                    Re-read pages
-                                </Typography>
-                                <Typography type="caption">
-                                    Created: { created }
-                                </Typography>
-                            </div>
+                <CardContent>
+                    <div className={styles.headerContainer}>
+                        <div className={styles.headerText}>
+                            <Typography type="headline" component="h4">
+                                { summary }
+                            </Typography>
+                            <Typography type="caption">
+                                { dateUtil.displayStartEndDates(startDate, endDate) },
 
-                            <div className={styles.headerIcons}>
-                                {
-                                    nIncomplete ? (
-                                        <IconButton
-                                            aria-label="Done All"
-                                            onClick={this.handleDoneAll}>
-                                            <DoneAllIcon />
-                                        </IconButton>
-                                    ) : null
-                                }
-                            </div>
+                                &nbsp;&nbsp;
+
+                                Created: { created }
+                            </Typography>
                         </div>
 
-                        <Typography style={{ margin: '10px 0 20px 0' }}>
-                            Total: {nIncomplete + nCompleted}, Remaining: {incomplete.length}
-                        </Typography>
+                        <div className={styles.headerIcons}>
+                            {
+                                nIncomplete ? (
+                                    <IconButton
+                                        aria-label="Done All"
+                                        onClick={this.handleDoneAll}>
+                                        <DoneAllIcon />
+                                    </IconButton>
+                                ) : null
+                            }
+                        </div>
+                    </div>
 
-                        {
-                            nIncomplete ? (
-                                <Table
-                                    title="INCOMPLETE"
-                                    backgroundColor={pink['50']}
-                                    list={incomplete}
-                                    actionIcon={<DoneIcon />}
-                                    onActionClick={this.handleDone}
-                                />
-                            ) : (
-                                <Typography type="subheading" align="center">
-                                    All tasks completed.
-                                </Typography>
-                            )
-                        }
-                    </CardContent>
+                    <Typography style={{ margin: '10px 0 20px 0' }}>
+                        Total: {nIncomplete + nCompleted}, Remaining: {incomplete.length}
+                    </Typography>
 
-                    <Collapse in={Boolean(nCompleted) && this.state.showCompleted}
-                        transitionDuration="auto" unmountOnExit>
-
-                        <CardContent>
-                            <Table
-                                title="COMPLETED"
-                                backgroundColor={lightGreen['50']}
-                                list={completed}
-                                actionIcon={<UndoIcon />}
-                                onActionClick={this.handleUndo}
-                            />
-                        </CardContent>
-                    </Collapse>
                     {
-                        nCompleted ? (
-                            <CardActions classes={{
-                                root: styles.cardActionContainer
-                            }}>
-                                <Button dense color="primary" onClick={this.handleExpandClick}>
-                                    { this.state.showCompleted ?
-                                        'Hide completed' :
-                                        'Show completed' }
-                                </Button>
-                            </CardActions>
-                        ) : null
+                        nIncomplete ? (
+                            <Table
+                                title="INCOMPLETE"
+                                backgroundColor={pink['50']}
+                                list={incomplete}
+                                actionIcon={<DoneIcon />}
+                                onActionClick={this.handleDone}
+                            />
+                        ) : (
+                            <Typography type="subheading" align="center">
+                                All tasks completed.
+                            </Typography>
+                        )
                     }
-                </Card>
-            </div>
+                </CardContent>
+
+                <Collapse in={Boolean(nCompleted) && this.state.showCompleted}
+                    transitionDuration="auto" unmountOnExit>
+
+                    <CardContent>
+                        <Table
+                            title="COMPLETED"
+                            backgroundColor={lightGreen['50']}
+                            list={completed}
+                            actionIcon={<UndoIcon />}
+                            onActionClick={this.handleUndo}
+                        />
+                    </CardContent>
+                </Collapse>
+                {
+                    nCompleted ? (
+                        <CardActions classes={{
+                            root: styles.cardActionContainer
+                        }}>
+                            <Button dense color="primary" onClick={this.handleExpandClick}>
+                                { this.state.showCompleted ?
+                                    'Hide completed' :
+                                    'Show completed' }
+                            </Button>
+                        </CardActions>
+                    ) : null
+                }
+            </Card>
         );
     }
 }

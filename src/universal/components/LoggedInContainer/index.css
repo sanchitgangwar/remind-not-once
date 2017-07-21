@@ -5,6 +5,10 @@
     background: #efefef;
 }
 
+.appBar {
+    justify-content: center;
+}
+
 .logoContainer {
     flex: 1;
     align-items: center;
@@ -16,7 +20,7 @@
 }
 
 .contentContainer {
-    padding: 24px;
+    padding: 16px;
     margin-top: 65px;
     width: 100%;
     max-width: 800px;

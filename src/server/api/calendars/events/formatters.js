@@ -42,7 +42,8 @@ function formatList(response) {
                 summary,
                 created: moment(event.created).format('LL'),
                 updated: moment(event.updated).format('LL'),
-                date: event.start.date,
+                startDate: event.start.date,
+                endDate: event.end.date,
                 completed: tasks.completed,
                 incomplete: tasks.incomplete
             };
@@ -63,8 +64,40 @@ function formatTasksToText({ completed, incomplete }) {
         `${completedDesc}`;
 }
 
+function getCreateRequestBodies({ eventName, tasks, occurrences }) {
+    const requestBodies = new Array(occurrences.length);
+    const completed = [];
+    const incomplete = [];
+    const nTasks = tasks.length;
+
+    for (let i = 0; i < nTasks; ++i) {
+        if (tasks[i].completed) {
+            completed.push(tasks[i].name);
+        } else {
+            incomplete.push(tasks[i].name);
+        }
+    }
+
+    const description = formatTasksToText({ completed, incomplete });
+    for (let i = occurrences.length - 1; i >= 0; --i) {
+        requestBodies[i] = {
+            start: {
+                date: occurrences[i].startDate
+            },
+            end: {
+                date: occurrences[i].endDate
+            },
+            summary: `[R+] ${eventName}`,
+            description
+        };
+    }
+
+    return requestBodies;
+}
+
 export default {
     formatList,
     formatTasksTextToArray,
-    formatTasksToText
+    formatTasksToText,
+    getCreateRequestBodies
 };

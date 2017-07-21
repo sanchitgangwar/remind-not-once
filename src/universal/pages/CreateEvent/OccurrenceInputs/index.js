@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Field, FormSection, formValueSelector } from 'redux-form';
 import theme from 'Universal/../theme';
 import EnhancedDatePicker from 'Universal/components/Fields/EnhancedDatePicker';
+import dateUtil from 'Universal/utils/date';
 
 import DynamicTable from '../DynamicTable';
 import styles from './index.css';
@@ -28,6 +29,13 @@ class OccurrenceInputs extends Component {
         occurrences: PropTypes.array
     };
 
+    /**
+     * Passed as a param to DynamicTable. Returns the heading to be rendered
+     * on a row's toolbar.
+     *
+     * @param  {Integer} index The index of the row.
+     * @return {String}
+     */
     getToolbarHeading = (index) => {
         const field = this.props.fields.get(index);
         if (!field) {
@@ -36,34 +44,21 @@ class OccurrenceInputs extends Component {
 
         const { startDate, endDate } = field;
 
-        const mStartDate = moment(startDate);
-        const mEndDate = moment(endDate);
-
-        let startString;
-        let endString;
-
-        if (mEndDate.diff(mStartDate) === 0) {
-            startString = mStartDate.format('DD MMMM, YYYY');
-            return startString;
-        }
-
-        if (mStartDate.year() === mEndDate.year()) {
-            startString = mStartDate.format('DD MMMM');
-            endString = mEndDate.format('DD MMMM, YYYY');
-
-            return `${startString} - ${endString}`;
-        }
-
-        startString = mStartDate.format('DD MMMM, YYYY');
-        endString = mEndDate.format('DD MMMM, YYYY');
-
-        return `${startString} - ${endString}`;
+        return dateUtil.displayStartEndDates(startDate, endDate);
     }
 
+    /**
+     * Handles deletion of a row.
+     *
+     * @param  {Integer} index The index of the row.
+     */
     handleDelete = (index) => {
         this.props.fields.remove(index);
     };
 
+    /**
+     * Handles deletion of all rows.
+     */
     handleDeleteAll = () => {
         this.props.fields.removeAll();
         this.props.fields.push({
@@ -72,6 +67,9 @@ class OccurrenceInputs extends Component {
         });
     };
 
+    /**
+     * Handles addition of a row.
+     */
     handleAdd = () => {
         const lastField = this.props.fields.get(this.props.fields.length - 1);
 
@@ -81,6 +79,13 @@ class OccurrenceInputs extends Component {
         });
     };
 
+    /**
+     * Passed as a param to DynamicTable. Called when DynamicTable is
+     * rendering rows.
+     *
+     * @param  {Integer} index The index of the row being rendered.
+     * @return {Element}
+     */
     renderRow = index => (
         <FormSection name={`${this.props.fields.name}[${index}]`}>
             <div className={styles.rowContent} style={jsStyles.rowContent}>
@@ -92,6 +97,7 @@ class OccurrenceInputs extends Component {
                         firstDate={ index ? this.props.fields.get(0).endDate : null }
                         lastDate={ index ? this.props.fields.get(index - 1).endDate : null }
                         min={moment().format('YYYY-MM-DD')}
+                        showError={true}
                     />
                 </div>
 
@@ -105,6 +111,7 @@ class OccurrenceInputs extends Component {
                         startDate={ this.props.occurrences[index] &&
                             this.props.occurrences[index].startDate }
                         min={moment().format('YYYY-MM-DD')}
+                        showError={true}
                     />
                 </div>
             </div>

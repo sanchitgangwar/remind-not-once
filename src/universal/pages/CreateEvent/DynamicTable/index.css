@@ -30,7 +30,7 @@
 
 @media only screen and (max-width: 500px) {
     .rowsContainer {
-        padding: 12px 0;
+        padding: 12px 6px;
     }
 
     .expandButton {

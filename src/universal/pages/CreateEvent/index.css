@@ -1,5 +1,6 @@
 .root {
-    padding: 20px;
+    padding: 16px;
+    overflow: auto;
 }
 
 .footer {
@@ -14,4 +15,25 @@
 
 .cancelLink {
     text-decoration: none;
+}
+
+.menuItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.calendarInputContainer {
+    position: relative;
+
+    input {
+        width: calc(100% - 36px);
+    }
+}
+
+.calendarInputIcon {
+    position: absolute;
+    right: 6px;
+    bottom: 4px;
 }

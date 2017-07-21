@@ -44,10 +44,22 @@ module.exports = {
             })
         }, {
             test: /\.svg$/,
-            use: 'url?limit=3000&name=[name]_[hash:6].[ext]'
+            use: {
+                loader: 'url-loader',
+                options: {
+                    limit: 30000,
+                    name: '[name]_[hash:6].[ext]'
+                }
+            }
         }, {
             test: /\.(png|jpg|jpeg|gif|ttf|woff2|woff|eot)$/,
-            use: 'url?limit=1000&name=[name]_[hash:6].[ext]'
+            use: {
+                loader: 'file-loader',
+                options: {
+                    limit: 10000,
+                    name: '[name]_[hash:6].[ext]'
+                }
+            }
         }, {
             test: /\.hbs$/,
             use: 'handlebars-loader'

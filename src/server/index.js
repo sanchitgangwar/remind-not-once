@@ -8,11 +8,11 @@ import express from 'express';
 // import thunkMiddleware from 'redux-thunk';
 // import { createStore, applyMiddleware } from 'redux';
 
-// import path from 'path';
+import path from 'path';
 import fetch from 'node-fetch';
 
 import compress from 'compression';
-// import favicon from 'serve-favicon';
+import favicon from 'serve-favicon';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import bunyan from 'bunyan';
@@ -33,6 +33,7 @@ global.fetch = fetch;
 
 const app = express();
 
+app.use(favicon(path.resolve('./assets/icons/favicon-96x96.png')));
 // Change Default template engine to handlebars for res.render
 app.use(express.static('dist/'));
 // app.engine('.hbs', exphbs({

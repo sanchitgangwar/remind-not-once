@@ -33,7 +33,8 @@ class EnhancedDatePicker extends Component {
         input: PropTypes.object.isRequired,
         lastDate: PropTypes.string, // All date formats are YYYY-MM-DD
         firstDate: PropTypes.string,
-        startDate: PropTypes.string
+        startDate: PropTypes.string,
+        showError: PropTypes.bool
     };
 
     constructor(props) {
@@ -88,7 +89,8 @@ class EnhancedDatePicker extends Component {
             input,
             meta,
             firstDate,
-            startDate
+            startDate,
+            showError
         } = this.props;
 
         let source = firstDate ? startOptions : startOptionsFirst;
@@ -111,7 +113,7 @@ class EnhancedDatePicker extends Component {
                         onChange={this.handleDateInputChange}
                         meta={{
                             ...meta,
-                            touched: true
+                            touched: meta.touched || showError
                         }}
                     />
                 </div>

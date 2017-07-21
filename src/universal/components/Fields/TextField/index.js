@@ -8,12 +8,23 @@ class RFTextField extends Component {
     static propTypes = {
         label: PropTypes.string,
         meta: PropTypes.object,
-        input: PropTypes.object
+        input: PropTypes.object,
+        showError: PropTypes.bool,
+        autoSelectOnFocus: PropTypes.bool
     };
 
     static defaultProps = {
         meta: {},
         input: {}
+    };
+
+    handleFocus = (event, ...rest) => {
+        const { meta: { touched }, autoSelectOnFocus } = this.props;
+        if (autoSelectOnFocus && !touched) {
+            event.target.select();
+        }
+
+        this.props.input.onFocus(event, ...rest);
     };
 
     render() {
@@ -24,20 +35,23 @@ class RFTextField extends Component {
                 touched,
                 error
             },
+            showError,
+            autoSelectOnFocus,
             ...custom
         } = this.props;
 
         return (
             (
                 <TextField
-                    error={Boolean(touched && error)}
+                    error={Boolean((touched || showError) && error)}
                     label={label}
-                    helperText={touched && error}
+                    helperText={(showError || touched) && error}
                     fullWidth={true}
                     className={styles.root}
                     helperTextClassName={styles.helperText}
                     {...input}
                     {...custom}
+                    onFocus={this.handleFocus}
                 />
             )
         );

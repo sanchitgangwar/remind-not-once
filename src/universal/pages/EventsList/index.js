@@ -18,7 +18,6 @@ import api from 'Universal/utils/api';
 
 import CalendarSelect from './CalendarSelect';
 import Event from './Event';
-// import styles from './index.css';
 
 const loadingStyle = {
     color: 'rgba(0, 0, 0, 0.5)'
@@ -69,7 +68,7 @@ class EventsList extends Component {
         const date = getTodaysDate();
 
         api.get({
-            path: `/api/calendars/${calendarId}/events/list`,
+            path: `/api/calendars/${calendarId}/events`,
             query: {
                 date
             }
