@@ -17,7 +17,7 @@
     "scripts": {
         "hot": "webpack-dev-server --env=dev --useLocalIp --compress --config webpack/client.dev.js",
         "build": "webpack -p --config webpack/client.prod.js",
-        "dev-server": "webpack -d --config webpack/server.dev.js",
+        "build-server": "webpack -d --config webpack/server.dev.js",
         "start": "node distServer/server.js | node_modules/bunyan/bin/bunyan",
         "lint": "eslint src/"
     },
