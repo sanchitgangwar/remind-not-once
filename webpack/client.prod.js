@@ -65,9 +65,9 @@ module.exports = {
         }),
         new BabiliPlugin({}, { comments: false }),
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'commons',
-            filename: 'commons-[chunkhash:6].js',
-            minChunks: 2
+            name: 'vendor',
+            filename: 'vendor-[chunkhash:6].js',
+            minChunks: Infinity
         }),
         new ExtractTextPlugin({
             filename: 'app.bundle.[contenthash].css',
