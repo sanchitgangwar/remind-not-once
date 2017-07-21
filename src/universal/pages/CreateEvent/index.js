@@ -176,7 +176,7 @@ class CreateEvent extends Component {
                     <form onSubmit={this.props.handleSubmit(this.handleSubmit)}>
                         <Field name="eventName"
                             component={TextField}
-                            label="Group name"
+                            label="Event name"
                             required={true}
                         />
 
