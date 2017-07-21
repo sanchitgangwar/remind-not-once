@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Field, FormSection, formValueSelector } from 'redux-form';
 import theme from 'Universal/../theme';
 import EnhancedDatePicker from 'Universal/components/Fields/EnhancedDatePicker';
+import dateUtil from 'Universal/utils/date';
 
 import DynamicTable from '../DynamicTable';
 import styles from './index.css';
@@ -43,28 +44,7 @@ class OccurrenceInputs extends Component {
 
         const { startDate, endDate } = field;
 
-        const mStartDate = moment(startDate);
-        const mEndDate = moment(endDate);
-
-        let startString;
-        let endString;
-
-        if (mEndDate.diff(mStartDate) === 0) {
-            startString = mStartDate.format('DD MMMM, YYYY');
-            return startString;
-        }
-
-        if (mStartDate.year() === mEndDate.year()) {
-            startString = mStartDate.format('DD MMMM');
-            endString = mEndDate.format('DD MMMM, YYYY');
-
-            return `${startString} - ${endString}`;
-        }
-
-        startString = mStartDate.format('DD MMMM, YYYY');
-        endString = mEndDate.format('DD MMMM, YYYY');
-
-        return `${startString} - ${endString}`;
+        return dateUtil.displayStartEndDates(startDate, endDate);
     }
 
     /**

@@ -17,7 +17,7 @@ function initLoginAction() {
             });
 
             api.get({
-                path: '/api/user/details'
+                path: '/api/user'
             }).then((response) => {
                 dispatch({
                     type: SET_USER_DETAILS,

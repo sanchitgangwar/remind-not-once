@@ -140,7 +140,7 @@ class CreateEvent extends Component {
     handleSubmit = (values) => {
         const { calendarId = 'primary' } = values;
         return api.post({
-            path: `/api/calendars/${calendarId}/events/create`
+            path: `/api/calendars/${calendarId}/events`
         }, {
             eventName: values.eventName,
             tasks: values.tasks,

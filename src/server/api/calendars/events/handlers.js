@@ -15,9 +15,16 @@ function getList(req, res) {
         date = moment(date, 'YYYY-MM-DD');
     }
 
+    const { calendarId = 'primary' } = req.params;
+    req.log.info('Getting events list: ', {
+        calendarId,
+        timeMin: date.startOf('day').format(),
+        timeMax: date.endOf('day').format()
+    });
+
     calendar.events.list({
         auth: oauth2Client,
-        calendarId: req.params.calendarId || 'primary',
+        calendarId,
         timeMin: date.startOf('day').format(),
         timeMax: date.endOf('day').format()
     }, (err, response) => {
@@ -27,6 +34,44 @@ function getList(req, res) {
         }
 
         res.send(formatters.formatList(response));
+    });
+}
+
+function createEvent(req, res) {
+    const oauth2Client = oauth.getClient(req);
+    const calendar = google.calendar('v3');
+    const { calendarId } = req.params;
+
+    const requestBodies = formatters.getCreateRequestBodies(req.body);
+    const nRequests = requestBodies.length;
+
+    const promises = [];
+    for (let i = 0; i < nRequests; ++i) {
+        req.log.info('Creating Event: ', {
+            calendarId,
+            resource: requestBodies[i]
+        });
+
+        promises.push(new Promise((resolve, reject) => {
+            calendar.events.insert({
+                auth: oauth2Client,
+                calendarId,
+                resource: requestBodies[i]
+            }, (err, response) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve(response);
+            });
+        }));
+    }
+
+    Promise.all(promises).then((responses) => {
+        res.status(200).send(responses);
+    }, (err) => {
+        res.status(500).send(err);
     });
 }
 
@@ -76,10 +121,16 @@ function updateEvent(req, res) {
         ]);
         newResource.description = newDescription;
 
+        req.log.info('Updating event: ', {
+            calendarId,
+            eventId,
+            resource: newResource
+        });
+
         calendar.events.update({
             auth: oauth2Client,
-            calendarId: req.params.calendarId,
-            eventId: req.params.eventId,
+            calendarId,
+            eventId,
             resource: newResource
         }, (err) => {
             if (err) {
@@ -142,10 +193,16 @@ function updateTask(req, res) {
         ]);
         newResource.description = newDescription;
 
+        req.log.info('Updating task: ', {
+            calendarId,
+            eventId,
+            resource: newResource
+        });
+
         calendar.events.update({
             auth: oauth2Client,
-            calendarId: req.params.calendarId,
-            eventId: req.params.eventId,
+            calendarId,
+            eventId,
             resource: newResource
         }, (err) => {
             if (err) {
@@ -162,6 +219,7 @@ function updateTask(req, res) {
 
 export default {
     getList,
+    createEvent,
     updateEvent,
     updateTask
 };

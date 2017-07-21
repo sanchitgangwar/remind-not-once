@@ -68,7 +68,7 @@ class EventsList extends Component {
         const date = getTodaysDate();
 
         api.get({
-            path: `/api/calendars/${calendarId}/events/list`,
+            path: `/api/calendars/${calendarId}/events`,
             query: {
                 date
             }
