@@ -7,7 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const BabiliPlugin = require('babili-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-
+const InlineManifestPlugin = require('inline-manifest-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, '../src'),
@@ -45,7 +45,8 @@ module.exports = {
             DEV: false
         }),
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: 'index.hbs',
+            filename: 'index.html',
             inject: true,
             minify: { collapseWhitespace: true }
         }),
@@ -65,8 +66,8 @@ module.exports = {
         }),
         new BabiliPlugin({}, { comments: false }),
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            filename: 'vendor-[chunkhash:6].js',
+            name: ['vendor', 'manifest'],
+            // filename: 'vendor-[chunkhash:6].js',
             minChunks: Infinity
         }),
         new ExtractTextPlugin({
@@ -80,7 +81,12 @@ module.exports = {
             test: /\.js$|\.css$|\.html$/,
             threshold: 10240,
             minRatio: 0
+        }),
+        new webpack.HashedModuleIdsPlugin(),
+        new InlineManifestPlugin({
+            name: 'webpackManifest'
         })
+
     ],
     module: {
         rules: [{
