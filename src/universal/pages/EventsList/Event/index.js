@@ -30,7 +30,8 @@ class Event extends Component {
         calendarId: PropTypes.string.isRequired,
         details: PropTypes.object.isRequired,
         showSnackbar: PropTypes.func.isRequired,
-        updateEvent: PropTypes.func.isRequired
+        updateEvent: PropTypes.func.isRequired,
+        date: PropTypes.string
     };
 
     constructor(props) {
@@ -78,7 +79,7 @@ class Event extends Component {
         }).then((newTasks) => {
             this.props.updateEvent({
                 id,
-                date: this.props.details.date,
+                date: this.props.date,
                 completed: newTasks.completed,
                 incomplete: newTasks.incomplete
             });
@@ -105,7 +106,7 @@ class Event extends Component {
         }).then((newTasks) => {
             this.props.updateEvent({
                 id,
-                date: this.props.details.date,
+                date: this.props.date,
                 completed: newTasks.completed,
                 incomplete: newTasks.incomplete
             });
@@ -132,7 +133,7 @@ class Event extends Component {
         }).then((newTasks) => {
             this.props.updateEvent({
                 id,
-                date: this.props.details.date,
+                date: this.props.date,
                 completed: newTasks.completed,
                 incomplete: newTasks.incomplete
             });

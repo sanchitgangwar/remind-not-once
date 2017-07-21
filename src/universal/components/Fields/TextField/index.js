@@ -24,7 +24,9 @@ class RFTextField extends Component {
             event.target.select();
         }
 
-        this.props.input.onFocus(event, ...rest);
+        if (this.props.input.onFocus) {
+            this.props.input.onFocus(event, ...rest);
+        }
     };
 
     render() {

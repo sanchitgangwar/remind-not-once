@@ -25,6 +25,12 @@ import validate from './validate';
 
 import styles from './index.css';
 
+const jsStyles = {
+    eventName: {
+        marginBottom: 12
+    }
+};
+
 class CreateEvent extends Component {
     static propTypes = {
         handleSubmit: PropTypes.func.isRequired,
@@ -43,7 +49,7 @@ class CreateEvent extends Component {
             calendarsSource: this.getCalendarsSource(props),
             calendar: {
                 id: null,
-                background: theme.palette.grey['300']
+                background: props.calendars.selected.backgroundColor || theme.palette.grey['300']
             },
             submitClicked: false
         };
@@ -178,6 +184,7 @@ class CreateEvent extends Component {
                             component={TextField}
                             label="Event name"
                             required={true}
+                            style={jsStyles.eventName}
                         />
 
                         <div className={styles.calendarInputContainer}>

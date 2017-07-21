@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import moment from 'moment';
 
 import Typography from 'material-ui/Typography';
 
@@ -24,11 +25,7 @@ const loadingStyle = {
 };
 
 function getTodaysDate() {
-    const d = new Date();
-    let month = d.getMonth() + 1;
-    month = month < 10 ? `0${month}` : month;
-
-    return `${d.getFullYear()}-${month}-${d.getDate()}`;
+    return moment().format('YYYY-MM-DD');
 }
 
 class EventsList extends Component {
@@ -65,7 +62,7 @@ class EventsList extends Component {
     }
 
     getEvents(calendarId) {
-        const date = getTodaysDate();
+        const date = this.props.date;
 
         api.get({
             path: `/api/calendars/${calendarId}/events`,
@@ -85,7 +82,7 @@ class EventsList extends Component {
     }
 
     render() {
-        const { events: allEvents } = this.props;
+        const { events: allEvents, date } = this.props;
         const events = allEvents && allEvents[this.props.date];
 
         return (
@@ -105,6 +102,7 @@ class EventsList extends Component {
                                         key={index}
                                         details={event}
                                         calendarId={this.props.calendars.selected.id}
+                                        date={date}
                                     />
                                 ))
                                 : <Typography
