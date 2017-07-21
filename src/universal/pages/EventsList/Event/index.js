@@ -71,7 +71,7 @@ class Event extends Component {
     handleDoneAll = () => {
         const { calendarId, details: { id } } = this.props;
 
-        api.put({
+        return api.put({
             path: `/api/calendars/${calendarId}/events/${id}`,
             query: {
                 op: 'DONE'
@@ -96,7 +96,7 @@ class Event extends Component {
     handleUndo = (event, index) => {
         const { calendarId, details: { id } } = this.props;
 
-        api.put({
+        return api.put({
             path: `/api/calendars/${calendarId}/events/${id}/tasks`,
             query: {
                 op: 'UNDO'
@@ -123,7 +123,7 @@ class Event extends Component {
     handleDone = (event, index) => {
         const { calendarId, details: { id } } = this.props;
 
-        api.put({
+        return api.put({
             path: `/api/calendars/${calendarId}/events/${id}/tasks`,
             query: {
                 op: 'DONE'

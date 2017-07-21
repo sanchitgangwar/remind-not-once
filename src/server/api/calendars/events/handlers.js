@@ -16,17 +16,21 @@ function getList(req, res) {
     }
 
     const { calendarId = 'primary' } = req.params;
+    const timeMin = date.startOf('day').format();
+    const timeMax = date.end('day').format();
     req.log.info('Getting events list: ', {
         calendarId,
-        timeMin: date.startOf('day').format(),
-        timeMax: date.endOf('day').format()
+        timeMin,
+        timeMax,
+        orderBy: 'updated'
     });
 
     calendar.events.list({
         auth: oauth2Client,
         calendarId,
-        timeMin: date.startOf('day').format(),
-        timeMax: date.endOf('day').format()
+        timeMin,
+        timeMax,
+        orderBy: 'updated'
     }, (err, response) => {
         if (err) {
             res.status(err.code || 500).send(err);

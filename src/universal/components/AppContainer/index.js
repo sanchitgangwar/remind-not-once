@@ -69,7 +69,7 @@ class AppContainer extends Component {
                     SnackbarContentProps={{
                         'aria-describedby': 'message-id',
                     }}
-                    autoHideDuration={this.props.snackbar.autoHideDuration || 1000}
+                    autoHideDuration={this.props.snackbar.autoHideDuration || 2000}
                     message={<span id="message-id">{this.props.snackbar.message}</span>}
                 />
             </div>
