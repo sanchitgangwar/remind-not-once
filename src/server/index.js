@@ -11,7 +11,6 @@ import express from 'express';
 import path from 'path';
 import fetch from 'node-fetch';
 
-import compress from 'compression';
 import favicon from 'serve-favicon';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -34,6 +33,13 @@ global.fetch = fetch;
 const app = express();
 
 app.use(favicon(path.resolve('./assets/icons/favicon-96x96.png')));
+
+app.get('*.js', (req, res, next) => {
+    req.url = req.url + '.gz';
+    res.set('Content-Encoding', 'gzip');
+    next();
+});
+
 // Change Default template engine to handlebars for res.render
 app.use(express.static('dist/'));
 // app.engine('.hbs', exphbs({
@@ -47,7 +53,6 @@ app.use(logger({
 }));
 
 app.disable('x-powered-by');
-app.use(compress());
 app.use(bodyParser.urlencoded({
     extended: false
 }));

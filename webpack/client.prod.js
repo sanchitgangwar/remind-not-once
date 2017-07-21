@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const BabiliPlugin = require('babili-webpack-plugin');
-// const CompressionPlugin = require('compression-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 
 module.exports = {
@@ -73,13 +73,14 @@ module.exports = {
             filename: 'app.bundle.[contenthash].css',
             disable: false
         }),
-        // new CompressionPlugin({
-        //     asset: '[path][query]',
-        //     algorithm: 'gzip',
-        //     test: /\.js$|\.css$|\.html$/,
-        //     threshold: 10240,
-        //     minRatio: 0
-        // })
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new CompressionPlugin({
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0
+        })
     ],
     module: {
         rules: [{
