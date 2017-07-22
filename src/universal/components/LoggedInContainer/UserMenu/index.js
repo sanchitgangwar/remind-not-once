@@ -9,8 +9,7 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import Typography from 'material-ui/Typography';
 
 import {
-    showSnackbarAction,
-    hideSnackbarAction
+    showSnackbarAction
 } from 'Universal/actions/snackbar';
 import api from 'Universal/utils/api';
 
@@ -19,8 +18,7 @@ import styles from './index.css';
 class UserMenu extends Component {
     static propTypes = {
         userDetails: PropTypes.object.isRequired,
-        showSnackbar: PropTypes.func.isRequired,
-        hideSnackbar: PropTypes.func.isRequired
+        showSnackbar: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -54,8 +52,7 @@ class UserMenu extends Component {
             }
         }, () => {
             this.props.showSnackbar({
-                message: 'Please try again.',
-                onRequestClose: this.props.hideSnackbar
+                message: 'Logout failed. Please try again.'
             });
             this.setState({
                 open: false
@@ -102,8 +99,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        showSnackbar: showSnackbarAction,
-        hideSnackbar: hideSnackbarAction
+        showSnackbar: showSnackbarAction
     }, dispatch);
 }
 

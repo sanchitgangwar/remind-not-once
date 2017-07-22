@@ -48,7 +48,7 @@ function logout(req, res) {
     res.cookie('token', '', { expires: new Date(null) });
     res.cookie('RT', '', { expires: new Date(null) });
 
-    res.redirect('/');
+    res.redirect('/login');
 }
 
 export default {
