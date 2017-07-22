@@ -10,7 +10,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 400px;
+    margin: 12px;
+    min-width: 350px;
     max-width: 400px;
     height: 80%;
     min-height: 350px;
