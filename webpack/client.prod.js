@@ -51,20 +51,6 @@ module.exports = {
             inject: true,
             minify: { collapseWhitespace: true }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: true,
-            compress: {
-                warnings: false, // Suppress uglification warnings
-                pure_getters: true,
-                unsafe: true,
-                unsafe_comps: true,
-                screw_ie8: true
-            },
-            output: {
-                comments: false,
-            },
-            exclude: [/\.min\.js$/gi] // skip pre-minified libs
-        }),
         new BabiliPlugin({}, { comments: false }),
         new webpack.optimize.CommonsChunkPlugin({
             name: ['vendor', 'manifest'],
@@ -83,6 +69,7 @@ module.exports = {
             threshold: 10240,
             minRatio: 0
         }),
+        new webpack.HashedModuleIdsPlugin(),
         new InlineManifestPlugin({
             name: 'webpackManifest'
         })
