@@ -11,7 +11,8 @@ function getClient(req) {
 
     if (req && req.cookies) {
         oauth2Client.setCredentials({
-            access_token: req.cookies.token
+            access_token: req.cookies.T,
+            refresh_token: req.cookies.RT
         });
     }
 

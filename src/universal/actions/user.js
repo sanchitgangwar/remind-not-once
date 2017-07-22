@@ -8,7 +8,7 @@ export const SET_USER_DETAILS = 'SET_USER_DETAILS';
 export const USER_LOGGED_OUT = 'LOGOUT';
 
 function initLoginAction() {
-    const token = readCookie('token');
+    const token = readCookie('T');
 
     if (token) {
         return (dispatch) => {

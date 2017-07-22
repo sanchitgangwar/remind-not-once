@@ -4,7 +4,7 @@ function authMiddleware(req, res, next) {
         return;
     }
 
-    if (req.cookies && req.cookies.token) {
+    if (req.cookies && req.cookies.T) {
         next();
     } else {
         res.status(401).send();

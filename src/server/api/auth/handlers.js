@@ -28,7 +28,7 @@ function oauth2callback(req, res) {
 
     oauth2Client.getToken(code, (err, tokens) => {
         if (!err) {
-            res.cookie('token', tokens.access_token, {
+            res.cookie('T', tokens.access_token, {
                 path: '/',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
@@ -45,7 +45,7 @@ function oauth2callback(req, res) {
 }
 
 function logout(req, res) {
-    res.cookie('token', '', { expires: new Date(null) });
+    res.cookie('T', '', { expires: new Date(null) });
     res.cookie('RT', '', { expires: new Date(null) });
 
     res.redirect('/login');

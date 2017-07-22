@@ -12,7 +12,7 @@ function getDetails(req, res) {
         fields: 'displayName,image'
     }, (err, response) => {
         if (err) {
-            res.cookie('token', '', { expires: new Date(null), path: '/' });
+            res.cookie('T', '', { expires: new Date(null), path: '/' });
             res.status(401).send(err);
             return;
         }
