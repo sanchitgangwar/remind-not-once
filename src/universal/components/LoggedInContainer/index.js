@@ -52,6 +52,8 @@ class LoggedInContainer extends Component {
     }
 
     render() {
+        const { location: { pathname } } = this.props;
+
         return (
             <div className={styles.root}>
                 <AppBar style={{
@@ -64,7 +66,7 @@ class LoggedInContainer extends Component {
                         </Link>
 
                         {
-                            this.props.location.pathname === '/create' ?
+                            (pathname === '/create' || pathname === '/create/') ?
                                 null : (
                                     <Link to="/create" className={styles.button}>
                                         <Button>CREATE NEW</Button>

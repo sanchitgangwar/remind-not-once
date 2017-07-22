@@ -13,7 +13,6 @@ import Button from 'material-ui/Button';
 import BookmarkIcon from 'material-ui-icons/Bookmark';
 import { LinearProgress } from 'material-ui/Progress';
 
-
 import { showSnackbarAction } from 'Universal/actions/snackbar';
 import TextField from 'Universal/components/Fields/TextField';
 import Dropdown from 'Universal/components/Fields/Dropdown';

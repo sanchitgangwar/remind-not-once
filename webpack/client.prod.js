@@ -23,6 +23,7 @@ module.exports = {
     },
     devtool: 'cheap-module-source-map',
     resolve: {
+        extensions: ['.js', '.json', '.css'],
         modules: [
             path.resolve(__dirname, '../src'),
             path.resolve(__dirname, '../assets'),
@@ -82,7 +83,6 @@ module.exports = {
             threshold: 10240,
             minRatio: 0
         }),
-        new webpack.HashedModuleIdsPlugin(),
         new InlineManifestPlugin({
             name: 'webpackManifest'
         })
