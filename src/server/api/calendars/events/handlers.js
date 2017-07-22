@@ -17,7 +17,7 @@ function getList(req, res) {
 
     const { calendarId = 'primary' } = req.params;
     const timeMin = date.startOf('day').format();
-    const timeMax = date.end('day').format();
+    const timeMax = date.endOf('day').format();
     req.log.info('Getting events list: ', {
         calendarId,
         timeMin,

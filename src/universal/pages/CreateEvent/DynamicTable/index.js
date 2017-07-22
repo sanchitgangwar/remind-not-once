@@ -232,7 +232,10 @@ class DynamicTable extends Component {
                         </Toolbar>
                     </div>
 
-                    <Collapse in={this.state.expanded[index]} unmountOnExit>
+                    <Collapse
+                        in={this.state.expanded[index]}
+                        unmountOnExit
+                    >
                         { this.props.renderRow(index) }
                     </Collapse>
                 </Paper>
@@ -278,7 +281,10 @@ class DynamicTable extends Component {
                     </Toolbar>
                 </Paper>
 
-                <Collapse in={this.state.rootExpanded}>
+                <Collapse
+                    in={this.state.rootExpanded}
+                    unmountOnExit
+                >
                     <div className={styles.rowsContainer}>
                         { rows }
                     </div>
