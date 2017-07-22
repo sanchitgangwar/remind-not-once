@@ -27,7 +27,7 @@ class Login extends Component {
             window.location.href = response.url;
         }, () => {
             this.props.showSnackbar({
-                message: 'Please try again'
+                message: 'Login failed. Please try again.'
             });
         });
     };

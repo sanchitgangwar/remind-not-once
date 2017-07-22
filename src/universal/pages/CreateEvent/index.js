@@ -152,12 +152,12 @@ class CreateEvent extends Component {
             occurrences: values.occurrences
         }).then(() => {
             this.props.showSnackbar({
-                message: 'Event created'
+                message: 'Event created.'
             });
             this.props.history.push('/');
         }, () => {
             this.props.showSnackbar({
-                message: 'Could not create event'
+                message: 'Could not create event.'
             });
         });
     };

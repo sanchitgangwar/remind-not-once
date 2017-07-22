@@ -10,6 +10,7 @@ import Collapse from 'material-ui/transitions/Collapse';
 import IconButton from 'material-ui/IconButton';
 import lightGreen from 'material-ui/colors/lightGreen';
 import pink from 'material-ui/colors/pink';
+import { CircularProgress } from 'material-ui/Progress';
 
 import DoneIcon from 'material-ui-icons/Done';
 import DoneAllIcon from 'material-ui-icons/DoneAll';
@@ -39,28 +40,9 @@ class Event extends Component {
 
         this.state = {
             showCompleted: false,
-            selected: []
+            processingDoneAll: false
         };
     }
-
-    handleToggle = (event, index) => {
-        const i = this.state.selected.indexOf(index);
-        if (i !== -1) {
-            this.setState({
-                selected: [
-                    ...this.state.selected.slice(0, i),
-                    ...this.state.selected.slice(i + 1, -1)
-                ]
-            });
-        } else {
-            this.setState({
-                selected: [
-                    ...this.state.selected,
-                    index
-                ]
-            });
-        }
-    };
 
     handleExpandClick = () => {
         this.setState({
@@ -70,6 +52,10 @@ class Event extends Component {
 
     handleDoneAll = () => {
         const { calendarId, details: { id } } = this.props;
+
+        this.setState({
+            processingDoneAll: true
+        });
 
         return api.put({
             path: `/api/calendars/${calendarId}/events/${id}`,
@@ -89,6 +75,10 @@ class Event extends Component {
         }, () => {
             this.props.showSnackbar({
                 message: 'Could not mark as completed.'
+            });
+        }).then(() => {
+            this.setState({
+                processingDoneAll: false
             });
         });
     };
@@ -181,7 +171,7 @@ class Event extends Component {
                             </Typography>
                         </div>
 
-                        <div className={styles.headerIcons}>
+                        <div className={styles.headerIcon}>
                             {
                                 nIncomplete ? (
                                     <IconButton
@@ -190,6 +180,14 @@ class Event extends Component {
                                         <DoneAllIcon />
                                     </IconButton>
                                 ) : null
+                            }
+
+                            {
+                                this.state.processingDoneAll &&
+                                    <CircularProgress
+                                        size={50}
+                                        className={styles.progress}
+                                    />
                             }
                         </div>
                     </div>
