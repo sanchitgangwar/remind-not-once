@@ -16,7 +16,14 @@ function updateEventAction(payload) {
     };
 }
 
+function clearEventsAction() {
+    return {
+        type: CLEAR_EVENTS
+    };
+}
+
 export {
     setEventsForDateAction,
-    updateEventAction
+    updateEventAction,
+    clearEventsAction
 };

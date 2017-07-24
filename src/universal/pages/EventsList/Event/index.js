@@ -163,9 +163,9 @@ class Event extends Component {
                                 { summary }
                             </Typography>
                             <Typography type="caption">
-                                { dateUtil.displayStartEndDates(startDate, endDate) },
+                                Duration: { dateUtil.displayStartEndDates(startDate, endDate) },
 
-                                &nbsp;&nbsp;
+                                &nbsp;
 
                                 Created: { created }
                             </Typography>

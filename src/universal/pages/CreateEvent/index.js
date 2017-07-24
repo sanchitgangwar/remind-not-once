@@ -14,6 +14,7 @@ import BookmarkIcon from 'material-ui-icons/Bookmark';
 import { LinearProgress } from 'material-ui/Progress';
 
 import { showSnackbarAction } from 'Universal/actions/snackbar';
+import { clearEventsAction } from 'Universal/actions/events';
 import TextField from 'Universal/components/Fields/TextField';
 import Dropdown from 'Universal/components/Fields/Dropdown';
 import api from 'Universal/utils/api';
@@ -38,7 +39,8 @@ class CreateEvent extends Component {
         history: PropTypes.object.isRequired,
         calendars: PropTypes.object.isRequired,
         initialValues: PropTypes.object.isRequired,
-        invalid: PropTypes.bool.isRequired
+        invalid: PropTypes.bool.isRequired,
+        clearEvents: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -151,6 +153,7 @@ class CreateEvent extends Component {
             tasks: values.tasks,
             occurrences: values.occurrences
         }).then(() => {
+            this.props.clearEvents();
             this.props.showSnackbar({
                 message: 'Event created.'
             });
@@ -253,7 +256,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        showSnackbar: showSnackbarAction
+        showSnackbar: showSnackbarAction,
+        clearEvents: clearEventsAction
     }, dispatch);
 }
 
