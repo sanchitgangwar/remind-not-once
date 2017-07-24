@@ -207,9 +207,15 @@ class CreateEvent extends Component {
                                 }} />
                         </div>
 
-                        <FieldArray name="tasks" component={TaskInputs} />
+                        <FieldArray
+                            name="tasks"
+                            component={TaskInputs}
+                        />
 
-                        <FieldArray name="occurrences" component={OccurrenceInputs} />
+                        <FieldArray
+                            name="occurrences"
+                            component={OccurrenceInputs}
+                        />
 
                         <div className={styles.footer}>
                             <Link to="/" className={styles.cancelLink}>

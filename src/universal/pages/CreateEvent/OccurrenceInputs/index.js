@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
 import { connect } from 'react-redux';
-import { Field, FormSection, formValueSelector } from 'redux-form';
+import { bindActionCreators } from 'redux';
+import { Field, FormSection, formValueSelector, change } from 'redux-form';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+
+import Button from 'material-ui/Button';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
+
 import theme from 'Universal/../theme';
 import EnhancedDatePicker from 'Universal/components/Fields/EnhancedDatePicker';
 import dateUtil from 'Universal/utils/date';
@@ -23,10 +28,24 @@ const jsStyles = {
     }
 };
 
+const presets = [{
+    label: '(7d)-(7d)-(14d)',
+    value: 0,
+    description: `After 7 days; after 7 days from that occurrence;
+        after 14 days from that occurrence.`
+}, {
+    label: '(7d: 2d)-(7d: 2d)-(14d: 2d)',
+    value: 1,
+    description: `After 7 days; after 7 days from that occurrence;
+        after 14 days from that occurrence. Each occurrence lasting for 2 days.`
+}];
+
 class OccurrenceInputs extends Component {
     static propTypes = {
-        fields: PropTypes.object,
-        occurrences: PropTypes.array
+        fields: PropTypes.object.isRequired,
+        meta: PropTypes.object.isRequired,
+        occurrences: PropTypes.array.isRequired,
+        changeFieldValue: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -35,7 +54,8 @@ class OccurrenceInputs extends Component {
         this.state = {
             // Used for automatically focussing the text input only when
             // a new task is added.
-            autoFocus: false
+            autoFocus: false,
+            presetsOpen: false
         };
     }
 
@@ -90,6 +110,76 @@ class OccurrenceInputs extends Component {
     };
 
     /**
+     * Called when the Presets button is clicked.
+     *
+     * @param  {Object} event The event object.
+     */
+    handlePresetsClick = (event) => {
+        event.stopPropagation();
+        this.setState({
+            presetsOpen: true,
+            presetsAnchorEl: event.currentTarget
+        });
+    }
+
+    /**
+     * Called when the presets dialog backdrop is clicked.
+     */
+    onBackdropClick = () => {
+        this.setState({
+            presetsOpen: false
+        });
+    }
+
+    /**
+     * Called when a preset is selected. This computes the value and sets
+     * them.
+     *
+     * @param  {Object} event The event object.
+     */
+    handlePresetsSelect = (event) => {
+        const { fields, meta } = this.props;
+        let { dataset: { value } } = event.currentTarget;
+        value = parseInt(value, 10);
+
+        const today = moment();
+
+        if (value === 0) {
+            const dates = [
+                today.add(7, 'days').format('YYYY-MM-DD'),
+                today.add(7, 'days').format('YYYY-MM-DD'),
+                today.add(14, 'days').format('YYYY-MM-DD')
+            ];
+
+            this.props.changeFieldValue(meta.form, fields.name, [{
+                startDate: dates[0],
+                endDate: dates[0]
+            }, {
+                startDate: dates[1],
+                endDate: dates[1]
+            }, {
+                startDate: dates[2],
+                endDate: dates[2]
+            }]);
+        } else if (value === 1) {
+            this.props.changeFieldValue(meta.form, fields.name, [{
+                startDate: today.add(7, 'days').format('YYYY-MM-DD'),
+                endDate: today.add(1, 'days').format('YYYY-MM-DD')
+            }, {
+                startDate: today.add(6, 'days').format('YYYY-MM-DD'),
+                endDate: today.add(1, 'days').format('YYYY-MM-DD'),
+            }, {
+                startDate: today.add(6, 'days').format('YYYY-MM-DD'),
+                endDate: today.add(1, 'days').format('YYYY-MM-DD')
+            }]);
+        }
+
+        this.setState({
+            presetsOpen: false
+        });
+    }
+
+    /**
      * Passed as a param to DynamicTable. Called when DynamicTable is
      * rendering rows.
      *
@@ -104,8 +194,8 @@ class OccurrenceInputs extends Component {
                         name="startDate"
                         label="Start date"
                         component={EnhancedDatePicker}
-                        firstDate={ index ? this.props.fields.get(0).endDate : null }
-                        lastDate={ index ? this.props.fields.get(index - 1).endDate : null }
+                        firstDate={ index ? this.props.fields.get(0).startDate : null }
+                        lastDate={ index ? this.props.fields.get(index - 1).startDate : null }
                         min={moment().format('YYYY-MM-DD')}
                         showError={true}
                         autoFocus={this.state.autoFocus}
@@ -117,8 +207,8 @@ class OccurrenceInputs extends Component {
                         name="endDate"
                         label="End date"
                         component={EnhancedDatePicker}
-                        firstDate={ index ? this.props.fields.get(0).endDate : null }
-                        lastDate={ index ? this.props.fields.get(index - 1).endDate : null }
+                        firstDate={ index ? this.props.fields.get(0).startDate : null }
+                        lastDate={ index ? this.props.fields.get(index - 1).startDate : null }
                         startDate={ this.props.occurrences[index] &&
                             this.props.occurrences[index].startDate }
                         min={moment().format('YYYY-MM-DD')}
@@ -142,12 +232,57 @@ class OccurrenceInputs extends Component {
                     renderRow={this.renderRow}
                     minRows={1}
                     maxRows={5}
+                    rows={fields.length || 1}
                     onAdd={this.handleAdd}
                     onDelete={this.handleDelete}
                     onDeleteAll={this.handleDeleteAll}
                     getToolbarBg={this.getToolbarBg}
                     getToolbarHeading={this.getToolbarHeading}
                     rowsContainerClassName={styles.rowsContainer}
+                    additionalButtons={
+                        <div>
+                            <Button
+                                color="contrast"
+                                onClick={this.handlePresetsClick}
+                            >
+                                Presets
+                            </Button>
+
+                            <Dialog
+                                maxWidth="xs"
+                                open={this.state.presetsOpen}
+                                onBackdropClick={this.handlePresetsClose}
+                            >
+                                <DialogTitle>Occurrences Presets</DialogTitle>
+                                <DialogContent>
+                                    <List>
+                                        {
+                                            presets.map((preset, index) => (
+                                                <ListItem
+                                                    button
+                                                    key={index}
+                                                    data-value={preset.value}
+                                                    onClick={this.handlePresetsSelect}
+                                                >
+                                                    <ListItemText
+                                                        onClick={this.handlePresetsRequestClose}
+                                                        primary={preset.label}
+                                                        secondary={preset.description}
+                                                    />
+                                                </ListItem>
+                                            ))
+                                        }
+                                    </List>
+                                </DialogContent>
+
+                                <DialogActions>
+                                    <Button onClick={this.handlePresetsClose} color="primary">
+                                        Cancel
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </div>
+                    }
                 />
             </div>
         );
@@ -161,4 +296,10 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(OccurrenceInputs);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        changeFieldValue: change
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OccurrenceInputs);

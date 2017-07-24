@@ -145,6 +145,7 @@ class TaskInputs extends Component {
                     renderRow={this.renderRow}
                     minRows={1}
                     maxRows={30}
+                    rows={fields.length || 1}
                     onAdd={this.handleAdd}
                     onDelete={this.handleDelete}
                     onDeleteAll={this.handleDeleteAll}

@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
+import AddIcon from 'material-ui-icons/Add';
 
 import {
     setSelectedCalendarAction
@@ -19,6 +22,8 @@ import api from 'Universal/utils/api';
 
 import CalendarSelect from './CalendarSelect';
 import Event from './Event';
+
+import styles from './index.css';
 
 const loadingStyle = {
     color: 'rgba(0, 0, 0, 0.5)'
@@ -111,6 +116,12 @@ class EventsList extends Component {
                                 </Typography>
                         )
                 }
+
+                <Link to="/create" className={styles.addButton}>
+                    <Button fab color="accent">
+                        <AddIcon />
+                    </Button>
+                </Link>
             </div>
         );
     }

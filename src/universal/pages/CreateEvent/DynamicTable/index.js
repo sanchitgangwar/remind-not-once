@@ -55,22 +55,23 @@ class DynamicTable extends Component {
         addButtonText: PropTypes.string,
         maxRows: PropTypes.number,
         minRows: PropTypes.number,
+        rows: PropTypes.number,
         onAdd: PropTypes.func,
         onDelete: PropTypes.func,
         onDeleteAll: PropTypes.func,
         getToolbarBg: PropTypes.func,
-        getToolbarHeading: PropTypes.func
+        getToolbarHeading: PropTypes.func,
+        additionalButtons: PropTypes.element
     };
 
     constructor(props) {
         super(props);
 
-        const { minRows } = props;
+        const { rows } = props;
         this.state = {
-            nRows: minRows || 0,
             rootExpanded: true,
-            expanded: (new Array(minRows)).fill(true), // All are expanded by default
-            expandTouched: (new Array(minRows)).fill(false)
+            expanded: (new Array(rows)).fill(true), // All are expanded by default
+            expandTouched: (new Array(rows)).fill(false)
         };
     }
 
@@ -87,8 +88,7 @@ class DynamicTable extends Component {
             expanded: [
                 ...this.state.expanded.slice(0, index),
                 ...this.state.expanded.slice(index + 1)
-            ],
-            nRows: this.state.nRows - 1
+            ]
         });
     };
 
@@ -96,7 +96,8 @@ class DynamicTable extends Component {
      * Handles addition of a new row.
      */
     handleAdd = () => {
-        const { nRows, expanded, expandTouched } = this.state;
+        const { expanded, expandTouched } = this.state;
+        const { rows: nRows } = this.props;
         let newExpanded;
 
         if (nRows) {
@@ -115,8 +116,7 @@ class DynamicTable extends Component {
             expandTouched: [
                 ...expandTouched,
                 false
-            ],
-            nRows: this.state.nRows + 1
+            ]
         });
     }
 
@@ -133,8 +133,7 @@ class DynamicTable extends Component {
         this.props.onDeleteAll();
         this.setState({
             expanded: (new Array(minRows)).fill(true),
-            expandTouched: (new Array(minRows)).fill(false),
-            nRows: minRows
+            expandTouched: (new Array(minRows)).fill(false)
         });
     };
 
@@ -246,7 +245,7 @@ class DynamicTable extends Component {
     }
 
     render() {
-        const { nRows } = this.state;
+        const { rows: nRows } = this.props;
 
         const rows = [];
         for (let i = 0; i < nRows; ++i) {
@@ -260,6 +259,8 @@ class DynamicTable extends Component {
                         <Typography style={jsStyles.toolbarHeader}>
                             { this.props.toolbarText }
                         </Typography>
+
+                        { this.props.additionalButtons }
 
                         <IconButton onClick={this.handleDeleteAll}>
                             <DeleteSweepIcon style={jsStyles.toolbarIcon} />

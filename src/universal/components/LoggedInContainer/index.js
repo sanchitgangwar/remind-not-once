@@ -6,7 +6,6 @@ import { Link, Route, Switch } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
 
 import EventsList from 'Universal/pages/EventsList';
 import CreateEvent from 'Universal/pages/CreateEvent';
@@ -64,15 +63,6 @@ class LoggedInContainer extends Component {
                         <Link to="/" className={styles.logoContainer}>
                             <img src={LogoFull} className={styles.logo} />
                         </Link>
-
-                        {
-                            (pathname === '/create' || pathname === '/create/') ?
-                                null : (
-                                    <Link to="/create" className={styles.button}>
-                                        <Button>CREATE NEW</Button>
-                                    </Link>
-                                )
-                        }
 
                         <UserMenu />
                     </Toolbar>
