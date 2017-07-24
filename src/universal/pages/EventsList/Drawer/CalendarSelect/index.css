@@ -1,0 +1,31 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.placeholder {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0);
+}
+
+.calendarName {
+    display: inline-block;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.listItemText {
+    overflow: hidden;
+
+    h3 {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.icon {
+    margin-right: 0 !important;
+}

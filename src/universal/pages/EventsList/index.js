@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
@@ -20,9 +19,9 @@ import {
 } from 'Universal/actions/snackbar';
 import api from 'Universal/utils/api';
 
-import CalendarSelect from './CalendarSelect';
 import DateSelect from './DateSelect';
 import Event from './Event';
+import Drawer from './Drawer';
 
 import styles from './index.css';
 
@@ -53,6 +52,9 @@ class EventsList extends Component {
         const areCalendarsSame = nextProps.calendars.selected.id ===
             this.props.calendars.selected.id;
         const areDatesSame = nextProps.date.value === this.props.date.value;
+
+        console.log('C: ', areCalendarsSame);
+        console.log('D: ', areDatesSame);
 
         if (!areCalendarsSame || !areDatesSame) {
             if (nextProps.calendars.selected.id) {
@@ -97,39 +99,39 @@ class EventsList extends Component {
 
         return (
             <div>
-                <div className={styles.selectRoot}>
+                <Drawer />
+                <div>
                     <DateSelect />
-                    <CalendarSelect />
+
+                    {
+                        !events
+                            ? <Typography
+                                style={loadingStyle} type="subheading" align="center">
+                                    Loading
+                            </Typography>
+                            : (
+                                events.length
+                                    ? events.map((event, index) => (
+                                        <Event
+                                            key={index}
+                                            details={event}
+                                            calendarId={this.props.calendars.selected.id}
+                                            date={date.value}
+                                        />
+                                    ))
+                                    : <Typography
+                                        style={loadingStyle} type="subheading" align="center">
+                                        No events
+                                    </Typography>
+                            )
+                    }
+
+                    <Link to="/create" className={styles.addButton}>
+                        <Button fab color="accent">
+                            <AddIcon />
+                        </Button>
+                    </Link>
                 </div>
-
-                {
-                    !events
-                        ? <Typography
-                            style={loadingStyle} type="subheading" align="center">
-                                Loading
-                        </Typography>
-                        : (
-                            events.length
-                                ? events.map((event, index) => (
-                                    <Event
-                                        key={index}
-                                        details={event}
-                                        calendarId={this.props.calendars.selected.id}
-                                        date={date.value}
-                                    />
-                                ))
-                                : <Typography
-                                    style={loadingStyle} type="subheading" align="center">
-                                    No events
-                                </Typography>
-                        )
-                }
-
-                <Link to="/create" className={styles.addButton}>
-                    <Button fab color="accent">
-                        <AddIcon />
-                    </Button>
-                </Link>
             </div>
         );
     }
