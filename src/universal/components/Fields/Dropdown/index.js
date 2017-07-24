@@ -32,7 +32,10 @@ class RFDropdown extends Component {
 
     handleLabelClick = (event) => {
         event.preventDefault();
-        event.target.blur();
+
+        // Need this to re-focus the TextField to preserve tabindex.
+        this.textInput = event.target;
+
         if (!this.props.source.length) {
             return;
         }
@@ -51,6 +54,8 @@ class RFDropdown extends Component {
         this.setState({
             open: false
         });
+
+        this.textInput.focus();
     }
 
     render() {
@@ -79,6 +84,7 @@ class RFDropdown extends Component {
                     {
                         <TextField
                             onClick={this.handleLabelClick}
+                            onKeyPress={this.handleLabelClick}
                             label={label}
                             value={selectedLabel || 'Select'}
                             fullWidth={true}

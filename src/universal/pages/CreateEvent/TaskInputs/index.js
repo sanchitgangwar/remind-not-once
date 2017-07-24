@@ -25,6 +25,16 @@ class TaskInputs extends Component {
         tasks: PropTypes.array.isRequired
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            // Used for automatically focussing the text input only when
+            // a new task is added.
+            autoFocus: false
+        };
+    }
+
     /**
      * Returns the background to be set on a row's toolbar.
      *
@@ -80,6 +90,10 @@ class TaskInputs extends Component {
      * Handles addition of a row.
      */
     handleAdd = () => {
+        this.setState({
+            autoFocus: true
+        });
+
         this.props.fields.push({
             name: 'Untitled task'
         });
@@ -104,6 +118,7 @@ class TaskInputs extends Component {
                         style={jsStyles.textField}
                         required={true}
                         autoSelectOnFocus={true}
+                        autoFocus={this.state.autoFocus}
                     />
                 </div>
 

@@ -187,6 +187,7 @@ class CreateEvent extends Component {
                             label="Event name"
                             required={true}
                             style={jsStyles.eventName}
+                            autoFocus={true}
                         />
 
                         <div className={styles.calendarInputContainer}>

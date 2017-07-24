@@ -29,6 +29,16 @@ class OccurrenceInputs extends Component {
         occurrences: PropTypes.array
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            // Used for automatically focussing the text input only when
+            // a new task is added.
+            autoFocus: false
+        };
+    }
+
     /**
      * Passed as a param to DynamicTable. Returns the heading to be rendered
      * on a row's toolbar.
@@ -98,6 +108,7 @@ class OccurrenceInputs extends Component {
                         lastDate={ index ? this.props.fields.get(index - 1).endDate : null }
                         min={moment().format('YYYY-MM-DD')}
                         showError={true}
+                        autoFocus={this.state.autoFocus}
                     />
                 </div>
 
