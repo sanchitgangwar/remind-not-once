@@ -7,14 +7,16 @@ import helpers from './helpers';
 import formatters from './formatters';
 
 function getList(req, res) {
+    if (!req.query.date) {
+        res.status(400).send({
+            error: 'Missing date query.'
+        });
+    }
+
     const oauth2Client = oauth.getClient(req);
     const calendar = google.calendar('v3');
 
-    let date = moment(new Date());
-    if (req.query.date) {
-        date = moment(date, 'YYYY-MM-DD');
-    }
-
+    const date = moment(req.query.date, 'YYYY-MM-DD');
     const { calendarId = 'primary' } = req.params;
     const timeMin = date.startOf('day').format();
     const timeMax = date.endOf('day').format();

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link, Route, Switch } from 'react-router-dom';
+import moment from 'moment';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -20,6 +21,9 @@ import {
 import {
     showSnackbarAction
 } from 'Universal/actions/snackbar';
+import {
+    setSelectedDateAction
+} from 'Universal/actions/date';
 import UserMenu from './UserMenu';
 
 import LogoFull from '../../../../assets/images/LogoFull.svg';
@@ -29,8 +33,10 @@ class LoggedInContainer extends Component {
     static propTypes = {
         userDetails: PropTypes.object.isRequired,
         calendars: PropTypes.object.isRequired,
+        date: PropTypes.object.isRequired,
         setSelectedCalendar: PropTypes.func.isRequired,
         setCalendarsList: PropTypes.func.isRequired,
+        setSelectedDate: PropTypes.func.isRequired,
         showSnackbar: PropTypes.func.isRequired,
         location: PropTypes.object.isRequired
     };
@@ -46,6 +52,13 @@ class LoggedInContainer extends Component {
                 this.props.showSnackbar({
                     message: 'Could not fetch calendars.'
                 });
+            });
+        }
+
+        if (!this.props.date.value) {
+            this.props.setSelectedDate({
+                value: moment().format('YYYY-MM-DD'),
+                label: 'Today'
             });
         }
     }
@@ -80,7 +93,8 @@ class LoggedInContainer extends Component {
 function mapStateToProps(state) {
     return {
         userDetails: state.user.details,
-        calendars: state.calendars
+        calendars: state.calendars,
+        date: state.date
     };
 }
 
@@ -89,6 +103,7 @@ function mapDispatchToProps(dispatch) {
         setSelectedCalendar: setSelectedCalendarAction,
         setCalendarsList: setCalendarsListAction,
         setEventsForDate: setEventsForDateAction,
+        setSelectedDate: setSelectedDateAction,
         showSnackbar: showSnackbarAction
     }, dispatch);
 }

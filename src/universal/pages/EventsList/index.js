@@ -21,6 +21,7 @@ import {
 import api from 'Universal/utils/api';
 
 import CalendarSelect from './CalendarSelect';
+import DateSelect from './DateSelect';
 import Event from './Event';
 
 import styles from './index.css';
@@ -29,35 +30,41 @@ const loadingStyle = {
     color: 'rgba(0, 0, 0, 0.5)'
 };
 
-function getTodaysDate() {
-    return moment().format('YYYY-MM-DD');
-}
-
 class EventsList extends Component {
     static propTypes = {
         calendars: PropTypes.object.isRequired,
-        date: PropTypes.string,
+        date: PropTypes.object,
         events: PropTypes.object.isRequired,
         setDefaultCalendar: PropTypes.func.isRequired,
         setEventsForDate: PropTypes.func.isRequired,
         showSnackbar: PropTypes.func.isRequired
     };
 
-    static defaultProps = {
-        date: getTodaysDate()
-    };
-
     componentDidMount() {
         if (this.props.calendars.selected.id) {
-            this.getEvents(this.props.calendars.selected.id);
+            this.getEvents(
+                this.props.calendars.selected.id,
+                this.props.date.value
+            );
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.calendars.selected.id !==
-            this.props.calendars.selected.id) {
+        const areCalendarsSame = nextProps.calendars.selected.id ===
+            this.props.calendars.selected.id;
+        const areDatesSame = nextProps.date.value === this.props.date.value;
+
+        if (!areCalendarsSame || !areDatesSame) {
             if (nextProps.calendars.selected.id) {
-                this.getEvents(nextProps.calendars.selected.id);
+                this.getEvents(
+                    nextProps.calendars.selected.id,
+                    nextProps.date.value
+                );
+            } else if (this.props.calendars.selected.id) {
+                this.getEvents(
+                    this.props.calendars.selected.id,
+                    this.props.date.value
+                );
             }
 
             this.setState({
@@ -66,9 +73,7 @@ class EventsList extends Component {
         }
     }
 
-    getEvents(calendarId) {
-        const date = this.props.date;
-
+    getEvents(calendarId, date) {
         api.get({
             path: `/api/calendars/${calendarId}/events`,
             query: {
@@ -88,11 +93,14 @@ class EventsList extends Component {
 
     render() {
         const { events: allEvents, date } = this.props;
-        const events = allEvents && allEvents[this.props.date];
+        const events = allEvents && allEvents[this.props.date.value];
 
         return (
             <div>
-                <CalendarSelect />
+                <div className={styles.selectRoot}>
+                    <DateSelect />
+                    <CalendarSelect />
+                </div>
 
                 {
                     !events
@@ -107,7 +115,7 @@ class EventsList extends Component {
                                         key={index}
                                         details={event}
                                         calendarId={this.props.calendars.selected.id}
-                                        date={date}
+                                        date={date.value}
                                     />
                                 ))
                                 : <Typography
@@ -131,7 +139,8 @@ class EventsList extends Component {
 function mapStateToProps(state) {
     return {
         calendars: state.calendars,
-        events: state.events
+        events: state.events,
+        date: state.date
     };
 }
 

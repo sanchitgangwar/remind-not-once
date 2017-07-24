@@ -3,3 +3,8 @@
     bottom: 24px;
     right: 24px;
 }
+
+.selectRoot {
+    display: flex;
+    justify-content: space-between;
+}

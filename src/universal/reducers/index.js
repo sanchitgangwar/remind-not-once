@@ -5,13 +5,15 @@ import user from './user';
 import snackbar from './snackbar';
 import calendars from './calendars';
 import events from './events';
+import date from './date';
 
 const rootReducer = combineReducers({
     form: formReducer,
     user,
     snackbar,
     calendars,
-    events
+    events,
+    date
 });
 
 export default rootReducer;

@@ -1,0 +1,30 @@
+.root {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.button {
+    flex: none !important;
+    text-align: left;
+}
+
+.color {
+    display: inline-block;
+    margin: 0 10px 0 0 ;
+    /*height: 15px;*/
+    width: 15px;
+    background: red;
+}
+
+.placeholder {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0);
+}
+
+.menuItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
