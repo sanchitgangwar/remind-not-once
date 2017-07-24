@@ -51,8 +51,6 @@ class LoggedInContainer extends Component {
     }
 
     render() {
-        const { location: { pathname } } = this.props;
-
         return (
             <div className={styles.root}>
                 <AppBar style={{
