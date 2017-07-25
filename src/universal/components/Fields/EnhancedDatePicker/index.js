@@ -46,6 +46,12 @@ class EnhancedDatePicker extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (moment(nextProps.startDate).diff(moment(this.props.input.value)) > 0) {
+            this.props.input.onChange(nextProps.startDate);
+        }
+    }
+
     handleDropdownChange = (value) => {
         const date = this.getDateFromInputs(this.state.days, value);
         this.props.input.onChange(date);
