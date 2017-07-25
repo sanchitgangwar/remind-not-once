@@ -12,7 +12,7 @@ import NavigateNextIcon from 'material-ui-icons/NavigateNext';
 
 import {
     setSelectedDateAction
-} from 'Universal/actions/date';
+} from 'Universal/actions/filters';
 
 import styles from './index.css';
 
@@ -131,7 +131,7 @@ class DateSelect extends Component {
 
 function mapStateToProps(state) {
     return {
-        date: state.date
+        date: state.filters.date
     };
 }
 

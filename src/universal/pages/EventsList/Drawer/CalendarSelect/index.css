@@ -1,0 +1,25 @@
+.placeholder {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0);
+}
+
+.calendarName {
+    display: inline-block;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.calendarText {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.listItemSelected {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.icon {
+    margin-right: 0 !important;
+}

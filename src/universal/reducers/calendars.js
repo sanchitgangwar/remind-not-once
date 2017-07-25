@@ -1,6 +1,5 @@
 import {
-    SET_CALENDARS_LIST,
-    SET_SELECTED_CALENDAR
+    SET_CALENDARS_LIST
 } from 'Universal/actions/calendars';
 
 export default function (state = {
@@ -12,11 +11,6 @@ export default function (state = {
         return {
             ...state,
             list: action.payload
-        };
-    case SET_SELECTED_CALENDAR:
-        return {
-            ...state,
-            selected: action.payload
         };
     default:
         return state;

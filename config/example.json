@@ -3,5 +3,6 @@
         "clientId": "<GOOGLE_CLIENT_ID>",
         "clientSecret": "<GOOGLE_CLIENT_SECRET>",
         "redirectUrl": "http://<HOST>:<PORT>/api/auth/oauth2callback"
-    }
+    },
+    "feedbackEmail": "<EMAIL_ADDRESS>"
 }

@@ -117,19 +117,18 @@ class OccurrenceInputs extends Component {
     handlePresetsClick = (event) => {
         event.stopPropagation();
         this.setState({
-            presetsOpen: true,
-            presetsAnchorEl: event.currentTarget
+            presetsOpen: true
         });
     }
 
     /**
      * Called when the presets dialog backdrop is clicked.
      */
-    onBackdropClick = () => {
+    handlePresetsClose = () => {
         this.setState({
             presetsOpen: false
         });
-    }
+    };
 
     /**
      * Called when a preset is selected. This computes the value and sets
@@ -251,7 +250,7 @@ class OccurrenceInputs extends Component {
                             <Dialog
                                 maxWidth="xs"
                                 open={this.state.presetsOpen}
-                                onBackdropClick={this.handlePresetsClose}
+                                onRequestClose={this.handlePresetsClose}
                             >
                                 <DialogTitle>Occurrences Presets</DialogTitle>
                                 <DialogContent>

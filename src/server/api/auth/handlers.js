@@ -2,11 +2,11 @@ import oauth from 'Server/api/oauth2';
 
 const oauth2Client = oauth.getClient();
 
-
 function login(req, res) {
     const scopes = [
         'https://www.googleapis.com/auth/plus.me',
-        'https://www.googleapis.com/auth/calendar'
+        'https://www.googleapis.com/auth/calendar',
+        'https://www.googleapis.com/auth/userinfo.email'
     ];
     const url = oauth2Client.generateAuthUrl({
         scope: scopes

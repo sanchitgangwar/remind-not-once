@@ -38,6 +38,7 @@ class CreateEvent extends Component {
         showSnackbar: PropTypes.func.isRequired,
         history: PropTypes.object.isRequired,
         calendars: PropTypes.object.isRequired,
+        filters: PropTypes.object.isRequired,
         initialValues: PropTypes.object.isRequired,
         invalid: PropTypes.bool.isRequired,
         clearEvents: PropTypes.func.isRequired
@@ -50,7 +51,7 @@ class CreateEvent extends Component {
             calendarsSource: this.getCalendarsSource(props),
             calendar: {
                 id: null,
-                background: props.calendars.selected.backgroundColor || theme.palette.grey['300']
+                background: props.filters.calendar.backgroundColor || theme.palette.grey['300']
             },
             submitClicked: false
         };
@@ -63,11 +64,11 @@ class CreateEvent extends Component {
             });
         }
 
-        if (this.props.calendars.selected.id !== nextProps.calendars.selected.id) {
+        if (this.props.filters.calendar.id !== nextProps.filters.calendar.id) {
             this.setState({
                 calendar: {
-                    id: nextProps.calendars.selected.id,
-                    background: nextProps.calendars.selected.backgroundColor
+                    id: nextProps.filters.calendar.id,
+                    background: nextProps.filters.calendar.backgroundColor
                 }
             });
         }
@@ -170,76 +171,78 @@ class CreateEvent extends Component {
         const { calendarsSource, calendar } = this.state;
 
         return (
-            <Paper>
-                <div className={styles.root}>
-                    <Typography
-                        type="headline"
-                        className={cx(styles.formHeader, {
-                            [styles.placeholder]: !calendars.list.length
-                        })}
-                    >
-                        Create Event
-                    </Typography>
+            <div className={styles.wrapper}>
+                <Paper className={styles.paper}>
+                    <div className={styles.root}>
+                        <Typography
+                            type="headline"
+                            className={cx(styles.formHeader, {
+                                [styles.placeholder]: !calendars.list.length
+                            })}
+                        >
+                            Create Event
+                        </Typography>
 
-                    <form onSubmit={this.props.handleSubmit(this.handleSubmit)}>
-                        <Field name="eventName"
-                            component={TextField}
-                            label="Event name"
-                            required={true}
-                            style={jsStyles.eventName}
-                            autoFocus={true}
-                        />
-
-                        <div className={styles.calendarInputContainer}>
-                            <Field name="calendarId"
-                                component={Dropdown}
-                                label="Calendar"
+                        <form onSubmit={this.props.handleSubmit(this.handleSubmit)}>
+                            <Field name="eventName"
+                                component={TextField}
+                                label="Event name"
                                 required={true}
-                                source={calendarsSource}
-                                renderOption={this.renderCalendarOption}
-                                onChange={this.handleCalendarIdChange}
+                                style={jsStyles.eventName}
+                                autoFocus={true}
                             />
 
-                            <BookmarkIcon
-                                className={styles.calendarInputIcon}
-                                style={{
-                                    fill: calendar.background
-                                }} />
-                        </div>
+                            <div className={styles.calendarInputContainer}>
+                                <Field name="calendarId"
+                                    component={Dropdown}
+                                    label="Calendar"
+                                    required={true}
+                                    source={calendarsSource}
+                                    renderOption={this.renderCalendarOption}
+                                    onChange={this.handleCalendarIdChange}
+                                />
 
-                        <FieldArray
-                            name="tasks"
-                            component={TaskInputs}
-                        />
+                                <BookmarkIcon
+                                    className={styles.calendarInputIcon}
+                                    style={{
+                                        fill: calendar.background
+                                    }} />
+                            </div>
 
-                        <FieldArray
-                            name="occurrences"
-                            component={OccurrenceInputs}
-                        />
+                            <FieldArray
+                                name="tasks"
+                                component={TaskInputs}
+                            />
 
-                        <div className={styles.footer}>
-                            <Link to="/" className={styles.cancelLink}>
-                                <Button disabled={submitting}>
-                                    Cancel
+                            <FieldArray
+                                name="occurrences"
+                                component={OccurrenceInputs}
+                            />
+
+                            <div className={styles.footer}>
+                                <Link to="/" className={styles.cancelLink}>
+                                    <Button disabled={submitting}>
+                                        Cancel
+                                    </Button>
+                                </Link>
+
+                                <Button
+                                    raised
+                                    color="accent"
+                                    type="submit"
+                                    disabled={invalid || submitting}
+                                >
+                                    Create event
                                 </Button>
-                            </Link>
+                            </div>
+                        </form>
+                    </div>
 
-                            <Button
-                                raised
-                                color="accent"
-                                type="submit"
-                                disabled={invalid || submitting}
-                            >
-                                Create event
-                            </Button>
-                        </div>
-                    </form>
-                </div>
-
-                {
-                    submitting ? (<LinearProgress />) : null
-                }
-            </Paper>
+                    {
+                        submitting ? (<LinearProgress />) : null
+                    }
+                </Paper>
+            </div>
         );
     }
 }
@@ -247,9 +250,10 @@ class CreateEvent extends Component {
 function mapStateToProps(state) {
     return {
         calendars: state.calendars,
+        filters: state.filters,
         initialValues: {
             eventName: '',
-            calendarId: state.calendars.selected && state.calendars.selected.id,
+            calendarId: state.filters.calendar && state.filters.calendar.id,
             tasks: [{
                 name: 'Untitled task'
             }],

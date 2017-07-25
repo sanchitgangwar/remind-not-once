@@ -1,10 +1,15 @@
+.contentWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.contentContainer {
+    width: 100%;
+    max-width: 900px;
+}
+
 .addButton {
     position: fixed;
     bottom: 24px;
     right: 24px;
-}
-
-.selectRoot {
-    display: flex;
-    justify-content: space-between;
 }

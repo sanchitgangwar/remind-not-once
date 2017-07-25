@@ -26,22 +26,37 @@ import Table from './Table';
 
 import styles from './index.css';
 
+const jsStyles = {
+    incompleteTable: {
+        marginBottom: 24
+    }
+};
+
 class Event extends Component {
     static propTypes = {
         calendarId: PropTypes.string.isRequired,
         details: PropTypes.object.isRequired,
         showSnackbar: PropTypes.func.isRequired,
         updateEvent: PropTypes.func.isRequired,
-        date: PropTypes.string
+        date: PropTypes.string.isRequired,
+        view: PropTypes.string.isRequired
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            showCompleted: false,
+            showCompleted: this.props.view === 'COMPLETED' || false,
             processingDoneAll: false
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.view === 'COMPLETED') {
+            this.setState({
+                showCompleted: true
+            });
+        }
     }
 
     handleExpandClick = () => {
@@ -146,11 +161,13 @@ class Event extends Component {
                 startDate,
                 endDate,
                 summary
-            }
+            },
+            view
         } = this.props;
 
         const nCompleted = completed.length;
         const nIncomplete = incomplete.length;
+        const expanded = Boolean(nCompleted) && this.state.showCompleted;
 
         return (
             <Card className={styles.card}>
@@ -197,26 +214,30 @@ class Event extends Component {
                     </Typography>
 
                     {
-                        nIncomplete ? (
-                            <Table
-                                title="INCOMPLETE"
-                                backgroundColor={pink['50']}
-                                list={incomplete}
-                                actionIcon={<DoneIcon />}
-                                onActionClick={this.handleDone}
-                            />
-                        ) : (
-                            <Typography type="subheading" align="center">
-                                All tasks completed.
-                            </Typography>
-                        )
+                        view !== 'COMPLETED' ? (
+                            nIncomplete ? (
+                                <Table
+                                    title="INCOMPLETE"
+                                    backgroundColor={pink['50']}
+                                    list={incomplete}
+                                    actionIcon={<DoneIcon />}
+                                    onActionClick={this.handleDone}
+                                    style={expanded ? jsStyles.incompleteTable : {}}
+                                />
+                            ) : (
+                                <Typography
+                                    type="subheading"
+                                    align="center"
+                                    style={expanded ? jsStyles.incompleteTable : {}}
+                                >
+                                    All tasks completed.
+                                </Typography>
+                            )
+                        ) : null
                     }
-                </CardContent>
 
-                <Collapse in={Boolean(nCompleted) && this.state.showCompleted}
-                    transitionDuration="auto" unmountOnExit>
-
-                    <CardContent>
+                    <Collapse in={expanded}
+                        transitionDuration="auto" unmountOnExit>
                         <Table
                             title="COMPLETED"
                             backgroundColor={lightGreen['50']}
@@ -224,10 +245,11 @@ class Event extends Component {
                             actionIcon={<UndoIcon />}
                             onActionClick={this.handleUndo}
                         />
-                    </CardContent>
-                </Collapse>
+                    </Collapse>
+                </CardContent>
+
                 {
-                    nCompleted ? (
+                    view !== 'COMPLETED' && nCompleted ? (
                         <CardActions classes={{
                             root: styles.cardActionContainer
                         }}>

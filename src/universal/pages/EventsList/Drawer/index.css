@@ -1,0 +1,44 @@
+.root {
+    width: 265px;
+    z-index: 0 !important;
+}
+
+.listRoot {
+    flex: none !important;
+}
+
+.divider {
+    margin: 6px 0 !important;
+}
+
+.icon {
+    margin-right: 0 !important;
+}
+
+.listItemText {
+    font-weight: 600 !important;
+}
+
+.listItemSelected {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.flex {
+    display: flex;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 22px;
+    height: 65px;
+}
+
+.logo {
+    height: 40px;
+}
+
+.noDecoration {
+    text-decoration: none;
+}

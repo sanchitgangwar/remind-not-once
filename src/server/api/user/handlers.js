@@ -2,6 +2,8 @@ import google from 'googleapis';
 
 import oauth from 'Server/api/oauth2';
 
+import formatters from './formatters';
+
 const plus = google.plus('v1');
 
 function getDetails(req, res) {
@@ -9,7 +11,7 @@ function getDetails(req, res) {
     plus.people.get({
         userId: 'me',
         auth: oauth2Client,
-        fields: 'displayName,image'
+        fields: 'displayName,image,emails'
     }, (err, response) => {
         if (err) {
             res.cookie('T', '', { expires: new Date(null), path: '/' });
@@ -17,7 +19,7 @@ function getDetails(req, res) {
             return;
         }
 
-        res.status(200).send(response);
+        res.status(200).send(formatters.formatDetails(response));
     });
 }
 

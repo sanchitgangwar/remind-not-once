@@ -7,38 +7,42 @@ import moment from 'moment';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+
+import MenuIcon from 'material-ui-icons/Menu';
 
 import EventsList from 'Universal/pages/EventsList';
 import CreateEvent from 'Universal/pages/CreateEvent';
 import api from 'Universal/utils/api';
 import {
-    setSelectedCalendarAction,
     setCalendarsListAction
 } from 'Universal/actions/calendars';
-import {
-    setEventsForDateAction
-} from 'Universal/actions/events';
 import {
     showSnackbarAction
 } from 'Universal/actions/snackbar';
 import {
+    toggleDrawerAction
+} from 'Universal/actions/drawer';
+import {
+    setSelectedCalendarAction,
     setSelectedDateAction
-} from 'Universal/actions/date';
+} from 'Universal/actions/filters';
 import UserMenu from './UserMenu';
 
-import LogoFull from '../../../../assets/images/LogoFull.svg';
+import LogoFull from '../../../../assets/images/LogoFull_228.png';
 import styles from './index.css';
 
 class LoggedInContainer extends Component {
     static propTypes = {
         userDetails: PropTypes.object.isRequired,
         calendars: PropTypes.object.isRequired,
-        date: PropTypes.object.isRequired,
+        filters: PropTypes.object.isRequired,
         setSelectedCalendar: PropTypes.func.isRequired,
         setCalendarsList: PropTypes.func.isRequired,
         setSelectedDate: PropTypes.func.isRequired,
         showSnackbar: PropTypes.func.isRequired,
-        location: PropTypes.object.isRequired
+        location: PropTypes.object.isRequired,
+        toggleDrawer: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -55,12 +59,16 @@ class LoggedInContainer extends Component {
             });
         }
 
-        if (!this.props.date.value) {
+        if (!this.props.filters.date.value) {
             this.props.setSelectedDate({
                 value: moment().format('YYYY-MM-DD'),
                 label: 'Today'
             });
         }
+    }
+
+    toggleDrawer = () => {
+        this.props.toggleDrawer();
     }
 
     render() {
@@ -70,7 +78,18 @@ class LoggedInContainer extends Component {
                     backgroundColor: '#fcfcfc',
                     height: 65
                 }} className={styles.appBar}>
-                    <Toolbar>
+                    <Toolbar style={{ paddingLeft: 4 }}>
+
+                        {
+                            this.props.location.pathname === '/' ? (
+                                <IconButton
+                                    onClick={this.toggleDrawer}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                            ) : <div className={styles.menuSpacer} />
+                        }
+
                         <Link to="/" className={styles.logoContainer}>
                             <img src={LogoFull} className={styles.logo} />
                         </Link>
@@ -94,7 +113,7 @@ function mapStateToProps(state) {
     return {
         userDetails: state.user.details,
         calendars: state.calendars,
-        date: state.date
+        filters: state.filters
     };
 }
 
@@ -102,9 +121,9 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setSelectedCalendar: setSelectedCalendarAction,
         setCalendarsList: setCalendarsListAction,
-        setEventsForDate: setEventsForDateAction,
         setSelectedDate: setSelectedDateAction,
-        showSnackbar: showSnackbarAction
+        showSnackbar: showSnackbarAction,
+        toggleDrawer: toggleDrawerAction
     }, dispatch);
 }
 

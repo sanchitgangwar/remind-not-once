@@ -10,7 +10,7 @@ import Typography from 'material-ui/Typography';
 import api from 'Universal/utils/api';
 import { showSnackbarAction } from 'Universal/actions/snackbar';
 
-import Logo from '../../../../assets/images/LogoFull.svg';
+import Logo from '../../../../assets/images/LogoFull_228.png';
 import GoogleLogo from '../../../../assets/images/google_logo1600.png';
 
 import styles from './index.css';
