@@ -38,6 +38,7 @@ class CreateEvent extends Component {
         showSnackbar: PropTypes.func.isRequired,
         history: PropTypes.object.isRequired,
         calendars: PropTypes.object.isRequired,
+        filters: PropTypes.object.isRequired,
         initialValues: PropTypes.object.isRequired,
         invalid: PropTypes.bool.isRequired,
         clearEvents: PropTypes.func.isRequired
@@ -50,7 +51,7 @@ class CreateEvent extends Component {
             calendarsSource: this.getCalendarsSource(props),
             calendar: {
                 id: null,
-                background: props.calendars.selected.backgroundColor || theme.palette.grey['300']
+                background: props.filters.calendar.backgroundColor || theme.palette.grey['300']
             },
             submitClicked: false
         };
@@ -63,11 +64,11 @@ class CreateEvent extends Component {
             });
         }
 
-        if (this.props.calendars.selected.id !== nextProps.calendars.selected.id) {
+        if (this.props.filters.calendar.id !== nextProps.filters.calendar.id) {
             this.setState({
                 calendar: {
-                    id: nextProps.calendars.selected.id,
-                    background: nextProps.calendars.selected.backgroundColor
+                    id: nextProps.filters.calendar.id,
+                    background: nextProps.filters.calendar.backgroundColor
                 }
             });
         }
@@ -247,9 +248,10 @@ class CreateEvent extends Component {
 function mapStateToProps(state) {
     return {
         calendars: state.calendars,
+        filters: state.filters,
         initialValues: {
             eventName: '',
-            calendarId: state.calendars.selected && state.calendars.selected.id,
+            calendarId: state.filters.calendar && state.filters.calendar.id,
             tasks: [{
                 name: 'Untitled task'
             }],

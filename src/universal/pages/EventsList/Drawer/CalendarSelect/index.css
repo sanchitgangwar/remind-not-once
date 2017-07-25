@@ -17,13 +17,13 @@
 }
 
 .listItemText {
+    width: 100%;
     overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    h3 {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.listItemSelected {
+    background-color: rgba(0, 0, 0, 0.12);
 }
 
 .icon {

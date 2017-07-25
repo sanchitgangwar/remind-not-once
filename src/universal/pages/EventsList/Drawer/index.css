@@ -1,5 +1,17 @@
 .root {
     width: 265px;
     padding-top: 65px;
-    /*z-index: 0 !important;*/
+    z-index: 0 !important;
+}
+
+.divider {
+    margin: 6px 0 !important;
+}
+
+.icon {
+    margin-right: 0 !important;
+}
+
+.listItemSelected {
+    background-color: rgba(0, 0, 0, 0.12);
 }

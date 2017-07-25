@@ -1,5 +1,23 @@
+.contentWrapper {
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 265px);
+    margin-left: 265px;
+}
+
+.contentContainer {
+    width: 80%;
+    max-width: 1000px;
+}
+
 .addButton {
     position: fixed;
     bottom: 24px;
     right: 24px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .content {
+        margin-left: 0;
+    }
 }

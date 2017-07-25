@@ -6,13 +6,14 @@ import cx from 'classnames';
 
 import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
+import Typography from 'material-ui/Typography';
 import BookmarkIcon from 'material-ui-icons/Bookmark';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import ExpandLessIcon from 'material-ui-icons/ExpandLess';
 
 import {
     setSelectedCalendarAction
-} from 'Universal/actions/calendars';
+} from 'Universal/actions/filters';
 import {
     setEventsForDateAction
 } from 'Universal/actions/events';
@@ -25,12 +26,16 @@ const classes = {
     },
     listItemText: {
         root: styles.listItemText
+    },
+    selected: {
+        root: styles.listItemSelected
     }
 };
 
 class CalendarSelect extends Component {
     static propTypes = {
         calendars: PropTypes.object.isRequired,
+        filters: PropTypes.object.isRequired,
         events: PropTypes.object.isRequired,
         setSelectedCalendar: PropTypes.func.isRequired,
         setEventsForDate: PropTypes.func.isRequired
@@ -56,7 +61,7 @@ class CalendarSelect extends Component {
     };
 
     render() {
-        const selected = this.props.calendars.selected || {};
+        const selected = this.props.filters.calendar || {};
 
         return (
             <div className={styles.root}>
@@ -117,7 +122,11 @@ class CalendarSelect extends Component {
                                 key={index}
                                 data-index={index}
                                 onClick={this.handleCalendarSelect}
-                                selected={calendar.id === selected.id}
+                                classes={
+                                    calendar.id === selected.id ?
+                                        classes.selected :
+                                        undefined
+                                }
                             >
                                 <ListItemIcon>
                                     <BookmarkIcon style={{
@@ -125,7 +134,12 @@ class CalendarSelect extends Component {
                                     }} classes={classes.icon} />
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary={calendar.summary}
+                                    disableTypography
+                                    primary={
+                                        <Typography className={styles.listItemText}>
+                                            { calendar.summary }
+                                        </Typography>
+                                    }
                                     classes={classes.listItemText}
                                 />
                             </ListItem>)
@@ -141,7 +155,8 @@ class CalendarSelect extends Component {
 function mapStateToProps(state) {
     return {
         calendars: state.calendars,
-        events: state.events
+        events: state.events,
+        filters: state.filters
     };
 }
 
