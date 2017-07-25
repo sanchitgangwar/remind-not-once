@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { CircularProgress } from 'material-ui/Progress';
 
 import styles from './index.css';
-import LogoSmall from '../../../../assets/images/LogoSmall.svg';
+import LogoSmall from '../../../../assets/images/LogoSmall_131.png';
 
 class Loader extends Component {
     render() {

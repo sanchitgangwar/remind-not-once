@@ -12,7 +12,7 @@ import {
 
 import CalendarSelect from './CalendarSelect';
 import StatusSelect from './StatusSelect';
-import LogoFull from '../../../../../assets/images/LogoFull.svg';
+import LogoFull from '../../../../../assets/images/LogoFull_228.png';
 
 import styles from './index.css';
 

@@ -29,7 +29,7 @@ import {
 } from 'Universal/actions/filters';
 import UserMenu from './UserMenu';
 
-import LogoFull from '../../../../assets/images/LogoFull.svg';
+import LogoFull from '../../../../assets/images/LogoFull_228.png';
 import styles from './index.css';
 
 class LoggedInContainer extends Component {

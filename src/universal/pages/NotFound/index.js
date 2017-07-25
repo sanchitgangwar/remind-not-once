@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Typography from 'material-ui/Typography';
 
-import LogoSmall from '../../../../assets/images/LogoSmall.svg';
+import LogoSmall from '../../../../assets/images/LogoSmall_131.png';
 import styles from './index.css';
 
 class NotFound extends Component {
