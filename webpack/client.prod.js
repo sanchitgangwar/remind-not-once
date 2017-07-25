@@ -8,6 +8,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const BabiliPlugin = require('babili-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const InlineManifestPlugin = require('inline-manifest-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, '../src'),
@@ -36,6 +37,13 @@ module.exports = {
         }
     },
     plugins: [
+        new FaviconsWebpackPlugin({
+            logo: path.join(__dirname, '../assets/icons/favicon-192x192.png'),
+            prefix: 'icons-[hash]/',
+            persistentCache: true,
+            inject: true,
+            title: '(Remind)+'
+        }),
         new CleanWebpackPlugin(['dist/'], {
             root: path.resolve(__dirname, '../'),
             verbose: true
