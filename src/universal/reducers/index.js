@@ -6,6 +6,7 @@ import snackbar from './snackbar';
 import calendars from './calendars';
 import events from './events';
 import filters from './filters';
+import drawer from './drawer';
 
 const rootReducer = combineReducers({
     form: formReducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     snackbar,
     calendars,
     events,
-    filters
+    filters,
+    drawer
 });
 
 export default rootReducer;

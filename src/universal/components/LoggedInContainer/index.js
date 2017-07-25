@@ -7,6 +7,9 @@ import moment from 'moment';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+
+import MenuIcon from 'material-ui-icons/Menu';
 
 import EventsList from 'Universal/pages/EventsList';
 import CreateEvent from 'Universal/pages/CreateEvent';
@@ -17,6 +20,9 @@ import {
 import {
     showSnackbarAction
 } from 'Universal/actions/snackbar';
+import {
+    toggleDrawerAction
+} from 'Universal/actions/drawer';
 import {
     setSelectedCalendarAction,
     setSelectedDateAction
@@ -35,7 +41,8 @@ class LoggedInContainer extends Component {
         setCalendarsList: PropTypes.func.isRequired,
         setSelectedDate: PropTypes.func.isRequired,
         showSnackbar: PropTypes.func.isRequired,
-        location: PropTypes.object.isRequired
+        location: PropTypes.object.isRequired,
+        toggleDrawer: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -60,6 +67,10 @@ class LoggedInContainer extends Component {
         }
     }
 
+    toggleDrawer = () => {
+        this.props.toggleDrawer();
+    }
+
     render() {
         return (
             <div className={styles.root}>
@@ -67,7 +78,11 @@ class LoggedInContainer extends Component {
                     backgroundColor: '#fcfcfc',
                     height: 65
                 }} className={styles.appBar}>
-                    <Toolbar>
+                    <Toolbar style={{ paddingLeft: 4 }}>
+                        <IconButton onClick={this.toggleDrawer}>
+                            <MenuIcon />
+                        </IconButton>
+
                         <Link to="/" className={styles.logoContainer}>
                             <img src={LogoFull} className={styles.logo} />
                         </Link>
@@ -100,7 +115,8 @@ function mapDispatchToProps(dispatch) {
         setSelectedCalendar: setSelectedCalendarAction,
         setCalendarsList: setCalendarsListAction,
         setSelectedDate: setSelectedDateAction,
-        showSnackbar: showSnackbarAction
+        showSnackbar: showSnackbarAction,
+        toggleDrawer: toggleDrawerAction
     }, dispatch);
 }
 

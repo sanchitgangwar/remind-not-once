@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
+import cx from 'classnames';
 
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
@@ -17,6 +18,7 @@ import {
 import {
     showSnackbarAction
 } from 'Universal/actions/snackbar';
+import resizeHandler from 'Universal/utils/resizeHandler';
 import api from 'Universal/utils/api';
 
 import DateSelect from './DateSelect';
@@ -33,18 +35,14 @@ class EventsList extends Component {
     static propTypes = {
         filters: PropTypes.object.isRequired,
         events: PropTypes.object.isRequired,
+        drawer: PropTypes.object.isRequired,
         setSelectedCalendar: PropTypes.func.isRequired,
         setEventsForDate: PropTypes.func.isRequired,
         showSnackbar: PropTypes.func.isRequired
     };
 
-    componentDidMount() {
-        if (this.props.filters.calendar.id) {
-            this.getEvents(
-                this.props.filters.calendar.id,
-                this.props.filters.date.value
-            );
-        }
+    componentWillUnmount() {
+        this.resizeInstance.unsubscribe(this.handleResize);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -123,14 +121,17 @@ class EventsList extends Component {
     }
 
     render() {
-        const { events: allEvents, filters: { date } } = this.props;
+        const { events: allEvents, filters: { date }, drawer } = this.props;
         const events = allEvents && allEvents[date.value];
+        const width = resizeHandler.getInstance().getDimensions().width;
 
         return (
             <div>
                 <Drawer />
 
-                <div className={styles.contentWrapper}>
+                <div className={cx(styles.contentWrapper, {
+                    [styles.marginLeft]: width > 1000 && drawer.open
+                })}>
                     <div className={styles.contentContainer}>
                         <DateSelect />
 
@@ -159,7 +160,8 @@ class EventsList extends Component {
 function mapStateToProps(state) {
     return {
         events: state.events,
-        filters: state.filters
+        filters: state.filters,
+        drawer: state.drawer
     };
 }
 

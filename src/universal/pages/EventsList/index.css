@@ -1,6 +1,9 @@
 .contentWrapper {
     display: flex;
     justify-content: center;
+}
+
+.marginLeft {
     width: calc(100% - 265px);
     margin-left: 265px;
 }
@@ -17,6 +20,11 @@
 }
 
 @media only screen and (max-width: 1000px) {
+    .contentWrapper {
+        width: 100%;
+        margin-left: 0;
+    }
+
     .content {
         margin-left: 0;
     }
