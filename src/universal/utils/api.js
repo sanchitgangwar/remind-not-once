@@ -176,8 +176,6 @@ class Api {
             fetchOptions.body = reqBody;
         }
 
-        console.log(`FETCH CALL: ${this.formatUrl(config)}`, fetchOptions);
-
         const getResult = (response) => {
             let result = null;
             const contentType = response.headers.get('Content-Type');
@@ -206,14 +204,6 @@ class Api {
                     : result;
             }, (response) => {
                 const result = getResult(response);
-
-                return Promise.reject(result);
-            }).then((result) => {
-                console.log('FETCH SUCCESS: ', result);
-
-                return result;
-            }, (result) => {
-                console.log('FETCH FAILED: ', result);
 
                 return Promise.reject(result);
             });

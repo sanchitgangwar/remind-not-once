@@ -16,7 +16,8 @@ class Table extends Component {
         list: PropTypes.array.isRequired,
         backgroundColor: PropTypes.string,
         actionIcon: PropTypes.element,
-        onActionClick: PropTypes.func
+        onActionClick: PropTypes.func,
+        style: PropTypes.object
     };
 
     constructor(props) {

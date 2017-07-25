@@ -24,7 +24,7 @@ export default function (state = {
         return {
             ...state,
             status: action.payload
-        }
+        };
     default:
         return state;
     }
