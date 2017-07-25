@@ -46,6 +46,10 @@ class DrawerComponent extends Component {
         this.handleResize(this.resizeInstance.getDimensions());
     }
 
+    componentWillUnmount() {
+        this.resizeInstance.unsubscribe(this.handleResize);
+    }
+
     handleResize = (dims) => {
         if (dims.width < 1000) {
             this.props.closeDrawer();

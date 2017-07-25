@@ -41,10 +41,6 @@ class EventsList extends Component {
         showSnackbar: PropTypes.func.isRequired
     };
 
-    componentWillUnmount() {
-        this.resizeInstance.unsubscribe(this.handleResize);
-    }
-
     componentWillReceiveProps(nextProps) {
         const areCalendarsSame = nextProps.filters.calendar.id ===
             this.props.filters.calendar.id;
