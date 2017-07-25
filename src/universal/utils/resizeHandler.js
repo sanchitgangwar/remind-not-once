@@ -35,7 +35,7 @@ class ResizeHandler {
         this.nSubscribers++;
     }
 
-    unsusbscribe(callback) {
+    unsubscribe(callback) {
         for (let i = 0; i < this.nSubscribers; ++i) {
             if (this.subscribers[i] === callback) {
                 this.subscribers.splice(i, 1);
