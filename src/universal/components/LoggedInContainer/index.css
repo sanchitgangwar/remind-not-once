@@ -28,3 +28,8 @@
 .button {
     text-decoration: none;
 }
+
+.menuSpacer {
+    width: 20px;
+    height: 100%;
+}

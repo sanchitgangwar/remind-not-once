@@ -79,9 +79,16 @@ class LoggedInContainer extends Component {
                     height: 65
                 }} className={styles.appBar}>
                     <Toolbar style={{ paddingLeft: 4 }}>
-                        <IconButton onClick={this.toggleDrawer}>
-                            <MenuIcon />
-                        </IconButton>
+
+                        {
+                            this.props.location.pathname === '/' ? (
+                                <IconButton
+                                    onClick={this.toggleDrawer}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                            ) : <div className={styles.menuSpacer} />
+                        }
 
                         <Link to="/" className={styles.logoContainer}>
                             <img src={LogoFull} className={styles.logo} />

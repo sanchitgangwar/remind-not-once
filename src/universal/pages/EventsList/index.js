@@ -41,6 +41,15 @@ class EventsList extends Component {
         showSnackbar: PropTypes.func.isRequired
     };
 
+    componentDidMount() {
+        const { events: allEvents, filters: { calendar, date } } = this.props;
+        const events = allEvents && allEvents[date.value];
+
+        if (!events && calendar.id && date.value) {
+            this.getEvents(calendar.id, date.value);
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         const areCalendarsSame = nextProps.filters.calendar.id ===
             this.props.filters.calendar.id;
