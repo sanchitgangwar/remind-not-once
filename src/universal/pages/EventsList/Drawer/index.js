@@ -5,7 +5,6 @@ import Divider from 'material-ui/Divider';
 
 import CalendarSelect from './CalendarSelect';
 import StatusSelect from './StatusSelect';
-import Contact from './Contact';
 
 import styles from './index.css';
 
@@ -26,9 +25,6 @@ class DrawerComponent extends Component {
                 <StatusSelect />
 
                 <Divider />
-
-                <Contact />
-
             </Drawer>
         );
     }
