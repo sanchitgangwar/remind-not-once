@@ -12,6 +12,7 @@ import {
 
 import CalendarSelect from './CalendarSelect';
 import StatusSelect from './StatusSelect';
+import Source from './Source';
 import LogoFull from '../../../../../assets/images/LogoFull_228.png';
 
 import styles from './index.css';
@@ -48,6 +49,8 @@ class DrawerComponent extends Component {
                 <StatusSelect />
 
                 <Divider />
+
+                <Source />
             </Drawer>
         );
     }

@@ -32,14 +32,20 @@ npm run hot
 ### Build server code
 
 ```
-npm run dev-server
+npm run build-server
 ```
 
 ### Start server
 
+This starts the server on the port `12000`.
+
 ```
 npm run start
 ```
+
+### Config
+
+You need a config to be present in the `config` directory before starting the server. The example config has been provided and is present in the aforementioned directory.
 
 ## Details
 
