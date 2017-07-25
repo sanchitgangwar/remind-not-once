@@ -38,7 +38,7 @@ module.exports = {
     },
     plugins: [
         new FaviconsWebpackPlugin({
-            logo: path.join(__dirname, '../assets/icons/favicon-192x192.png'),
+            logo: path.join(__dirname, '../assets/icons/icon_1024.png'),
             prefix: 'icons-[hash]/',
             persistentCache: true,
             inject: true,
