@@ -12,18 +12,15 @@ import EventsList from 'Universal/pages/EventsList';
 import CreateEvent from 'Universal/pages/CreateEvent';
 import api from 'Universal/utils/api';
 import {
-    setSelectedCalendarAction,
     setCalendarsListAction
 } from 'Universal/actions/calendars';
-import {
-    setEventsForDateAction
-} from 'Universal/actions/events';
 import {
     showSnackbarAction
 } from 'Universal/actions/snackbar';
 import {
+    setSelectedCalendarAction,
     setSelectedDateAction
-} from 'Universal/actions/date';
+} from 'Universal/actions/filters';
 import UserMenu from './UserMenu';
 
 import LogoFull from '../../../../assets/images/LogoFull.svg';
@@ -33,7 +30,7 @@ class LoggedInContainer extends Component {
     static propTypes = {
         userDetails: PropTypes.object.isRequired,
         calendars: PropTypes.object.isRequired,
-        date: PropTypes.object.isRequired,
+        filters: PropTypes.object.isRequired,
         setSelectedCalendar: PropTypes.func.isRequired,
         setCalendarsList: PropTypes.func.isRequired,
         setSelectedDate: PropTypes.func.isRequired,
@@ -55,7 +52,7 @@ class LoggedInContainer extends Component {
             });
         }
 
-        if (!this.props.date.value) {
+        if (!this.props.filters.date.value) {
             this.props.setSelectedDate({
                 value: moment().format('YYYY-MM-DD'),
                 label: 'Today'
@@ -94,7 +91,7 @@ function mapStateToProps(state) {
     return {
         userDetails: state.user.details,
         calendars: state.calendars,
-        date: state.date
+        filters: state.filters
     };
 }
 
@@ -102,7 +99,6 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setSelectedCalendar: setSelectedCalendarAction,
         setCalendarsList: setCalendarsListAction,
-        setEventsForDate: setEventsForDateAction,
         setSelectedDate: setSelectedDateAction,
         showSnackbar: showSnackbarAction
     }, dispatch);

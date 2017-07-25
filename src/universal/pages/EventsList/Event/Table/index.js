@@ -6,6 +6,8 @@ import { CircularProgress } from 'material-ui/Progress';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 
+import makeCancelable from 'Universal/utils/makeCancelable';
+
 import styles from './index.css';
 
 class Table extends Component {
@@ -23,6 +25,9 @@ class Table extends Component {
         this.state = {
             processing: {}
         };
+
+        // Promises which should be canceled when the component unmounts
+        this.promises = [];
     }
 
     handleActionClick = (event) => {
@@ -36,26 +41,40 @@ class Table extends Component {
             }
         });
 
-        this.props.onActionClick(event, index).then(() => {
+        const cancelable = makeCancelable(this.props.onActionClick(event, index));
+        this.promises.push(cancelable);
+
+        cancelable.promise.then(() => {
             this.setState({
                 processing: {
                     ...processing,
                     [index]: false
                 }
             });
-        }, () => this.setState({
-            processing: {
-                ...processing,
-                [index]: false
+        }, (error) => {
+            if (!error.isCanceled) {
+                this.setState({
+                    processing: {
+                        ...processing,
+                        [index]: false
+                    }
+                });
             }
-        }));
-    };
+        });
+    }
+
+    componentWillUnmount() {
+        for (let i = this.promises.length - 1; i >= 0; --i) {
+            this.promises[i].cancel();
+        }
+    }
 
     render() {
         return (
             <div className={styles.listRoot}
                 style={{
-                    backgroundColor: this.props.backgroundColor || '#fcfcfc'
+                    backgroundColor: this.props.backgroundColor || '#fcfcfc',
+                    ...this.props.style
                 }}>
                 <Typography type="subheading">
                     { this.props.title }

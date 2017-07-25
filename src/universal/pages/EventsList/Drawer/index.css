@@ -4,6 +4,10 @@
     z-index: 0 !important;
 }
 
+.listRoot {
+    flex: none !important;
+}
+
 .divider {
     margin: 6px 0 !important;
 }
@@ -12,6 +16,15 @@
     margin-right: 0 !important;
 }
 
+.listItemText {
+    font-weight: 600 !important;
+}
+
 .listItemSelected {
     background-color: rgba(0, 0, 0, 0.12);
 }
+
+.flex {
+    display: flex;
+}
+

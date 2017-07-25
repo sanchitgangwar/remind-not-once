@@ -89,6 +89,39 @@ class EventsList extends Component {
         });
     }
 
+    renderEvents(events) {
+        const { filters: { status, date } } = this.props;
+        const eventsToRender = [];
+
+        events.forEach((event, index) => {
+            if ((status === 'COMPLETED' && !event.incomplete.length) ||
+                (status === 'INCOMPLETE' && event.incomplete.length) ||
+                (status === 'ALL')) {
+                eventsToRender.push(
+                    <Event
+                        key={index}
+                        details={event}
+                        view={this.props.filters.status}
+                        calendarId={this.props.filters.calendar.id}
+                        date={date.value}
+                    />
+                );
+            }
+        });
+
+        if (eventsToRender.length) {
+            return eventsToRender;
+        }
+
+        return (
+            <Typography
+                style={loadingStyle} type="subheading" align="center"
+            >
+                No events
+            </Typography>
+        );
+    }
+
     render() {
         const { events: allEvents, filters: { date } } = this.props;
         const events = allEvents && allEvents[date.value];
@@ -107,21 +140,7 @@ class EventsList extends Component {
                                     style={loadingStyle} type="subheading" align="center">
                                         Loading
                                 </Typography>
-                                : (
-                                    events.length
-                                        ? events.map((event, index) => (
-                                            <Event
-                                                key={index}
-                                                details={event}
-                                                calendarId={this.props.filters.calendar.id}
-                                                date={date.value}
-                                            />
-                                        ))
-                                        : <Typography
-                                            style={loadingStyle} type="subheading" align="center">
-                                            No events
-                                        </Typography>
-                                )
+                                : this.renderEvents(events)
                         }
 
                         <Link to="/create" className={styles.addButton}>

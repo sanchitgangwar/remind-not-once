@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import cx from 'classnames';
 
-import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
+import List, { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
 import Typography from 'material-ui/Typography';
 import BookmarkIcon from 'material-ui-icons/Bookmark';
@@ -17,7 +17,9 @@ import {
 import {
     setEventsForDateAction
 } from 'Universal/actions/events';
+import theme from 'Universal/../theme';
 
+import drawerStyles from '../index.css';
 import styles from './index.css';
 
 const classes = {
@@ -29,6 +31,15 @@ const classes = {
     },
     selected: {
         root: styles.listItemSelected
+    }
+};
+
+const jsStyles = {
+    textSelected: {
+        color: theme.palette.primary['500']
+    },
+    calendarListRoot: {
+        paddingTop: 0
     }
 };
 
@@ -64,87 +75,103 @@ class CalendarSelect extends Component {
         const selected = this.props.filters.calendar || {};
 
         return (
-            <div className={styles.root}>
-                <ListItem
-                    button
-                    aria-haspopup="true"
-                    aria-controls="calendar-menu"
-                    aria-label="Calendar"
-                    onClick={this.handleClickListItem}
-                    disabled={!selected.id}
-                >
-                    <ListItemIcon>
-                        <BookmarkIcon style={{
-                            fill: selected.backgroundColor || 'currentColor'
-                        }} classes={classes.icon} />
-                    </ListItemIcon>
+            <div>
+                <List className={drawerStyles.listRoot}>
+                    <ListItem
+                        button
+                        aria-haspopup="true"
+                        aria-controls="calendar-menu"
+                        aria-label="Calendar"
+                        onClick={this.handleClickListItem}
+                        disabled={!selected.id}
+                    >
+                        <ListItemIcon>
+                            <BookmarkIcon style={{
+                                fill: selected.backgroundColor || 'currentColor'
+                            }} classes={classes.icon} />
+                        </ListItemIcon>
 
-                    <ListItemText
-                        primary={
-                            <span className={cx({
-                                [styles.placeholder]: !selected.id
-                            })}>
-                                Calendar
-                            </span>
-                        }
-                        secondary={
-                            <span className={cx(
-                                styles.calendarName,
-                                {
+                        <ListItemText
+                            primary={
+                                <span className={cx(drawerStyles.listItemText, {
                                     [styles.placeholder]: !selected.id
                                 })}>
-                                {selected.summary || 'NONE'}
-                            </span>
-                        }
-                    />
+                                    Calendar
+                                </span>
+                            }
+                            secondary={
+                                <span
+                                    className={cx(
+                                        styles.calendarName,
+                                        {
+                                            [styles.placeholder]: !selected.id
+                                        })
+                                    }
+                                >
+                                    {selected.summary || 'NONE'}
+                                </span>
+                            }
+                        />
 
-                    <ListItemIcon>
-                        {
-                            this.state.open ? (
-                                <ExpandLessIcon style={{
-                                    fill: 'currentColor'
-                                }} classes={classes.icon} />
-                            ) : (
-                                <ExpandMoreIcon style={{
-                                    fill: 'currentColor'
-                                }} classes={classes.icon} />
-                            )
-                        }
+                        <ListItemIcon>
+                            {
+                                this.state.open ? (
+                                    <ExpandLessIcon style={{
+                                        fill: 'currentColor'
+                                    }} classes={classes.icon} />
+                                ) : (
+                                    <ExpandMoreIcon style={{
+                                        fill: 'currentColor'
+                                    }} classes={classes.icon} />
+                                )
+                            }
 
-                    </ListItemIcon>
-                </ListItem>
+                        </ListItemIcon>
+                    </ListItem>
+                </List>
 
                 <Collapse in={this.state.open}>
-                    {
-                        this.props.calendars.list.map((calendar, index) => (
-                            <ListItem
-                                button
-                                key={index}
-                                data-index={index}
-                                onClick={this.handleCalendarSelect}
-                                classes={
-                                    calendar.id === selected.id ?
-                                        classes.selected :
-                                        undefined
-                                }
-                            >
-                                <ListItemIcon>
-                                    <BookmarkIcon style={{
-                                        fill: calendar.backgroundColor
-                                    }} classes={classes.icon} />
-                                </ListItemIcon>
-                                <ListItemText
-                                    disableTypography
-                                    primary={
-                                        <Typography className={styles.listItemText}>
-                                            { calendar.summary }
-                                        </Typography>
-                                    }
-                                    classes={classes.listItemText}
-                                />
-                            </ListItem>)
-                        )
-                    }
+                    <List className={drawerStyles.listRoot} style={jsStyles.calendarListRoot}>
+                        {
+                            this.props.calendars.list.map((calendar, index) => {
+                                const isSelected = calendar.id === selected.id;
+
+                                return (
+                                    <ListItem
+                                        button
+                                        key={index}
+                                        data-index={index}
+                                        onClick={this.handleCalendarSelect}
+                                        classes={
+                                            isSelected ?
+                                                classes.selected :
+                                                undefined
+                                        }
+                                    >
+                                        <ListItemIcon>
+                                            <BookmarkIcon style={{
+                                                fill: calendar.backgroundColor
+                                            }} classes={classes.icon} />
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            disableTypography
+                                            primary={
+                                                <Typography
+                                                    className={styles.calendarText}
+                                                    style={isSelected ?
+                                                        jsStyles.textSelected :
+                                                        undefined}
+                                                >
+                                                    { calendar.summary }
+                                                </Typography>
+                                            }
+                                            classes={classes.calendarText}
+                                        />
+                                    </ListItem>
+                                );
+                            })
+                        }
+                    </List>
                 </Collapse>
             </div>
         );

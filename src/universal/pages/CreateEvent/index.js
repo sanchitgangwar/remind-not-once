@@ -171,76 +171,78 @@ class CreateEvent extends Component {
         const { calendarsSource, calendar } = this.state;
 
         return (
-            <Paper>
-                <div className={styles.root}>
-                    <Typography
-                        type="headline"
-                        className={cx(styles.formHeader, {
-                            [styles.placeholder]: !calendars.list.length
-                        })}
-                    >
-                        Create Event
-                    </Typography>
+            <div className={styles.wrapper}>
+                <Paper className={styles.paper}>
+                    <div className={styles.root}>
+                        <Typography
+                            type="headline"
+                            className={cx(styles.formHeader, {
+                                [styles.placeholder]: !calendars.list.length
+                            })}
+                        >
+                            Create Event
+                        </Typography>
 
-                    <form onSubmit={this.props.handleSubmit(this.handleSubmit)}>
-                        <Field name="eventName"
-                            component={TextField}
-                            label="Event name"
-                            required={true}
-                            style={jsStyles.eventName}
-                            autoFocus={true}
-                        />
-
-                        <div className={styles.calendarInputContainer}>
-                            <Field name="calendarId"
-                                component={Dropdown}
-                                label="Calendar"
+                        <form onSubmit={this.props.handleSubmit(this.handleSubmit)}>
+                            <Field name="eventName"
+                                component={TextField}
+                                label="Event name"
                                 required={true}
-                                source={calendarsSource}
-                                renderOption={this.renderCalendarOption}
-                                onChange={this.handleCalendarIdChange}
+                                style={jsStyles.eventName}
+                                autoFocus={true}
                             />
 
-                            <BookmarkIcon
-                                className={styles.calendarInputIcon}
-                                style={{
-                                    fill: calendar.background
-                                }} />
-                        </div>
+                            <div className={styles.calendarInputContainer}>
+                                <Field name="calendarId"
+                                    component={Dropdown}
+                                    label="Calendar"
+                                    required={true}
+                                    source={calendarsSource}
+                                    renderOption={this.renderCalendarOption}
+                                    onChange={this.handleCalendarIdChange}
+                                />
 
-                        <FieldArray
-                            name="tasks"
-                            component={TaskInputs}
-                        />
+                                <BookmarkIcon
+                                    className={styles.calendarInputIcon}
+                                    style={{
+                                        fill: calendar.background
+                                    }} />
+                            </div>
 
-                        <FieldArray
-                            name="occurrences"
-                            component={OccurrenceInputs}
-                        />
+                            <FieldArray
+                                name="tasks"
+                                component={TaskInputs}
+                            />
 
-                        <div className={styles.footer}>
-                            <Link to="/" className={styles.cancelLink}>
-                                <Button disabled={submitting}>
-                                    Cancel
+                            <FieldArray
+                                name="occurrences"
+                                component={OccurrenceInputs}
+                            />
+
+                            <div className={styles.footer}>
+                                <Link to="/" className={styles.cancelLink}>
+                                    <Button disabled={submitting}>
+                                        Cancel
+                                    </Button>
+                                </Link>
+
+                                <Button
+                                    raised
+                                    color="accent"
+                                    type="submit"
+                                    disabled={invalid || submitting}
+                                >
+                                    Create event
                                 </Button>
-                            </Link>
+                            </div>
+                        </form>
+                    </div>
 
-                            <Button
-                                raised
-                                color="accent"
-                                type="submit"
-                                disabled={invalid || submitting}
-                            >
-                                Create event
-                            </Button>
-                        </div>
-                    </form>
-                </div>
-
-                {
-                    submitting ? (<LinearProgress />) : null
-                }
-            </Paper>
+                    {
+                        submitting ? (<LinearProgress />) : null
+                    }
+                </Paper>
+            </div>
         );
     }
 }

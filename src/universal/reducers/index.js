@@ -5,7 +5,6 @@ import user from './user';
 import snackbar from './snackbar';
 import calendars from './calendars';
 import events from './events';
-import date from './date';
 import filters from './filters';
 
 const rootReducer = combineReducers({
@@ -14,7 +13,6 @@ const rootReducer = combineReducers({
     snackbar,
     calendars,
     events,
-    date,
     filters
 });
 

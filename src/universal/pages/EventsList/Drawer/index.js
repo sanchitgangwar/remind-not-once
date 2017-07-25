@@ -2,25 +2,16 @@ import React, { Component } from 'react';
 
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
-import Typography from 'material-ui/Typography';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import ListIcon from 'material-ui-icons/List';
-import DoneIcon from 'material-ui-icons/Done';
-import TimelapseIcon from 'material-ui-icons/Timelapse';
 
 import CalendarSelect from './CalendarSelect';
+import StatusSelect from './StatusSelect';
+import Contact from './Contact';
 
 import styles from './index.css';
 
 const classes = {
     drawer: {
         paper: styles.root
-    },
-    icon: {
-        root: styles.icon
-    },
-    selected: {
-        root: styles.listItemSelected
     }
 };
 
@@ -28,60 +19,16 @@ class DrawerComponent extends Component {
     render() {
         return (
             <Drawer open={true} docked classes={classes.drawer}>
-                <List>
-                    <CalendarSelect />
+                <CalendarSelect />
 
-                    <Divider className={styles.divider} />
+                <Divider />
 
-                    <ListItem
-                        button
-                        selected
-                        classes={classes.selected}
-                    >
-                        <ListItemIcon>
-                            <ListIcon classes={classes.icon} />
-                        </ListItemIcon>
+                <StatusSelect />
 
-                        <ListItemText
-                            disableTypography
-                            primary={
-                                <Typography>
-                                    All
-                                </Typography>
-                            }
-                        />
-                    </ListItem>
+                <Divider />
 
-                    <ListItem button>
-                        <ListItemIcon>
-                            <DoneIcon classes={classes.icon} />
-                        </ListItemIcon>
+                <Contact />
 
-                        <ListItemText
-                            disableTypography
-                            primary={
-                                <Typography>
-                                    Completed
-                                </Typography>
-                            }
-                        />
-                    </ListItem>
-
-                    <ListItem button>
-                        <ListItemIcon>
-                            <TimelapseIcon classes={classes.icon} />
-                        </ListItemIcon>
-
-                        <ListItemText
-                            disableTypography
-                            primary={
-                                <Typography>
-                                    Incomplete
-                                </Typography>
-                            }
-                        />
-                    </ListItem>
-                </List>
             </Drawer>
         );
     }

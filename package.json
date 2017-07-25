@@ -44,6 +44,7 @@
         "react-mdl-datepicker": "^1.0.0",
         "react-redux": "^5.0.5",
         "react-router-dom": "^4.1.2",
+        "sendmail": "^1.1.1",
         "serve-favicon": "^2.4.3",
         "source-map-support": "^0.4.15"
     },

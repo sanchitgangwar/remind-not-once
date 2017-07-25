@@ -2,6 +2,7 @@ import { CLEAR_EVENTS } from './events';
 
 export const SET_SELECTED_CALENDAR = 'SET_SELECTED_CALENDAR';
 export const SET_SELECTED_DATE = 'SET_SELECTED_DATE';
+export const SET_STATUS_FILTER = 'SET_STATUS_FILTER';
 
 function setSelectedCalendarAction(payload) {
     return (dispatch) => {
@@ -23,7 +24,15 @@ function setSelectedDateAction(payload) {
     };
 }
 
+function setStatusFilterAction(payload) {
+    return {
+        type: SET_STATUS_FILTER,
+        payload
+    };
+}
+
 export {
     setSelectedCalendarAction,
-    setSelectedDateAction
+    setSelectedDateAction,
+    setStatusFilterAction
 };
