@@ -1,6 +1,7 @@
 export const DRAWER_OPEN = 'DRAWER_OPEN';
 export const DRAWER_CLOSE = 'DRAWER_CLOSE';
 export const DRAWER_TOGGLE = 'DRAWER_TOGGLE';
+export const DRAWER_CLOSE_IF_NOT_DOCKED = 'DRAWER_CLOSE_IF_NOT_DOCKED';
 
 function openDrawerAction(payload) {
     return {
@@ -23,8 +24,15 @@ function toggleDrawerAction(payload) {
     };
 }
 
+function closeDrawerIfNotDockedAction() {
+    return {
+        type: DRAWER_CLOSE_IF_NOT_DOCKED
+    }
+}
+
 export {
     openDrawerAction,
     closeDrawerAction,
-    toggleDrawerAction
+    toggleDrawerAction,
+    closeDrawerIfNotDockedAction
 };

@@ -12,6 +12,9 @@ import Typography from 'material-ui/Typography';
 import {
     setStatusFilterAction
 } from 'Universal/actions/filters';
+import {
+    closeDrawerIfNotDockedAction
+} from 'Universal/actions/drawer';
 import theme from 'Universal/../theme';
 
 import styles from './index.css';
@@ -54,13 +57,15 @@ const classes = {
 class StatusSelect extends Component {
     static propTypes = {
         filters: PropTypes.object.isRequired,
-        setStatusFilter: PropTypes.func.isRequired
+        setStatusFilter: PropTypes.func.isRequired,
+        closeDrawerIfNotDocked: PropTypes.func.isRequired
     };
 
     handleStatusOptionClick = (event) => {
         const index = parseInt(event.currentTarget.dataset.index, 10);
 
         this.props.setStatusFilter(status[index].value);
+        this.props.closeDrawerIfNotDocked();
     };
 
     render() {
@@ -116,7 +121,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        setStatusFilter: setStatusFilterAction
+        setStatusFilter: setStatusFilterAction,
+        closeDrawerIfNotDocked: closeDrawerIfNotDockedAction
     }, dispatch);
 }
 

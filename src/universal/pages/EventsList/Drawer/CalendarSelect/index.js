@@ -17,6 +17,9 @@ import {
 import {
     setEventsForDateAction
 } from 'Universal/actions/events';
+import {
+    closeDrawerIfNotDockedAction
+} from 'Universal/actions/drawer';
 import theme from 'Universal/../theme';
 
 import drawerStyles from '../index.css';
@@ -49,7 +52,8 @@ class CalendarSelect extends Component {
         filters: PropTypes.object.isRequired,
         events: PropTypes.object.isRequired,
         setSelectedCalendar: PropTypes.func.isRequired,
-        setEventsForDate: PropTypes.func.isRequired
+        setEventsForDate: PropTypes.func.isRequired,
+        closeDrawerIfNotDocked: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -69,6 +73,7 @@ class CalendarSelect extends Component {
     handleCalendarSelect = (event) => {
         const index = parseInt(event.currentTarget.dataset.index, 10);
         this.props.setSelectedCalendar(this.props.calendars.list[index]);
+        this.props.closeDrawerIfNotDocked();
     };
 
     render() {
@@ -190,7 +195,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setSelectedCalendar: setSelectedCalendarAction,
-        setEventsForDate: setEventsForDateAction
+        setEventsForDate: setEventsForDateAction,
+        closeDrawerIfNotDocked: closeDrawerIfNotDockedAction
     }, dispatch);
 }
 
