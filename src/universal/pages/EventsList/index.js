@@ -18,6 +18,10 @@ import {
 import {
     showSnackbarAction
 } from 'Universal/actions/snackbar';
+import {
+    openDrawerAction,
+    closeDrawerAction
+} from 'Universal/actions/drawer';
 import resizeHandler from 'Universal/utils/resizeHandler';
 import api from 'Universal/utils/api';
 
@@ -31,6 +35,19 @@ const loadingStyle = {
     color: 'rgba(0, 0, 0, 0.5)'
 };
 
+const jsStyles = {
+    sideCenter: {
+        width: 'calc(100% - 265px)',
+        marginLeft: 265
+    },
+    center: {
+        width: '100%',
+        marginLeft: 0
+    }
+};
+
+const DRAWER_WIDTH_THRESHOLD = 900;
+
 class EventsList extends Component {
     static propTypes = {
         filters: PropTypes.object.isRequired,
@@ -38,7 +55,9 @@ class EventsList extends Component {
         drawer: PropTypes.object.isRequired,
         setSelectedCalendar: PropTypes.func.isRequired,
         setEventsForDate: PropTypes.func.isRequired,
-        showSnackbar: PropTypes.func.isRequired
+        showSnackbar: PropTypes.func.isRequired,
+        closeDrawer: PropTypes.func.isRequired,
+        openDrawer: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -48,6 +67,10 @@ class EventsList extends Component {
         if (!events && calendar.id && date.value) {
             this.getEvents(calendar.id, date.value);
         }
+
+        this.resizeInstance = resizeHandler.getInstance();
+        this.resizeInstance.subscribe(this.handleResize);
+        this.handleResize(this.resizeInstance.getDimensions());
     }
 
     componentWillReceiveProps(nextProps) {
@@ -73,6 +96,18 @@ class EventsList extends Component {
             });
         }
     }
+
+    componentWillUnmount() {
+        this.resizeInstance.unsubscribe(this.handleResize);
+    }
+
+    handleResize = (dims) => {
+        if (dims.width < DRAWER_WIDTH_THRESHOLD) {
+            this.props.closeDrawer({ docked: false });
+        } else {
+            this.props.openDrawer({ docked: true });
+        }
+    };
 
     getEvents(calendarId, date) {
         api.get({
@@ -134,9 +169,10 @@ class EventsList extends Component {
             <div>
                 <Drawer />
 
-                <div className={cx(styles.contentWrapper, {
-                    [styles.marginLeft]: width > 1000 && drawer.open
-                })}>
+                <div className={styles.contentWrapper}
+                    style={width > DRAWER_WIDTH_THRESHOLD && drawer.open ?
+                        jsStyles.sideCenter : jsStyles.center}
+                >
                     <div className={styles.contentContainer}>
                         <DateSelect />
 
@@ -174,7 +210,9 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setSelectedCalendar: setSelectedCalendarAction,
         setEventsForDate: setEventsForDateAction,
-        showSnackbar: showSnackbarAction
+        showSnackbar: showSnackbarAction,
+        openDrawer: openDrawerAction,
+        closeDrawer: closeDrawerAction
     }, dispatch);
 }
 

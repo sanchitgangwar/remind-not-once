@@ -3,11 +3,6 @@
     justify-content: center;
 }
 
-.marginLeft {
-    width: calc(100% - 265px);
-    margin-left: 265px;
-}
-
 .contentContainer {
     width: 100%;
     max-width: 900px;
@@ -17,15 +12,4 @@
     position: fixed;
     bottom: 24px;
     right: 24px;
-}
-
-@media only screen and (max-width: 1000px) {
-    .contentWrapper {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    .content {
-        margin-left: 0;
-    }
 }

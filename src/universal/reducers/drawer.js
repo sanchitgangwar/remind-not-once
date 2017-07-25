@@ -5,20 +5,27 @@ import {
 } from 'Universal/actions/drawer';
 
 export default function (state = {
-    open: false
+    open: false,
+    docked: false
 }, action) {
     switch (action.type) {
     case DRAWER_OPEN:
         return {
-            open: true
+            ...state,
+            open: true,
+            ...action.payload
         };
     case DRAWER_CLOSE:
         return {
-            open: false
+            ...state,
+            open: false,
+            ...action.payload
         };
     case DRAWER_TOGGLE:
         return {
-            open: !state.open
+            ...state,
+            open: !state.open,
+            ...action.payload
         };
     default:
         return state;
