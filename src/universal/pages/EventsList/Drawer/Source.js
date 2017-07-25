@@ -23,6 +23,7 @@ class Contact extends Component {
                         href="https://github.com/sanchitgangwar/remind-plus"
                         className={styles.noDecoration}
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <ListItem
                             button
