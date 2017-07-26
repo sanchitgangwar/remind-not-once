@@ -1,9 +1,6 @@
 /* eslint-disable no-console */
 
-const DEBUG = true;
-
 const { assets } = global.serviceWorkerOption;
-
 const CACHE_NAME = new Date().toISOString();
 
 let assetsToCache = [...assets, './'];
@@ -20,9 +17,7 @@ self.addEventListener('install', (event) => {
             .open(CACHE_NAME)
             .then(cache => cache.addAll(assetsToCache))
             .then(() => {
-                if (DEBUG) {
-                    console.log('Cached assets: main', assetsToCache);
-                }
+                console.log('Cached assets: main', assetsToCache);
             }).catch((error) => {
                 console.error(error);
                 throw error;
@@ -56,9 +51,7 @@ self.addEventListener('fetch', (event) => {
 
     // Ignore non-GET requests.
     if (request.method !== 'GET') {
-        if (DEBUG) {
-            console.log(`[SW] Ignore non GET request ${request.method}`);
-        }
+        console.log(`[SW] Ignore non GET request ${request.method}`);
 
         return;
     }
