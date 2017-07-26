@@ -9,6 +9,7 @@ const BabiliPlugin = require('babili-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const InlineManifestPlugin = require('inline-manifest-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, '../src'),
@@ -39,7 +40,7 @@ module.exports = {
     plugins: [
         new FaviconsWebpackPlugin({
             logo: path.join(__dirname, '../assets/icons/icon_1024.png'),
-            prefix: 'icons-[hash]/',
+            prefix: 'icons/',
             persistentCache: true,
             inject: true,
             title: '(Remind)+'
@@ -80,8 +81,39 @@ module.exports = {
         new webpack.HashedModuleIdsPlugin(),
         new InlineManifestPlugin({
             name: 'webpackManifest'
+        }),
+        new GenerateJsonPlugin('manifest.json', {
+            name: '(Remind)+',
+            short_name: '(R)+',
+            description: 'Add to-do lists to Google Calendar.',
+            background_color: '#ffffff',
+            theme_color: '#ffffff',
+            display: 'standalone',
+            orientation: 'landscape',
+            start_url: '/',
+            icons: [{
+                src: './icons/android-chrome-384x384.png',
+                size: '384x384'
+            }, {
+                src: './icons/android-chrome-256x256.png',
+                size: '256x256'
+            }, {
+                src: './icons/android-chrome-192x192.png',
+                size: '192x192'
+            }, {
+                src: './icons/apple-touch-icon-144x144.png',
+                size: '144x144',
+            }, {
+                src: './icons/android-chrome-96x96.png',
+                size: '96x96'
+            }, {
+                src: './icons/android-chrome-48x48.png',
+                size: '48x48'
+            }, {
+                src: './icons/android-chrome-36x36.png',
+                size: '36x36'
+            }]
         })
-
     ],
     module: {
         rules: [{
