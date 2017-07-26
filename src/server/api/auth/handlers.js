@@ -9,6 +9,7 @@ function login(req, res) {
         'https://www.googleapis.com/auth/userinfo.email'
     ];
     const url = oauth2Client.generateAuthUrl({
+        access_type: 'offline',
         scope: scopes
     });
 
