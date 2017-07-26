@@ -6,6 +6,10 @@ import PropTypes from 'prop-types';
 import Snackbar from 'material-ui/Snackbar';
 import Slide from 'material-ui/transitions/Slide';
 
+import runtime from 'serviceworker-webpack-plugin/lib/runtime';
+import registerEvents from 'serviceworker-webpack-plugin/lib/browser/registerEvents';
+import applyUpdate from 'serviceworker-webpack-plugin/lib/browser/applyUpdate';
+
 import ProtectedRoute from 'Universal/components/ProtectedRoute';
 import Login from 'Universal/pages/Login';
 import NotFound from 'Universal/pages/NotFound';
@@ -31,6 +35,19 @@ class AppContainer extends Component {
         // Try logging in by checking and verifying the cookies.
         if (!this.props.isLoggedIn && !this.props.isCookieChecked) {
             this.props.initLogin();
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator &&
+            (window.location.protocol === 'https:'
+                || window.location.hostname === 'localhost')) {
+            const registration = runtime.register();
+
+            registerEvents(registration, {
+                onInstalled: () => {
+                    console.log('onInstalled');
+                }
+            });
         }
     }
 

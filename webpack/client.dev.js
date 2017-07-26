@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 
 module.exports = {
@@ -55,6 +56,9 @@ module.exports = {
         new ExtractTextPlugin({
             filename: 'app.bundle.[contenthash].css',
             disable: true
+        }),
+        new ServiceWorkerWebpackPlugin({
+            entry: path.resolve(__dirname, '../src/sw.js')
         })
     ],
     devServer: {
