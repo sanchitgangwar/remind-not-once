@@ -57,6 +57,14 @@ self.addEventListener('fetch', (event) => {
     }
 
     const requestUrl = new URL(request.url);
+
+    // Don't handle requests for different origins.
+    if (requestUrl.origin !== location.origin) {
+        console.log(`[SW] Ignore difference origin ${requestUrl.origin}`);
+
+        return;
+    }
+
     const resource = global.caches.match(request).then((response) => {
         // Cache hit.
         if (response) {
@@ -101,5 +109,5 @@ self.addEventListener('fetch', (event) => {
         });
     });
 
-    event.responseWith(resource);
+    event.respondWith(resource);
 });
