@@ -8,19 +8,19 @@ function displayStartEndDates(startDate, endDate) {
     let endString;
 
     if (mEndDate.diff(mStartDate) === 0) {
-        startString = mStartDate.format('DD MMMM, YYYY');
+        startString = mStartDate.format('DD MMM, YYYY');
         return startString;
     }
 
     if (mStartDate.year() === mEndDate.year()) {
-        startString = mStartDate.format('DD MMMM');
-        endString = mEndDate.format('DD MMMM, YYYY');
+        startString = mStartDate.format('DD MMM');
+        endString = mEndDate.format('DD MMM, YYYY');
 
         return `${startString} - ${endString}`;
     }
 
-    startString = mStartDate.format('DD MMMM, YYYY');
-    endString = mEndDate.format('DD MMMM, YYYY');
+    startString = mStartDate.format('DD MMM, YYYY');
+    endString = mEndDate.format('DD MMM, YYYY');
 
     return `${startString} - ${endString}`;
 }
