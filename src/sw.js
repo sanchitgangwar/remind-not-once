@@ -59,7 +59,7 @@ self.addEventListener('fetch', (event) => {
 
     // Ignore cross-origin requests.
     if (requestUrl.origin !== location.origin) {
-        console.log(`[SW] Ignoring cross-origin request ${requestUrl.toString()}`);
+        console.log(`[SW] Ignoring cross-origin request ${requestUrl.href}`);
         return;
     }
 
