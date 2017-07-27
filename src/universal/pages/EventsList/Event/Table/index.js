@@ -83,7 +83,7 @@ class Table extends Component {
                 <List>
                     {
                         this.props.list.map((value, index) =>
-                            <ListItem dense button key={value}
+                            <ListItem dense button key={index}
                                 classes={{
                                     root: styles.listItem
                                 }}>

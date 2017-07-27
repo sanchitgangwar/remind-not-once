@@ -4,8 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, '../src'),
@@ -39,11 +38,6 @@ module.exports = {
         }
     },
     plugins: [
-        new CleanWebpackPlugin(['dist'], {
-            root: path.resolve(__dirname, '../'),
-            verbose: true,
-            dry: false
-        }),
         new webpack.EnvironmentPlugin({ DEBUG: true, NODE_ENV: 'development', DEV: true }),
         new HtmlWebpackPlugin({
             template: 'index.html',
@@ -55,6 +49,9 @@ module.exports = {
         new ExtractTextPlugin({
             filename: 'app.bundle.[contenthash].css',
             disable: true
+        }),
+        new ServiceWorkerWebpackPlugin({
+            entry: path.resolve(__dirname, '../src/sw.js')
         })
     ],
     devServer: {

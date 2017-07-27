@@ -10,6 +10,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const InlineManifestPlugin = require('inline-manifest-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, '../src'),
@@ -113,6 +114,11 @@ module.exports = {
                 src: './icons/android-chrome-36x36.png',
                 size: '36x36'
             }]
+        }),
+        new ServiceWorkerWebpackPlugin({
+            entry: path.join(__dirname, '../src/sw.js'),
+            excludes: ['*.gz', '*.map'],
+            includes: ['*', 'icons/favicon*']
         })
     ],
     module: {
