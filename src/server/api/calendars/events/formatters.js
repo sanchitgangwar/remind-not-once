@@ -40,8 +40,8 @@ function formatList(response) {
             const obj = {
                 id: event.id,
                 summary,
-                created: moment(event.created).format('LL'),
-                updated: moment(event.updated).format('LL'),
+                created: moment(event.created).format('ll'),
+                updated: moment(event.updated).format('ll'),
                 startDate: event.start.date,
                 endDate: event.end.date,
                 completed: tasks.completed,
