@@ -13,15 +13,18 @@ self.addEventListener('install', (event) => {
     console.log('[SW] Install event');
 
     event.waitUntil(
-        global.caches
-            .open(CACHE_NAME)
-            .then(cache => cache.addAll(assetsToCache))
-            .then(() => {
-                console.log('Cached assets: main', assetsToCache);
-            }).catch((error) => {
-                console.error(error);
-                throw error;
-            })
+        Promise.all([
+            self.skipWaiting(),
+            global.caches
+                .open(CACHE_NAME)
+                .then(cache => cache.addAll(assetsToCache))
+                .then(() => {
+                    console.log('Cached assets: main', assetsToCache);
+                }).catch((error) => {
+                    console.error(error);
+                    throw error;
+                })
+        ])
     );
 });
 
@@ -31,18 +34,21 @@ self.addEventListener('activate', (event) => {
 
     // Clean the caches
     event.waitUntil(
-        global.caches.keys().then(cacheNames => (
-            Promise.all(
-                cacheNames.map((cacheName) => {
-                    // Delete the caches that are not the current one.
-                    if (cacheName.indexOf(CACHE_NAME) === 0) {
-                        return null;
-                    }
+        Promise.all([
+            self.clients.claim(),
+            global.caches.keys().then(cacheNames => (
+                Promise.all(
+                    cacheNames.map((cacheName) => {
+                        // Delete the caches that are not the current one.
+                        if (cacheName.indexOf(CACHE_NAME) === 0) {
+                            return null;
+                        }
 
-                    return global.caches.delete(cacheName);
-                })
-            )
-        ))
+                        return global.caches.delete(cacheName);
+                    })
+                )
+            ))
+        ])
     );
 });
 

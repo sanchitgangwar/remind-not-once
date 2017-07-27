@@ -94,25 +94,32 @@ module.exports = {
             start_url: '/',
             icons: [{
                 src: './icons/android-chrome-384x384.png',
-                size: '384x384'
+                size: '384x384',
+                type: 'image/png'
             }, {
                 src: './icons/android-chrome-256x256.png',
-                size: '256x256'
+                size: '256x256',
+                type: 'image/png'
             }, {
                 src: './icons/android-chrome-192x192.png',
-                size: '192x192'
+                size: '192x192',
+                type: 'image/png'
             }, {
                 src: './icons/apple-touch-icon-144x144.png',
                 size: '144x144',
+                type: 'image/png'
             }, {
                 src: './icons/android-chrome-96x96.png',
-                size: '96x96'
+                size: '96x96',
+                type: 'image/png'
             }, {
                 src: './icons/android-chrome-48x48.png',
-                size: '48x48'
+                size: '48x48',
+                type: 'image/png'
             }, {
                 src: './icons/android-chrome-36x36.png',
-                size: '36x36'
+                size: '36x36',
+                type: 'image/png'
             }]
         }),
         new ServiceWorkerWebpackPlugin({
