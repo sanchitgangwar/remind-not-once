@@ -16,7 +16,7 @@ function getList(req, res) {
     const oauth2Client = oauth.getClient(req);
     const calendar = google.calendar('v3');
 
-    const date = moment(req.query.date, 'YYYY-MM-DD');
+    const date = moment(req.query.date);
     const { calendarId = 'primary' } = req.params;
     const timeMin = date.startOf('day').format();
     const timeMax = date.endOf('day').format();
@@ -34,6 +34,7 @@ function getList(req, res) {
         timeMax,
         orderBy: 'updated'
     }, (err, response) => {
+        req.log.info('Events list fetched: ', response);
         if (err) {
             res.status(err.code || 500).send(err);
             return;

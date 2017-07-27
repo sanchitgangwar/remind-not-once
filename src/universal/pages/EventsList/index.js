@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
@@ -112,7 +113,7 @@ class EventsList extends Component {
         api.get({
             path: `/api/calendars/${calendarId}/events`,
             query: {
-                date
+                date: moment(date).format()
             }
         }).then((response) => {
             this.props.setEventsForDate({
