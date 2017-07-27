@@ -90,7 +90,7 @@ module.exports = {
             background_color: '#ffffff',
             theme_color: '#ffffff',
             display: 'standalone',
-            orientation: 'landscape',
+            orientation: 'portrait',
             start_url: '/',
             icons: [{
                 src: './icons/android-chrome-384x384.png',
