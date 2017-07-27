@@ -41,25 +41,7 @@ class AppContainer extends Component {
         if ('serviceWorker' in navigator &&
             (window.location.protocol === 'https:'
                 || window.location.hostname === 'localhost')) {
-            const registration = runtime.register();
-
-            registerEvents(registration, {
-                onInstalled: () => {
-                    console.log('onInstalled');
-                },
-                onUpdateReady: () => {
-                    console.log('onUpdateReady');
-                },
-                onUpdating: () => {
-                    console.log('onUpdating');
-                },
-                onUpdateFailed: () => {
-                    console.log('onUpdateFailed');
-                },
-                onUpdated: () => {
-                    console.log('onUpdated');
-                }
-            });
+            runtime.register();
         }
     }
 
