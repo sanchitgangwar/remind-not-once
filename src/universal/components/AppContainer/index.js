@@ -46,6 +46,18 @@ class AppContainer extends Component {
             registerEvents(registration, {
                 onInstalled: () => {
                     console.log('onInstalled');
+                },
+                onUpdateReady: () => {
+                    console.log('onUpdateReady');
+                },
+                onUpdating: () => {
+                    console.log('onUpdating');
+                },
+                onUpdateFailed: () => {
+                    console.log('onUpdateFailed');
+                },
+                onUpdated: () => {
+                    console.log('onUpdated');
                 }
             });
         }

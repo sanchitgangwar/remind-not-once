@@ -51,17 +51,21 @@ self.addEventListener('fetch', (event) => {
 
     // Ignore non-GET requests.
     if (request.method !== 'GET') {
-        console.log(`[SW] Ignore non GET request ${request.method}`);
-
+        console.log(`[SW] Ignoring non-GET request ${request.method}`);
         return;
     }
 
     const requestUrl = new URL(request.url);
 
-    // Don't handle requests for different origins.
+    // Ignore cross-origin requests.
     if (requestUrl.origin !== location.origin) {
-        console.log(`[SW] Ignore difference origin ${requestUrl.origin}`);
+        console.log(`[SW] Ignoring cross-origin request ${requestUrl.toString()}`);
+        return;
+    }
 
+    // Ignore API calls.
+    if (requestUrl.pathname.indexOf('/api/') !== -1) {
+        console.log(`[SW] Ignoring API call ${requestUrl.origin}`);
         return;
     }
 
@@ -69,7 +73,6 @@ self.addEventListener('fetch', (event) => {
         // Cache hit.
         if (response) {
             console.log(`[SW] fetch URL ${requestUrl.href} from cache`);
-
             return response;
         }
 
@@ -110,4 +113,17 @@ self.addEventListener('fetch', (event) => {
     });
 
     event.respondWith(resource);
+});
+
+self.addEventListener('message', (event) => {
+    switch (event.data.action) {
+    case 'skipWaiting':
+        if (self.skipWaiting) {
+            self.skipWaiting();
+            self.clients.claim();
+        }
+        break;
+    default:
+        break;
+    }
 });

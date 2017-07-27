@@ -117,7 +117,8 @@ module.exports = {
         }),
         new ServiceWorkerWebpackPlugin({
             entry: path.join(__dirname, '../src/sw.js'),
-            excludes: ['icons/*', '*.gz', '*.map']
+            excludes: ['*.gz', '*.map'],
+            includes: ['*', 'icons/favicon*']
         })
     ],
     module: {
