@@ -6,6 +6,10 @@ import {
     USER_LOGGED_OUT
 } from 'Universal/actions/user';
 
+import localStorage from 'Universal/utils/localStorage';
+
+const IDENTIFIER = 'accountEmail';
+
 export default function auth(state = {
     isLoggedIn: false,
     isLoggingIn: true,
@@ -38,6 +42,11 @@ export default function auth(state = {
             isCookieChecked: true
         };
     case SET_USER_DETAILS:
+        if (localStorage.get(IDENTIFIER) !== action.payload[IDENTIFIER]) {
+            localStorage.clear();
+            localStorage.set(IDENTIFIER, action.payload[IDENTIFIER]);
+        }
+
         return {
             ...state,
             isLoggedIn: true,

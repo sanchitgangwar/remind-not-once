@@ -88,6 +88,9 @@ function getCreateRequestBodies({ eventName, tasks, occurrences }) {
                 date: occurrences[i].endDate
             },
             summary: `[R+] ${eventName}`,
+            reminders: {
+                useDefault: false
+            },
             description
         };
     }

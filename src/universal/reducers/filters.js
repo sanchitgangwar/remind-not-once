@@ -4,6 +4,8 @@ import {
     SET_STATUS_FILTER
 } from 'Universal/actions/filters';
 
+import localStorage from 'Universal/utils/localStorage';
+
 export default function (state = {
     calendar: {},
     date: {},
@@ -11,6 +13,8 @@ export default function (state = {
 }, action) {
     switch (action.type) {
     case SET_SELECTED_CALENDAR:
+        localStorage.set('calendar', action.payload);
+
         return {
             ...state,
             calendar: action.payload

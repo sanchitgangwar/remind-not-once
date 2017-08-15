@@ -27,6 +27,7 @@ import {
     setSelectedCalendarAction,
     setSelectedDateAction
 } from 'Universal/actions/filters';
+import localStorage from 'Universal/utils/localStorage';
 import UserMenu from './UserMenu';
 
 import LogoFull from '../../../../assets/images/LogoFull_228.png';
@@ -46,11 +47,19 @@ class LoggedInContainer extends Component {
     };
 
     componentDidMount() {
+        const lsCalendar = localStorage.get('calendar');
+        if (lsCalendar) {
+            this.props.setSelectedCalendar(lsCalendar);
+        }
+
         if (!this.props.calendars.list.length) {
             api.get({
                 path: '/api/calendars/list'
             }).then((response) => {
-                this.props.setSelectedCalendar(response[0]);
+                if (!lsCalendar) {
+                    this.props.setSelectedCalendar(response[0]);
+                }
+
                 this.props.setCalendarsList(response);
             }, () => {
                 this.props.showSnackbar({

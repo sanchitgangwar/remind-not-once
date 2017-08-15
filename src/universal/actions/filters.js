@@ -1,3 +1,4 @@
+import store from 'Client/store';
 import { CLEAR_EVENTS } from './events';
 
 export const SET_SELECTED_CALENDAR = 'SET_SELECTED_CALENDAR';
@@ -6,9 +7,13 @@ export const SET_STATUS_FILTER = 'SET_STATUS_FILTER';
 
 function setSelectedCalendarAction(payload) {
     return (dispatch) => {
-        dispatch({
-            type: CLEAR_EVENTS
-        });
+        const currentCalendar = store.getState().filters.calendar.id;
+
+        if (currentCalendar !== payload.id) {
+            dispatch({
+                type: CLEAR_EVENTS
+            });
+        }
 
         dispatch({
             type: SET_SELECTED_CALENDAR,
