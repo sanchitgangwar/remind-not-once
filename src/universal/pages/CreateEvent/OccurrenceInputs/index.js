@@ -29,13 +29,17 @@ const jsStyles = {
 };
 
 const presets = [{
-    label: '(7d)-(7d)-(14d)',
+    label: '(7d)-(14d)',
     value: 0,
+    description: 'After 7 days; after 14 days from that occurrence.'
+}, {
+    label: '(7d)-(7d)-(14d)',
+    value: 1,
     description: `After 7 days; after 7 days from that occurrence;
         after 14 days from that occurrence.`
 }, {
     label: '(7d: 2d)-(7d: 2d)-(14d: 2d)',
-    value: 1,
+    value: 2,
     description: `After 7 days; after 7 days from that occurrence;
         after 14 days from that occurrence. Each occurrence lasting for 2 days.`
 }];
@@ -146,6 +150,19 @@ class OccurrenceInputs extends Component {
         if (value === 0) {
             const dates = [
                 today.add(7, 'days').format('YYYY-MM-DD'),
+                today.add(14, 'days').format('YYYY-MM-DD')
+            ];
+
+            this.props.changeFieldValue(meta.form, fields.name, [{
+                startDate: dates[0],
+                endDate: dates[0]
+            }, {
+                startDate: dates[1],
+                endDate: dates[1]
+            }]);
+        } else if (value === 1) {
+            const dates = [
+                today.add(7, 'days').format('YYYY-MM-DD'),
                 today.add(7, 'days').format('YYYY-MM-DD'),
                 today.add(14, 'days').format('YYYY-MM-DD')
             ];
@@ -160,7 +177,7 @@ class OccurrenceInputs extends Component {
                 startDate: dates[2],
                 endDate: dates[2]
             }]);
-        } else if (value === 1) {
+        } else if (value === 2) {
             this.props.changeFieldValue(meta.form, fields.name, [{
                 startDate: today.add(7, 'days').format('YYYY-MM-DD'),
                 endDate: today.add(1, 'days').format('YYYY-MM-DD')
