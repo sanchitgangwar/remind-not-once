@@ -85,7 +85,7 @@ function getCreateRequestBodies({ eventName, tasks, occurrences }) {
                 date: occurrences[i].startDate
             },
             end: {
-                date: occurrences[i].endDate
+                date: moment(occurrences[i].endDate).add(1, 'days').format('YYYY-MM-DD')
             },
             summary: `[R+] ${eventName}`,
             reminders: {
