@@ -17,9 +17,10 @@ function getList(req, res) {
     const calendar = google.calendar('v3');
 
     const date = moment(req.query.date);
+    const offset = moment.parseZone(req.query.date).utcOffset();
     const { calendarId = 'primary' } = req.params;
-    const timeMin = date.startOf('day').format();
-    const timeMax = date.endOf('day').format();
+    const timeMin = date.startOf('day').utcOffset(offset).format();
+    const timeMax = date.endOf('day').utcOffset(offset).format();
     req.log.info('Getting events list: ', {
         calendarId,
         timeMin,
